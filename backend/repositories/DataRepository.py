@@ -10,25 +10,31 @@ class DataRepository:
             gegevens = request.form.to_dict()
         return gegevens
 
+    
     @staticmethod
-    def read_status_lampen():
-        sql = "SELECT * from lampen"
+    def get_status():
+        sql = "SELECT deviceID, status from device"
         return Database.get_rows(sql)
 
     @staticmethod
-    def read_status_lamp_by_id(id):
-        sql = "SELECT * from lampen WHERE id = %s"
+    def get_historiek():
+        sql = "select * from historiek"
+        return Database.get_rows(sql)
+
+    @staticmethod
+    def get_specific_historiek(id):
+        sql = "select * from historiek where volgnummer = %s"
         params = [id]
-        return Database.get_one_row(sql, params)
+        return Database.get_one_row(sql,params)
 
     @staticmethod
-    def update_status_lamp(id, status):
-        sql = "UPDATE lampen SET status = %s WHERE id = %s"
-        params = [status, id]
-        return Database.execute_sql(sql, params)
+    def get_latest_value(id):
+        sql = "select Waarde from historiek where deviceID = %s ORDER BY volgnummer DESC LIMIT 1"
+        params = [id]
+        return Database.get_one_row(sql,params)
 
     @staticmethod
-    def update_status_alle_lampen(status):
-        sql = "UPDATE lampen SET status = %s"
-        params = [status]
-        return Database.execute_sql(sql, params)
+    def update_waterlevel(value,deviceid,actieid):
+        sql = "INSERT INTO historiek(waarde,deviceID,actieID) VALUES(%s,%s,%s)"
+        params = [value,deviceid,actieid]
+        return Database.execute_sql(sql,params)

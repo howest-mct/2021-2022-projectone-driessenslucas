@@ -1,3 +1,5 @@
+from ast import Pass
+import json
 import time
 from RPi import GPIO
 from helpers.klasseknop import Button
@@ -5,36 +7,46 @@ import threading
 
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, send
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from repositories.DataRepository import DataRepository
 
 from selenium import webdriver
+
+endpoint = '/api/v1'
 
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
 
 
-ledPin = 21
-btnPin = Button(20)
 
 # Code voor Hardware
-def setup_gpio():
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
+import time
+import smbus
+import numpy as np
 
-    GPIO.setup(ledPin, GPIO.OUT)
-    GPIO.output(ledPin, GPIO.LOW)
+NO_TOUCH = 0xFE
+max_val_wls = 100
+
+
+i2c = smbus.SMBus(1)
     
-    btnPin.on_press(lees_knop)
 
 
-def lees_knop(pin):
-    if btnPin.pressed:
-        print("**** button pressed ****")
-        if GPIO.input(ledPin) == 1:
-            switch_light({'lamp_id': '3', 'new_status': 0})
-        else:
-            switch_light({'lamp_id': '3', 'new_status': 1})
+def check_water_level():
+    touch_val = 0
+    low_data =  i2c.read_i2c_block_data(0x77, 0x01, 8)
+    high_data = i2c.read_i2c_block_data(0x78, 0x01, 12)
+    
+    for i in range(8):
+        if low_data[i] > max_val_wls:
+            touch_val += 1
+       
+    for i in range(12):
+        if high_data[i] > max_val_wls:
+            touch_val += 1
+    
+    value = touch_val * 5
+    return value
 
 
 
@@ -62,51 +74,75 @@ def error_handler(e):
 def hallo():
     return "Server is running, er zijn momenteel geen API endpoints beschikbaar."
 
+@app.route(endpoint + '/historiek/', methods=['GET','DELETE'])
+def get_progress():
+    if request.method == 'GET':
+        return jsonify(historiek=DataRepository.get_historiek()), 200
+    
+@app.route(endpoint + '/historiek/<volgnummer>/', methods=['GET'])
+def get_specific_historiek(volgnummer):
+    if request.method == 'GET':
+        if volgnummer != 0:
+            data = DataRepository.get_specific_historiek(volgnummer)
+            if data is not None:
+                return jsonify(data=data),200
+            else:
+                return jsonify(message="niet gevonden, foutive id"),400
+
+@app.route(endpoint + '/status/', methods=['GET'])
+def get_status():
+    if request.method == 'GET':
+        data = DataRepository.get_status()
+        if data is not None:
+            return jsonify(status=data),200
+        else: 
+            return jsonify(message="foutive status"),400
+
+
+
+
 
 @socketio.on('connect')
 def initial_connection():
     print('A new client connect')
     # # Send to the client!
     # vraag de status op van de lampen uit de DB
-    status = DataRepository.read_status_lampen()
-    emit('B2F_status_lampen', {'lampen': status}, broadcast=True)
+    data = DataRepository.get_latest_value(1)
+    if data['Waarde']:
+        percentage = data['Waarde']
+    else:
+        percentage = 0
+    emit('B2F_connected', {'current_waterlevel': percentage})
 
 
-@socketio.on('F2B_switch_light')
-def switch_light(data):
-    # Ophalen van de data
-    lamp_id = data['lamp_id']
-    new_status = data['new_status']
-    print(f"Lamp {lamp_id} wordt geswitcht naar {new_status}")
 
-    # Stel de status in op de DB
-    res = DataRepository.update_status_lamp(lamp_id, new_status)
-
-    # Vraag de (nieuwe) status op van de lamp en stuur deze naar de frontend.
-    data = DataRepository.read_status_lamp_by_id(lamp_id)
-    socketio.emit('B2F_verandering_lamp', {'lamp': data}, broadcast=True)
-
-    # Indien het om de lamp van de TV kamer gaat, dan moeten we ook de hardware aansturen.
-    if lamp_id == '3':
-        print(f"TV kamer moet switchen naar {new_status} !")
-        GPIO.output(ledPin, new_status)
+def wls():
+    while True:
+        percent = check_water_level()
+        print(f"water level = {percent}%")
+        data = DataRepository.update_waterlevel(percent,1,2)
+        if data != 0:
+            print('gelukt')
+            s = DataRepository.get_latest_value(1)
+        socketio.emit('B2F_connected', {'current_waterlevel': s['Waarde']})
+        time.sleep(10)
 
 
 
 # START een thread op. Belangrijk!!! Debugging moet UIT staan op start van de server, anders start de thread dubbel op
 # werk enkel met de packages gevent en gevent-websocket.
-def all_out():
-    while True:
-        print('*** We zetten alles uit **')
-        DataRepository.update_status_alle_lampen(0)
-        GPIO.output(ledPin, 0)
-        status = DataRepository.read_status_lampen()
-        socketio.emit('B2F_status_lampen', {'lampen': status})
-        time.sleep(15)
+# def all_out():
+#     while True:
+#         print('*** We zetten alles uit **')
+#         DataRepository.update_status_alle_lampen(0)
+#         GPIO.output(ledPin, 0)
+#         status = DataRepository.read_status_lampen()
+#         socketio.emit('B2F_status_lampen', {'lampen': status})
+#         time.sleep(15)
 
 def start_thread():
     print("**** Starting THREAD ****")
-    thread = threading.Thread(target=all_out, args=(), daemon=True)
+    thread = threading.Thread(target=wls, args=(), daemon=True)
     thread.start()
 
 
@@ -151,8 +187,8 @@ def start_chrome_thread():
 
 if __name__ == '__main__':
     try:
-        setup_gpio()
         start_thread()
+        # start_thread()
         start_chrome_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')
