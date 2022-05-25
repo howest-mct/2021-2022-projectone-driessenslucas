@@ -42,7 +42,7 @@ def fsr(write_to_db):
     commentaar = "fsr uitlezen"
     if fsrval is not None:
         if write_to_db == True:
-            data = DataRepository.update_fsr(fsrval,3,3,fsrval,commentaar)
+            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
             if data != 0:
                 print('gelukt fsr')
     socketio.emit('B2F_fsr', {'current_fsr': fsrval})
@@ -81,7 +81,7 @@ def wls():
         else:
             status - 0
         commentaar = "water niveau ophalen"
-        data = DataRepository.update_waterlevel(percent,1,2,status,commentaar)
+        data = DataRepository.create_log(percent,1,2,status,commentaar)
         if data != 0:
             print('gelukt waterlevel')
             s = DataRepository.get_latest_value(1)
