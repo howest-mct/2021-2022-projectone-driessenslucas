@@ -1,6 +1,7 @@
 from ast import Pass
 import json
 import time
+from wsgiref.simple_server import demo_app
 from RPi import GPIO
 from helpers.klasseknop import Button
 import threading
@@ -23,14 +24,25 @@ endpoint = '/api/v1'
 import time
 import smbus
 import numpy as np
+from helpers.i2c_helper import LCD
 
 NO_TOUCH = 0xFE
 max_val_wls = 100
 
 
 i2c = smbus.SMBus(1)
-    
+sda = 1
+scl = 1
 
+GPIO.setmode(GPIO.BCM)
+
+def write_lcd():
+    lcd = LCD()
+    lcd.init_LCD()
+    while True:
+        lcd.write_line("coffee machine  ")
+        lcd.next_line()
+        lcd.write_line("ip:192.168.0.222")
 
 def check_water_level():
     touch_val = 0
@@ -48,6 +60,14 @@ def check_water_level():
     value = touch_val * 5
     return value
 
+def wls():
+        percent = check_water_level()
+        print(f"water level = {percent}%")
+        data = DataRepository.update_waterlevel(percent,1,2)
+        if data != 0:
+            print('gelukt')
+            s = DataRepository.get_latest_value(1)
+        socketio.emit('B2F_connected', {'current_waterlevel': s['Waarde']})
 
 
 
@@ -125,34 +145,26 @@ def initial_connection():
 
 
 
-def wls():
+
+def wls_thread():
     while True:
-        percent = check_water_level()
-        print(f"water level = {percent}%")
-        data = DataRepository.update_waterlevel(percent,1,2)
-        if data != 0:
-            print('gelukt')
-            s = DataRepository.get_latest_value(1)
-        socketio.emit('B2F_connected', {'current_waterlevel': s['Waarde']})
-        time.sleep(10)
+        pass
+        time.sleep(60000)
 
+def lcd_thread():
+    while True:
+        write_lcd()
+        time.sleep(1)
 
-
-# START een thread op. Belangrijk!!! Debugging moet UIT staan op start van de server, anders start de thread dubbel op
-# werk enkel met de packages gevent en gevent-websocket.
-# def all_out():
-#     while True:
-#         print('*** We zetten alles uit **')
-#         DataRepository.update_status_alle_lampen(0)
-#         GPIO.output(ledPin, 0)
-#         status = DataRepository.read_status_lampen()
-#         socketio.emit('B2F_status_lampen', {'lampen': status})
-#         time.sleep(15)
 
 def start_thread():
     print("**** Starting THREAD ****")
-    thread = threading.Thread(target=wls, args=(), daemon=True)
+    thread = threading.Thread(target=wls_thread, args=(), daemon=True)
     thread.start()
+def start_thread2():
+    print("**** Starting THREAD2 ****")
+    thread2 = threading.Thread(target=lcd_thread,args=(),daemon=True)
+    thread2.start()
 
 
 def start_chrome_kiosk():
@@ -197,6 +209,7 @@ def start_chrome_thread():
 if __name__ == '__main__':
     try:
         start_thread()
+        start_thread2()
         # start_thread()
         start_chrome_thread()
         print("**** Starting APP ****")
