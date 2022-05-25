@@ -2,6 +2,10 @@ const lanIP = `${window.location.hostname}:5000`;
 
 
 // #region ***  Callback-Visualisation - show___         ***********
+const backToIndex = function () {
+	window.location.href = './historiek.html';
+};
+
 
 
 const showHistoriek = function (jsonObject) {
@@ -19,6 +23,19 @@ const showHistoriek = function (jsonObject) {
 };
 // #endregion
 
+//#region ***  Callback-No Visualisation - callback___  ***********
+const CallbackDeleteProgress = function (date) {
+	let datum = String(date);
+	console.log(datum);
+	const url = `http://192.168.168.169:5000/api/v1/historiek/`;
+	const body = JSON.stringify({
+		datum: datum,
+	});
+	handleData(url, backToIndex, null, 'DELETE', body);
+};
+
+//#endregion
+
 // #region ***  Data Access - get___                     ***********
 
 const gethistoriek = function () {
@@ -27,12 +44,32 @@ const gethistoriek = function () {
 };
 // #endregion
 
+//#region ***  Event Listeners - listenTo___            ***********
+
+
+const ListenToDelete = function () {
+	htmlDeletebtn.addEventListener('click', function () {
+		console.log('delete pressed');
+		var today = new Date();
+		var date =
+			today.getFullYear() +
+			'-0' +
+			(today.getMonth() + 1) +
+			'-' +
+			today.getDate();
+		CallbackDeleteProgress(date);
+	});
+};
+
+//#endregion
+
 
 // #region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
   htmlTable = document.querySelector('.js-table');
+  htmlDeletebtn = document.querySelector('.js-clear-amount-today');
   console.log('hello')
-  
+  ListenToDelete();
   gethistoriek();
 };
 

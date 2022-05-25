@@ -78,6 +78,14 @@ def hallo():
 def get_progress():
     if request.method == 'GET':
         return jsonify(historiek=DataRepository.get_historiek()), 200
+    elif request.method == 'DELETE':
+        formmdata = DataRepository.json_or_formdata(request)
+        print(formmdata)
+        id = DataRepository.delete_readings_today(formmdata['datum'])
+        if id >0:
+            return jsonify(status='success'),201
+        else:
+            return jsonify(status="no update", id=id), 201
     
 @app.route(endpoint + '/historiek/<volgnummer>/', methods=['GET'])
 def get_specific_historiek(volgnummer):
@@ -88,6 +96,7 @@ def get_specific_historiek(volgnummer):
                 return jsonify(data=data),200
             else:
                 return jsonify(message="niet gevonden, foutive id"),400
+    
 
 @app.route(endpoint + '/status/', methods=['GET'])
 def get_status():

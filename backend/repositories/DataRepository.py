@@ -18,7 +18,7 @@ class DataRepository:
 
     @staticmethod
     def get_historiek():
-        sql = "select * from historiek"
+        sql = "select * from historiek order by actiedatum desc"
         return Database.get_rows(sql)
 
     @staticmethod
@@ -38,3 +38,10 @@ class DataRepository:
         sql = "INSERT INTO historiek(waarde,deviceID,actieID) VALUES(%s,%s,%s)"
         params = [value,deviceid,actieid]
         return Database.execute_sql(sql,params)
+
+    @staticmethod
+    def delete_readings_today(datum):
+        sql = "delete from historiek where actiedatum like %s"
+        params = [str(datum)+"%"]
+        return Database.execute_sql(sql,params)
+        
