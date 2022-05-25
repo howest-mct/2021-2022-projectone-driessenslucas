@@ -16,11 +16,24 @@ const backToIndex = function () {
 	window.location.href = './waterlevel.html';
 };
 
+const showStatus = function(jsonObject){
+	console.log(jsonObject)
+	for (const status of jsonObject.status) {
+        if (status.deviceID == 1 & status.status == 1){
+			document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
+		}
+		else{
+			document.querySelector('.js-coffeebtn').classList.add("c-hidden");
+		}
+           
+    }
+}
+
 const updateView = function (value) {
 	console.log(value)
 	htmlPercentage.innerHTML = `${value}`;
 	htmlWave.style.transform = `translateY(${100-value}%)`;
-   
+	getStatus()
 };
 
 //#endregion
@@ -31,6 +44,11 @@ const updateView = function (value) {
 //#endregion
 
 //#region ***  Data Access - get___                     ***********
+const getStatus = function () {
+	const url = `http://192.168.168.169:5000/api/v1/status/`;
+	handleData(url, showStatus);
+};
+
 
 //#endregion
 
@@ -45,6 +63,7 @@ const listenToSocket = function () {
 	socketio.on('B2F_connected', function (data) {
         console.log(data)
 		updateView(data.current_waterlevel);
+
 	});
 	socketio.on('B2F_waterlevel', function (data) {
 		currentProgress = 0;
@@ -62,7 +81,6 @@ const init = function () {
 
 	listenToUI();
 	listenToSocket();
-	
 };
 document.addEventListener('DOMContentLoaded', init);
 //#endregion

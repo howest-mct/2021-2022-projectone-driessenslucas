@@ -63,7 +63,12 @@ def check_water_level():
 def wls():
         percent = check_water_level()
         print(f"water level = {percent}%")
-        data = DataRepository.update_waterlevel(percent,1,2)
+        status = 0
+        if percent > 10 & percent < 98:
+            status = 1
+        else:
+            status - 0
+        data = DataRepository.update_waterlevel(percent,1,2,status)
         if data != 0:
             print('gelukt')
             s = DataRepository.get_latest_value(1)
@@ -150,7 +155,7 @@ def wls_thread():
     while True:
         try:
             wls()
-            time.sleep(60000)
+            time.sleep(60)
         except:
             pass
 
