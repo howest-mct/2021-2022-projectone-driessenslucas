@@ -17,9 +17,9 @@ const backToIndex = function () {
 };
 
 const updateView = function (value) {
-	
-	htmlPercentage.innerHTML = `${value}%`;
-	htmlWave.style.transform = `translateY(${value}%)`;
+	console.log(value)
+	htmlPercentage.innerHTML = `${value}`;
+	htmlWave.style.transform = `translateY(${100-value}%)`;
    
 };
 
