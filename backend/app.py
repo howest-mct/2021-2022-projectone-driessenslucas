@@ -35,14 +35,13 @@ sda = 1
 scl = 1
 
 GPIO.setmode(GPIO.BCM)
-
+lcd = LCD()
+lcd.reset_lcd()
+lcd.init_LCD()
 def write_lcd():
-    lcd = LCD()
-    lcd.init_LCD()
-    while True:
         lcd.write_line("coffee machine  ")
         lcd.next_line()
-        lcd.write_line("192.168.168.169")
+        lcd.write_line("192.168.168.169 ")
 
 def check_water_level():
     touch_val = 0
@@ -152,9 +151,7 @@ def wls_thread():
         time.sleep(60000)
 
 def lcd_thread():
-    while True:
         write_lcd()
-        time.sleep(1)
 
 
 def start_thread():

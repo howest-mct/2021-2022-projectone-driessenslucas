@@ -40,6 +40,8 @@ class LCD:
     def next_line(self):
         self.instruct(0b10000000 | 0x40)
 
+    
+
     def reset_lcd(self):
         self.instruct(0b00000001)
     
