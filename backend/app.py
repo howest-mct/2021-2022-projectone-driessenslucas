@@ -36,6 +36,16 @@ scl = 1
 
 GPIO.setmode(GPIO.BCM)
 
+def fsr():
+    GPIO.setup(20, GPIO.IN)
+    fsrval = GPIO.input(20)
+    commentaar = "fsr uitlezen"
+    if fsrval is not None:
+        # data = DataRepository.update_fsr(fsrval,3,3,fsrval,commentaar)
+        # if data != 0:
+            # print('gelukt fsr')
+        socketio.emit('B2F_fsr', {'current_fsr': fsrval})
+
 def write_lcd():
         lcd = LCD()
         lcd.reset_lcd()
@@ -71,9 +81,10 @@ def wls():
         commentaar = "water niveau ophalen"
         data = DataRepository.update_waterlevel(percent,1,2,status,commentaar)
         if data != 0:
-            print('gelukt')
+            print('gelukt waterlevel')
             s = DataRepository.get_latest_value(1)
-        socketio.emit('B2F_connected', {'current_waterlevel': s['Waarde']})
+        socketio.emit('B2F_waterlevel', {'current_waterlevel': s['Waarde']})
+
 
 
 
@@ -166,15 +177,25 @@ def lcd_thread():
     except:
         pass
 
+def fsr_thread():
+    while True:
+        fsr()
+        time.sleep(1)
+        
+
 
 def start_thread():
     print("**** Starting THREAD ****")
     thread = threading.Thread(target=wls_thread, args=(), daemon=True)
     thread.start()
 def start_thread2():
-    print("**** Starting THREAD2 ****")
+    print("**** Starting THREADlcd ****")
     thread2 = threading.Thread(target=lcd_thread,args=(),daemon=True)
     thread2.start()
+def start_thread3():
+    print("**** Starting THREADFSR ****")
+    thread3 = threading.Thread(target=fsr_thread,args=(),daemon=True)
+    thread3.start()
 
 
 def start_chrome_kiosk():
@@ -220,6 +241,7 @@ if __name__ == '__main__':
     try:
         start_thread()
         start_thread2()
+        start_thread3()
         # start_thread()
         start_chrome_thread()
         print("**** Starting APP ****")

@@ -40,6 +40,12 @@ class DataRepository:
         return Database.execute_sql(sql,params)
 
     @staticmethod
+    def update_fsr(value,deviceid,actieid,status,commentaar):
+        sql = "INSERT INTO logs(waarde,deviceID,actieID,status,commentaar) VALUES(%s,%s,%s,%s,%s)"
+        params = [value,deviceid,actieid,status,commentaar]
+        return Database.execute_sql(sql,params)
+
+    @staticmethod
     def delete_readings_today(datum):
         sql = "delete from logs where actiedatum like %s"
         params = [str(datum)+"%"]

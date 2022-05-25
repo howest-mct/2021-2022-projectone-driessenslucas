@@ -3,6 +3,8 @@
 //#region ***  DOM references                           ***********
 
 let htmlAddButton, htmlWave, htmlPercentage;
+let statusWLS = 0;
+let statusFSR = 0;
 
 let currentProgress = 0; // in milliliter
 // !!
@@ -12,43 +14,43 @@ const socketio = io(lanIP);
 //#endregion
 
 //#region ***  Callback-Visualisation - show___         ***********
+
+
 const backToIndex = function () {
 	window.location.href = './waterlevel.html';
 };
 
 const showStatus = function(jsonObject){
-
-	let statusWLS = 0
-	let statusFSR = 0
+	console.log(jsonObject)
+	
 	for (const status of jsonObject.status) {
         if (status.deviceID == 1 & status.status == 1){
 			statusWLS = 1
 		}
-		else{
+		else if (status.deviceID == 3 & status.status == 0){
 			statusWLS = 0
 		}
 		if(status.deviceID == 3 & status.status == 1){
 			statusFSR = 1
 		}
-		else{
+		else if(status.deviceID == 3 & status.status == 0){
 			statusFSR = 0
 		}
     }
-	console.log(statusWLS)
-	console.log(statusFSR)
-	if (statusWLS == 1 & statusFSR == 1){
-		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
-	}
-	else{
-		document.querySelector('.js-coffeebtn').classList.add("c-hidden");
-	}
-	if (statusFSR == 1){
-		document.querySelector('.c-noCofffePot').classList.add("c-hidden");
-	}
-	else if (statusFSR == 0){
-		document.querySelector('.c-noCofffePot').classList.remove("c-hidden");
-	}
+	checkbtn()
 }
+const updateCoffeePot = function (data) {
+	
+	statusFSR = data	
+	if (data == 1){
+		document.querySelector('.js-CoffePot').classList.add("c-hidden");
+	}
+	else if (data == 0){
+		document.querySelector('.js-CoffePot').classList.remove("c-hidden");
+	}
+	checkbtn()
+}
+
 
 const updateView = function (value) {
 	console.log(value)
@@ -60,6 +62,15 @@ const updateView = function (value) {
 //#endregion
 
 //#region ***  Callback-No Visualisation - callback___  ***********
+const checkbtn = function () {
+	if (statusWLS == 1 & statusFSR == 1){
+		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
+	}
+	else{
+		document.querySelector('.js-coffeebtn').classList.add("c-hidden");
+	}
+}
+
 
 
 //#endregion
@@ -84,12 +95,13 @@ const listenToSocket = function () {
 	socketio.on('B2F_connected', function (data) {
         console.log(data)
 		updateView(data.current_waterlevel);
-
 	});
 	socketio.on('B2F_waterlevel', function (data) {
-		currentProgress = 0;
-		updateView(data.new_waterlevel);
-        backToIndex()
+        console.log(data)
+		updateView(data.current_waterlevel);
+	});
+	socketio.on('B2F_fsr', function (data) {
+		updateCoffeePot(data.current_fsr)
 	});
 };
 

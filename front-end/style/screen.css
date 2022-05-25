@@ -38,8 +38,9 @@
 body,
 html {
 	font: 16px/1.5 Oswald, sans-serif;
-	background: #fafafa;
+	background: lightblue;
 	-webkit-font-smoothing: antialiased;
+
 }
 ::-moz-selection {
 	background: #1990c7;
@@ -49,6 +50,22 @@ html {
 	background: #1990c7;
 	color: #fafafa;
 }
+
+.o-row{
+	display: flex;
+}
+.js-coffeebtn {
+	width: 200px;
+	height: 200px;
+	border: none;
+	border-radius: 100px;
+	outline: none;
+	background: #b71540;
+	color: white; 
+	cursor: pointer;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  }
+
 .c-btn,
 .c-btn:active {
 	all: unset;
