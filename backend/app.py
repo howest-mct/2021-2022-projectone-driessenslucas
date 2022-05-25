@@ -68,7 +68,8 @@ def wls():
             status = 1
         else:
             status - 0
-        data = DataRepository.update_waterlevel(percent,1,2,status)
+        commentaar = "water niveau ophalen"
+        data = DataRepository.update_waterlevel(percent,1,2,status,commentaar)
         if data != 0:
             print('gelukt')
             s = DataRepository.get_latest_value(1)

@@ -17,16 +17,37 @@ const backToIndex = function () {
 };
 
 const showStatus = function(jsonObject){
-	console.log(jsonObject)
+
+	let statusWLS = 0
+	let statusFSR = 0
 	for (const status of jsonObject.status) {
         if (status.deviceID == 1 & status.status == 1){
-			document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
+			statusWLS = 1
 		}
 		else{
-			document.querySelector('.js-coffeebtn').classList.add("c-hidden");
+			statusWLS = 0
 		}
-           
+		if(status.deviceID == 3 & status.status == 1){
+			statusFSR = 1
+		}
+		else{
+			statusFSR = 0
+		}
     }
+	console.log(statusWLS)
+	console.log(statusFSR)
+	if (statusWLS == 1 & statusFSR == 1){
+		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
+	}
+	else{
+		document.querySelector('.js-coffeebtn').classList.add("c-hidden");
+	}
+	if (statusFSR == 1){
+		document.querySelector('.c-noCofffePot').classList.add("c-hidden");
+	}
+	else if (statusFSR == 0){
+		document.querySelector('.c-noCofffePot').classList.remove("c-hidden");
+	}
 }
 
 const updateView = function (value) {
