@@ -35,10 +35,11 @@ sda = 1
 scl = 1
 
 GPIO.setmode(GPIO.BCM)
-lcd = LCD()
-lcd.reset_lcd()
-lcd.init_LCD()
+
 def write_lcd():
+        lcd = LCD()
+        lcd.reset_lcd()
+        lcd.init_LCD()
         lcd.write_line("coffee machine  ")
         lcd.next_line()
         lcd.write_line("192.168.168.169 ")
@@ -147,11 +148,17 @@ def initial_connection():
 
 def wls_thread():
     while True:
-        pass
-        time.sleep(60000)
+        try:
+            wls()
+            time.sleep(60000)
+        except:
+            pass
 
 def lcd_thread():
+    try:
         write_lcd()
+    except:
+        pass
 
 
 def start_thread():
