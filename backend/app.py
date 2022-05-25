@@ -42,7 +42,7 @@ def write_lcd():
     while True:
         lcd.write_line("coffee machine  ")
         lcd.next_line()
-        lcd.write_line("ip:192.168.0.222")
+        lcd.write_line("192.168.168.169")
 
 def check_water_level():
     touch_val = 0
