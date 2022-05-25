@@ -36,15 +36,17 @@ scl = 1
 
 GPIO.setmode(GPIO.BCM)
 
-def fsr():
+def fsr(write_to_db):
     GPIO.setup(20, GPIO.IN)
     fsrval = GPIO.input(20)
     commentaar = "fsr uitlezen"
     if fsrval is not None:
-        # data = DataRepository.update_fsr(fsrval,3,3,fsrval,commentaar)
-        # if data != 0:
-            # print('gelukt fsr')
-        socketio.emit('B2F_fsr', {'current_fsr': fsrval})
+        if write_to_db == True:
+            data = DataRepository.update_fsr(fsrval,3,3,fsrval,commentaar)
+            if data != 0:
+                print('gelukt fsr')
+    socketio.emit('B2F_fsr', {'current_fsr': fsrval})
+    
 
 def write_lcd():
         lcd = LCD()
@@ -84,6 +86,7 @@ def wls():
             print('gelukt waterlevel')
             s = DataRepository.get_latest_value(1)
         socketio.emit('B2F_waterlevel', {'current_waterlevel': s['Waarde']})
+        fsr(True)
 
 
 
@@ -179,7 +182,7 @@ def lcd_thread():
 
 def fsr_thread():
     while True:
-        fsr()
+        fsr(False)
         time.sleep(1)
         
 

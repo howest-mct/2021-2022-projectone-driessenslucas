@@ -27,14 +27,8 @@ const showStatus = function(jsonObject){
         if (status.deviceID == 1 & status.status == 1){
 			statusWLS = 1
 		}
-		else if (status.deviceID == 3 & status.status == 0){
+		else if (status.deviceID == 1 & status.status == 0){
 			statusWLS = 0
-		}
-		if(status.deviceID == 3 & status.status == 1){
-			statusFSR = 1
-		}
-		else if(status.deviceID == 3 & status.status == 0){
-			statusFSR = 0
 		}
     }
 	checkbtn()
@@ -63,6 +57,8 @@ const updateView = function (value) {
 
 //#region ***  Callback-No Visualisation - callback___  ***********
 const checkbtn = function () {
+	console.log(statusWLS)
+	console.log(statusFSR)
 	if (statusWLS == 1 & statusFSR == 1){
 		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
 	}
