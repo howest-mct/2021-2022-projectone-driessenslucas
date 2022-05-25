@@ -57,8 +57,7 @@ const updateView = function (value) {
 
 //#region ***  Callback-No Visualisation - callback___  ***********
 const checkbtn = function () {
-	console.log(statusWLS)
-	console.log(statusFSR)
+	
 	if (statusWLS == 1 & statusFSR == 1){
 		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
 	}
