@@ -22,7 +22,6 @@ const backToIndex = function () {
 
 const showStatus = function(jsonObject){
 	console.log(jsonObject)
-	
 	for (const status of jsonObject.status) {
         if (status.deviceID == 1 & status.status == 1){
 			statusWLS = 1
@@ -57,7 +56,6 @@ const updateView = function (value) {
 
 //#region ***  Callback-No Visualisation - callback___  ***********
 const checkbtn = function () {
-	
 	if (statusWLS == 1 & statusFSR == 1){
 		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
 	}
@@ -72,7 +70,8 @@ const checkbtn = function () {
 
 //#region ***  Data Access - get___                     ***********
 const getStatus = function () {
-	const url = `http://192.168.168.169:5000/api/v1/status/`;
+	//change ip between home and school http:192.168.0.222(home) and http:192.168.168.169(school)
+	const url = `http://192.168.0.220:5000/api/v1/status/`;
 	handleData(url, showStatus);
 };
 
@@ -104,9 +103,10 @@ const listenToSocket = function () {
 
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
+	console.log('dom loaded')
 	htmlWave = document.querySelector('.js-waves');
 	htmlPercentage = document.querySelector('.js-percentage');
-
+	getStatus();
 	listenToUI();
 	listenToSocket();
 };
