@@ -13,7 +13,7 @@ class DataRepository:
     
     @staticmethod
     def get_status():
-        sql = "SELECT deviceID, status from device"
+        sql = "SELECT deviceID, status from logs"
         return Database.get_rows(sql)
 
     @staticmethod
@@ -34,10 +34,12 @@ class DataRepository:
         return Database.get_one_row(sql,params)
 
     @staticmethod
-    def update_waterlevel(value,deviceid,actieid):
-        sql = "INSERT INTO logs(waarde,deviceID,actieID) VALUES(%s,%s,%s)"
-        params = [value,deviceid,actieid]
+    def create_log(value,deviceid,actieid,status,commentaar):
+        sql = "INSERT INTO logs(waarde,deviceID,actieID,status,commentaar) VALUES(%s,%s,%s,%s,%s)"
+        params = [value,deviceid,actieid,status,commentaar]
         return Database.execute_sql(sql,params)
+
+    
 
     @staticmethod
     def delete_readings_today(datum):

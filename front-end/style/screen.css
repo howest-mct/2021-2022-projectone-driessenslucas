@@ -38,8 +38,9 @@
 body,
 html {
 	font: 16px/1.5 Oswald, sans-serif;
-	background: #fafafa;
+	background: lightblue;
 	-webkit-font-smoothing: antialiased;
+
 }
 ::-moz-selection {
 	background: #1990c7;
@@ -49,6 +50,22 @@ html {
 	background: #1990c7;
 	color: #fafafa;
 }
+
+.o-row{
+	display: flex;
+}
+.js-coffeebtn {
+	width: 200px;
+	height: 200px;
+	border: none;
+	border-radius: 100px;
+	outline: none;
+	background: #b71540;
+	color: white; 
+	cursor: pointer;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  }
+
 .c-btn,
 .c-btn:active {
 	all: unset;
@@ -83,12 +100,9 @@ html {
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
-	min-height: 100vh;
-	max-width: 400px;
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 4rem;
 	color: #fafafa;
 	background: #205d8c;
 	background: linear-gradient(180deg, #205d8c 0, #002949);
@@ -124,7 +138,7 @@ html {
 }
 .c-percentage__current {
 	margin: 0;
-	font-size: 5rem;
+	font-size: 32px;
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
 	color: white;
@@ -248,4 +262,14 @@ h2 {
 
 .c-cell + .c-cell {
 	border-left: 1px solid #ddd;
+}
+.c-waterlevel{
+	margin:0 auto; 	
+	max-width: 100px;
+}
+.c-app{
+	max-height: 700px;
+}
+.c-hidden{
+	display: none;
 }
