@@ -33,13 +33,17 @@ const showStatus = function(jsonObject){
 	checkbtn()
 }
 const updateCoffeePot = function (data) {
-	
 	statusFSR = data	
 	if (data == 1){
 		document.querySelector('.js-CoffePot').classList.add("c-hidden");
+		document.querySelector('.js-CoffePot').classList.remove("u-1-of-2-bp3");
+		document.querySelector('.o-coffeebtn').classList.add("u-1-of-2-bp3");
+		
 	}
 	else if (data == 0){
 		document.querySelector('.js-CoffePot').classList.remove("c-hidden");
+		document.querySelector('.js-CoffePot').classList.add("u-1-of-2-bp3");
+		document.querySelector('.o-coffeebtn').classList.remove("u-1-of-2-bp3");
 	}
 	checkbtn()
 }
@@ -71,7 +75,7 @@ const checkbtn = function () {
 //#region ***  Data Access - get___                     ***********
 const getStatus = function () {
 	//change ip between home and school http:192.168.0.222(home) and http:192.168.168.169(school)
-	const url = `http://192.168.0.220:5000/api/v1/status/`;
+	const url = `http://192.168.168.169:5000/api/v1/status/`;
 	handleData(url, showStatus);
 };
 
@@ -94,8 +98,8 @@ const listenToSocket = function () {
         console.log(data)
 		updateView(data.current_waterlevel);
 	});
-	socketio.on('B2F_fsr', function (data) {
-		updateCoffeePot(data.current_fsr)
+	socketio.on('B2F_coffepot', function (data) {
+		updateCoffeePot(data.coffepot_status)
 	});
 };
 

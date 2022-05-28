@@ -1,5 +1,1092 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css');
 
+/*------------------------------------*\
+  #GENERIC
+\*------------------------------------*/
+
+/*
+    Generic: Page
+    ---
+    Global page styles + universal box-sizing:
+*/
+
+html {
+	font-size: 16px;
+	line-height: 24px;
+	font-family: 'DM Sans', sans-serif;
+	color: #0d121a;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+/*
+ * Remove text-shadow in selection highlight:
+ * https://twitter.com/miketaylr/status/12228805301
+ *
+ * Customize the background color to match your design.
+ */
+
+::selection {
+	background: #e85e00;
+	color: white;
+	text-shadow: none;
+}
+
+/*------------------------------------*\
+  #Elements
+\*------------------------------------*/
+
+/*
+    Elements: Images
+    ---
+    Default markup for images to make them responsive
+*/
+
+img {
+	max-width: 100%;
+	vertical-align: top;
+}
+
+/*
+    Elements: typography
+    ---
+    Default markup for typographic elements
+*/
+
+h1 {
+	font-size: 36px;
+	line-height: 40px;
+	margin: 0 0 24px;
+}
+
+h2 {
+	font-size: 23px;
+	line-height: 32px;
+	margin: 0 0 24px;
+}
+
+h3 {
+	font-size: 18px;
+	line-height: 24px;
+	margin: 0 0 24px;
+}
+
+h4,
+h5,
+h6 {
+	font-size: 16px;
+	line-height: 24px;
+	margin: 0 0 24px;
+}
+
+p,
+ol,
+ul,
+dl,
+table,
+address,
+figure {
+	margin: 0 0 24px;
+}
+
+ul,
+ol {
+	padding-left: 24px;
+}
+
+li ul,
+li ol {
+	margin-bottom: 0;
+}
+
+blockquote {
+	font-style: italic;
+	font-size: 23px;
+	line-height: 32px;
+	margin: 0 0 24px;
+	font-family: 'Times New Roman', serif;
+}
+
+blockquote * {
+	font-size: inherit;
+	line-height: inherit;
+}
+
+figcaption {
+	font-size: 12px;
+	line-height: 16px;
+	padding-top: 8px;
+	color: Grey;
+}
+
+hr {
+	border: 0;
+	height: 1px;
+	background: LightGrey;
+	margin: 0 0 24px;
+}
+
+a {
+	color: RoyalBlue;
+	transition: all 0.1s ease-in-out;
+}
+
+a:visited,
+a:active {
+	color: BlueViolet;
+}
+
+a:hover,
+a:focus {
+	color: Crimson;
+}
+
+/*------------------------------------*\
+  #OBJECTS
+\*------------------------------------*/
+
+/*
+    Objects: Row
+    ---
+    Creates a horizontal row that stretches the viewport and adds padding around children
+*/
+
+.o-row {
+	padding-left: 24px;
+	padding-right: 25px;
+	display: flow-root;
+}
+.o-row--header {
+	padding: 0;
+}
+.o-row--picture {
+	width: 512px;
+	height: 214px;
+	margin-bottom: 72px;
+}
+
+/* size modifiers */
+
+.o-row--lg {
+	padding-top: 48px;
+	padding-bottom: 24px;
+}
+
+.o-row--xl {
+	padding-top: 72px;
+	padding-bottom: 48px;
+}
+
+@media (min-width: 768px) {
+	.o-row--md {
+		padding-top: 48px;
+		padding-bottom: 24px;
+	}
+
+	.o-row--lg {
+		padding-top: 72px;
+		padding-bottom: 48px;
+	}
+	.o-row--picture {
+		width: 762px;
+		height: 313px;
+		margin: 0;
+		margin-bottom: 72px;
+	}
+}
+
+@media (min-width: 992px) {
+	.o-row--xl {
+		padding-top: 96px;
+		padding-bottom: 72px;
+	}
+	.o-row--picture {
+		width: 1024px;
+		height: 421px;
+	}
+}
+@media (min-width: 1200px) {
+	.o-row--picture {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+/*
+    Objects: Container
+    ---
+    Creates a horizontal container that sets de global max-width
+*/
+.o-coffeebtn{
+	margin: 0 auto;
+	justify-content: center;
+	align-self: center;
+	display: flex;
+}
+
+.o-container {
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	max-width: 69.25em; /* 90 * 16px = 1108px */
+	margin-bottom: 72px;
+}
+.o-container:nth-last-child(1) {
+	margin-bottom: 0;
+}
+
+.o-container--header {
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	height: 72px;
+}
+
+/*
+    Objects: section
+    ---
+    Creates vertical whitespace between adjacent sections inside a row
+*/
+
+.o-section {
+	display: flow-root;
+	width: 325px;
+}
+
+.o-section + .o-section {
+	margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+	.o-section--lg + .o-section--lg,
+	.o-section--xl + .o-section--xl {
+		margin-top: 48px;
+	}
+	.o-section {
+		width: 713px;
+	}
+}
+@media (min-width: 992px) {
+	.o-section {
+		width: 976px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.o-section--xl + .o-section--xl {
+		margin-top: 72px;
+	}
+	.o-section {
+		width: 1108px;
+	}
+}
+
+/*
+    Objects: Layout
+    ---
+    The layout object provides us with a column-style layout system. This object
+    contains the basic structural elements, but classes should be complemented
+    with width utilities
+*/
+
+.o-layout {
+	display: flex;
+	flex-wrap: wrap;
+}
+.o-layout--buttons {
+	width: 319px;
+}
+
+.o-layout__item {
+	flex-basis: 100%;
+}
+
+/* gutter modifiers, these affect o-layout__item too */
+
+.o-layout--gutter {
+	margin: 0 -12px;
+}
+
+.o-layout--gutter > .o-layout__item {
+	padding: 0 12px;
+}
+
+.o-layout--gutter-sm {
+	margin: 0 -6px;
+}
+
+.o-layout--gutter-sm > .o-layout__item {
+	padding: 0 6px;
+}
+
+.o-layout--gutter-lg {
+	margin: 0 -24px;
+}
+
+.o-layout--gutter-lg > .o-layout__item {
+	padding: 0 24px;
+}
+
+/* reverse horizontal row modifier */
+
+.o-layout--row-reverse {
+	flex-direction: row-reverse;
+}
+
+/* Horizontal alignment modifiers*/
+
+.o-layout--justify-start {
+	justify-content: flex-start;
+}
+
+.o-layout--justify-end {
+	justify-content: flex-end;
+}
+
+.o-layout--justify-center {
+	justify-content: center;
+}
+
+.o-layout--justify-space-around {
+	justify-content: space-around;
+}
+
+.o-layout--justify-space-evenly {
+	justify-content: space-evenly;
+}
+
+.o-layout--justify-space-between {
+	justify-content: space-between;
+}
+
+/* Vertical alignment modifiers */
+
+.o-layout--align-start {
+	align-items: flex-start;
+}
+
+.o-layout--align-end {
+	align-items: flex-end;
+}
+
+.o-layout--align-center {
+	align-items: center;
+}
+
+.o-layout--align-baseline {
+	align-items: baseline;
+}
+
+/* Vertical alignment modifiers that only work if there is one than one flex item */
+
+.o-layout--align-content-start {
+	align-content: start;
+}
+
+.o-layout--align-content-end {
+	align-content: end;
+}
+
+.o-layout--align-content-center {
+	align-content: center;
+}
+
+.o-layout--align-content-space-around {
+	align-content: space-around;
+}
+
+.o-layout--align-content-space-between {
+	align-content: space-between;
+}
+
+/*
+    Objects: List
+    ---
+    Small reusable object to remove default list styling from lists
+*/
+
+.o-list {
+	list-style: none;
+	padding: 0;
+}
+
+/*
+    Object: Button reset
+    ---
+    Small button reset object
+*/
+
+.o-button-reset {
+	border: none;
+	margin: 0;
+	padding: 0;
+	width: auto;
+	overflow: visible;
+	background: transparent;
+
+	/* inherit font & color from ancestor */
+	color: inherit;
+	font: inherit;
+
+	/* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+	line-height: normal;
+
+	/* Corrects font smoothing for webkit */
+	-webkit-font-smoothing: inherit;
+	-moz-osx-font-smoothing: inherit;
+
+	/* Corrects inability to style clickable `input` types in iOS */
+	-webkit-appearance: none;
+}
+
+/*------------------------------------*\
+  #COMPONENTS
+\*------------------------------------*/
+
+.c-button {
+	height: 46px;
+	width: 135px;
+	padding-top: 10px;
+	background-color: #006aff;
+	color: white;
+	border-radius: 6px;
+	text-align: center;
+	margin-right: 32px;
+}
+.c-button__text,
+.c-button__text:visited {
+	text-decoration: none;
+	color: #ffffff;
+}
+.c-button--inverted {
+	height: 46px;
+	width: 135px;
+	padding-top: 10px;
+	background-color: white;
+	border-radius: 6px;
+	border: 1px solid #006aff;
+	text-align: center;
+}
+.c-button__text--inverted,
+.c-button__text--inverted:visited {
+	text-decoration: none;
+	color: #006aff;
+}
+.c-button__nav {
+	display: none;
+}
+.c-button__nav__text {
+	text-decoration: none;
+}
+
+@media (min-width: 992px) {
+	.c-button__nav {
+		display: flex;
+		text-align: center;
+		padding-top: 8px;
+		width: 87px;
+		height: 21px;
+		justify-self: flex-end;
+	}
+	.c-button__nav__text,
+	.c-button__nav__text:visited {
+		color: #006aff;
+
+		text-align: center;
+	}
+}
+
+/*
+    Component: Nav
+    ---
+    Main navigation of the site
+*/
+
+.c-nav {
+	font-size: 17px;
+	font-weight: 600;
+	line-height: 24px;
+}
+
+.c-nav_item,
+.c-nav__list {
+	list-style: none;
+}
+
+.c-nav--meta {
+	font-size: 16px;
+}
+
+.c-nav__link {
+	font-size: 14px;
+	font-weight: 600;
+	display: block;
+	text-decoration: none;
+	padding: 8px 0;
+}
+
+.c-nav__link,
+.c-nav__link:visited,
+.c-nav__link:active {
+	color: #202024;
+}
+
+.c-nav__link--meta,
+.c-nav__link--meta:visited,
+.c-nav__link--meta:active {
+	color: #6c6c75;
+}
+
+.c-nav__link.is-selected,
+.c-nav__link:hover,
+.c-nav__link:focus {
+	color: #3478f4;
+}
+
+@media (min-width: 768px) {
+	.c-nav__list {
+		display: flex;
+		gap: 32px;
+	}
+}
+
+/*
+    Component: header
+    ---
+    Main header of the website
+*/
+.navbar {
+	overflow: hidden;
+	background-color: #333;
+  }
+  
+  .navbar a {
+	float: left;
+	font-size: 16px;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+  }
+  
+  .dropdown {
+	float: left;
+	overflow: hidden;
+  }
+  
+  .dropdown .dropbtn {
+	font-size: 16px;  
+	border: none;
+	outline: none;
+	color: white;
+	padding: 14px 16px;
+	background-color: inherit;
+	font-family: inherit;
+	margin: 0;
+  }
+  
+  .navbar a:hover, .dropdown:hover .dropbtn {
+	background-color: red;
+  }
+  
+  .dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+  }
+  
+  .dropdown-content a {
+	float: none;
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	text-align: left;
+  }
+  
+  .dropdown-content a:hover {
+	background-color: #ddd;
+  }
+  
+  .dropdown:hover .dropdown-content {
+	display: block;
+  }
+
+.c-header {
+	display: flex;
+	height: 72px;
+	text-align: center;
+	padding-top: 12px;
+}
+
+.c-header__nav {
+	display: none;
+}
+.c-header-icon {
+	height: 24px;
+	width: 95.74px;
+	justify-self: flex-start;
+}
+
+.c-header__mobile {
+	display: flow-root;
+}
+@media (min-width: 768px) {
+	.c-header {
+		display: flex;
+		gap: 32px;
+		justify-content: space-between;
+	}
+}
+
+@media (min-width: 992px) {
+	.c-header {
+		display: flex;
+		gap: 24px;
+		justify-content: space-between;
+	}
+	.c-figure {
+		display: inline-block;
+		margin-bottom: 50px;
+	}
+
+	.c-header__nav {
+		display: flex;
+		gap: 24px;
+		justify-content: center;
+		text-align: center;
+	}
+}
+@media (min-width: 1200px) {
+	.c-header {
+		padding-left: 0;
+	}
+}
+
+.c-link {
+}
+.c-link__text,
+.c-link__text:visited {
+	font-weight: 600;
+	color: #006aff;
+}
+
+/*
+    Component: Component name
+    ---
+    Component description
+*/
+.c-lead {
+	font-size: 32px;
+	font-weight: 500;
+	color: #0d141a;
+	width: 326px;
+}
+
+.c-lead--lg {
+	font-size: 39px;
+	font-weight: 700;
+	line-height: 48px;
+	color: #0d141a;
+}
+.c-lead-text {
+	font-size: 16px;
+	font-weight: 400;
+	color: #45484d;
+	width: 326px;
+	margin: 0;
+}
+.c-lead-text--lg {
+	font-size: 20px;
+	color: #83859e;
+}
+
+@media (min-width: 765px) {
+	.c-lead--lg {
+		font-size: 48px;
+		font-weight: bold;
+		line-height: 56px;
+	}
+	.c-lead {
+		width: 447px;
+	}
+	.c-lead-text {
+		width: 447px;
+	}
+}
+@media (min-width: 968px) {
+	.c-lead--lg {
+		font-size: 66px;
+		font-weight: bold;
+		line-height: 72px;
+	}
+	.c-lead {
+		width: 472px;
+	}
+	.c-lead-text {
+		width: 472px;
+	}
+}
+@media (min-width: 1200px) {
+	.c-lead {
+		width: 443px;
+	}
+	.c-lead-text {
+		width: 443px;
+	}
+}
+
+/*------------------------------------*\
+  #UTILITIES
+\*------------------------------------*/
+
+/*
+    Utilities: spacing
+    ---
+    Utility classes to put specific margins and paddings onto elements
+*/
+
+.u-pt-clear {
+	padding-top: 0 !important;
+}
+
+.u-mb-clear {
+	margin-bottom: 0 !important;
+}
+
+.u-mb-xs {
+	margin-bottom: 4px !important;
+}
+
+.u-mb-sm {
+	margin-bottom: 8px !important;
+}
+
+.u-mb-md {
+	margin-bottom: 16px !important;
+}
+
+.u-mb-lg {
+	margin-bottom: 32px !important;
+}
+
+.u-mb-xl {
+	margin-bottom: 48px !important;
+}
+
+/*
+    Utilities: max-width
+    ---
+    Utility classes to put specific max widths onto elements
+*/
+
+.u-max-width-sm {
+	max-width: 36em !important;
+}
+
+.u-max-width-md {
+	max-width: 45em !important;
+}
+
+.u-max-width-lg {
+	max-width: 60em !important;
+}
+
+.u-max-width-xl {
+	max-width: 75em !important;
+}
+
+.u-max-width-none {
+	max-width: none !important;
+}
+
+/*
+    Utility: Flex
+    ---
+    Utility classes to put specific flex properties onto elements
+    Will be mostly used on o-layout__item
+*/
+
+.u-flex-basis-auto {
+	flex-basis: auto !important;
+}
+
+.u-flex-grow-1 {
+	flex-grow: 1 !important;
+}
+
+.u-1-of-2 {
+	flex-basis: calc(100% / 2) !important;
+}
+
+.u-1-of-3 {
+	flex-basis: calc(100% / 3) !important;
+}
+
+.u-2-of-3 {
+	flex-basis: calc(100% / 3 * 2) !important;
+}
+
+.u-1-of-4 {
+	flex-basis: calc(100% / 4) !important;
+}
+
+.u-3-of-4 {
+	flex-basis: calc(100% / 4 * 3) !important;
+}
+
+.u-1-of-5 {
+	flex-basis: calc(100% / 5) !important;
+}
+
+.u-2-of-5 {
+	flex-basis: calc(100% / 5 * 2) !important;
+}
+
+.u-3-of-5 {
+	flex-basis: calc(100% / 5 * 3) !important;
+}
+
+.u-4-of-5 {
+	flex-basis: calc(100% / 5 * 4) !important;
+}
+
+.u-1-of-6 {
+	flex-basis: calc(100% / 6) !important;
+}
+
+.u-5-of-6 {
+	flex-basis: calc(100% / 6 * 5) !important;
+}
+
+@media (min-width: 576px) {
+	.u-1-of-2-bp1 {
+		flex-basis: calc(100% / 2) !important;
+	}
+	.u-1-of-3-bp1 {
+		flex-basis: calc(100% / 3) !important;
+	}
+	.u-2-of-3-bp1 {
+		flex-basis: calc(100% / 3 * 2) !important;
+	}
+	.u-1-of-4-bp1 {
+		flex-basis: calc(100% / 4) !important;
+	}
+	.u-3-of-4-bp1 {
+		flex-basis: calc(100% / 4 * 3) !important;
+	}
+	.u-1-of-5-bp1 {
+		flex-basis: calc(100% / 5) !important;
+	}
+	.u-2-of-5-bp1 {
+		flex-basis: calc(100% / 5 * 2) !important;
+	}
+	.u-3-of-5-bp1 {
+		flex-basis: calc(100% / 5 * 3) !important;
+	}
+	.u-4-of-5-bp1 {
+		flex-basis: calc(100% / 5 * 4) !important;
+	}
+	.u-1-of-6-bp1 {
+		flex-basis: calc(100% / 6) !important;
+	}
+	.u-5-of-6-bp1 {
+		flex-basis: calc(100% / 6 * 5) !important;
+	}
+}
+
+@media (min-width: 768px) {
+	.u-1-of-2-bp2 {
+		flex-basis: calc(100% / 2) !important;
+	}
+	.u-1-of-3-bp2 {
+		flex-basis: calc(100% / 3) !important;
+	}
+	.u-2-of-3-bp2 {
+		flex-basis: calc(100% / 3 * 2) !important;
+	}
+	.u-1-of-4-bp2 {
+		flex-basis: calc(100% / 4) !important;
+	}
+	.u-3-of-4-bp2 {
+		flex-basis: calc(100% / 4 * 3) !important;
+	}
+	.u-1-of-5-bp2 {
+		flex-basis: calc(100% / 5) !important;
+	}
+	.u-2-of-5-bp2 {
+		flex-basis: calc(100% / 5 * 2) !important;
+	}
+	.u-3-of-5-bp2 {
+		flex-basis: calc(100% / 5 * 3) !important;
+	}
+	.u-4-of-5-bp2 {
+		flex-basis: calc(100% / 5 * 4) !important;
+	}
+	.u-1-of-6-bp2 {
+		flex-basis: calc(100% / 6) !important;
+	}
+	.u-5-of-6-bp2 {
+		flex-basis: calc(100% / 6 * 5) !important;
+	}
+}
+
+@media (min-width: 992px) {
+	.u-1-of-2-bp3 {
+		flex-basis: calc(100% / 2) !important;
+	}
+	.u-1-of-3-bp3 {
+		flex-basis: calc(100% / 3) !important;
+	}
+	.u-2-of-3-bp3 {
+		flex-basis: calc(100% / 3 * 2) !important;
+	}
+	.u-1-of-4-bp3 {
+		flex-basis: calc(100% / 4) !important;
+	}
+	.u-3-of-4-bp3 {
+		flex-basis: calc(100% / 4 * 3) !important;
+	}
+	.u-1-of-5-bp3 {
+		flex-basis: calc(100% / 5) !important;
+	}
+	.u-2-of-5-bp3 {
+		flex-basis: calc(100% / 5 * 2) !important;
+	}
+	.u-3-of-5-bp3 {
+		flex-basis: calc(100% / 5 * 3) !important;
+	}
+	.u-4-of-5-bp3 {
+		flex-basis: calc(100% / 5 * 4) !important;
+	}
+	.u-1-of-6-bp3 {
+		flex-basis: calc(100% / 6) !important;
+	}
+	.u-5-of-6-bp3 {
+		flex-basis: calc(100% / 6 * 5) !important;
+	}
+}
+
+@media (min-width: 1200px) {
+	.u-1-of-2-bp4 {
+		flex-basis: calc(100% / 2) !important;
+	}
+	.u-1-of-3-bp4 {
+		flex-basis: calc(100% / 3) !important;
+	}
+	.u-2-of-3-bp4 {
+		flex-basis: calc(100% / 3 * 2) !important;
+	}
+	.u-1-of-4-bp4 {
+		flex-basis: calc(100% / 4) !important;
+	}
+	.u-3-of-4-bp4 {
+		flex-basis: calc(100% / 4 * 3) !important;
+	}
+	.u-1-of-5-bp4 {
+		flex-basis: calc(100% / 5) !important;
+	}
+	.u-2-of-5-bp4 {
+		flex-basis: calc(100% / 5 * 2) !important;
+	}
+	.u-3-of-5-bp4 {
+		flex-basis: calc(100% / 5 * 3) !important;
+	}
+	.u-4-of-5-bp4 {
+		flex-basis: calc(100% / 5 * 4) !important;
+	}
+	.u-1-of-6-bp4 {
+		flex-basis: calc(100% / 6) !important;
+	}
+	.u-5-of-6-bp4 {
+		flex-basis: calc(100% / 6 * 5) !important;
+	}
+}
+
+/*------------------------------------*\
+  #MEDIA
+\*------------------------------------*/
+
+/*
+    Print styles.
+    ---
+    Inlined to avoid the additional HTTP request:
+    http://www.phpied.com/delay-loading-your-print-css/
+*/
+
+@media print {
+	*,
+	*:before,
+	*:after {
+		background: transparent !important;
+		color: #000 !important;
+		/* Black prints faster:
+                                   http://www.sanbeiji.com/archives/953 */
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+	a,
+	a:visited {
+		text-decoration: underline;
+	}
+	a[href]:after {
+		content: ' (' attr(href) ')';
+	}
+	abbr[title]:after {
+		content: ' (' attr(title) ')';
+	}
+	/*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+	a[href^='#']:after,
+	a[href^='javascript:']:after {
+		content: '';
+	}
+	pre {
+		white-space: pre-wrap !important;
+	}
+	pre,
+	blockquote {
+		border: 1px solid #999;
+		page-break-inside: avoid;
+	}
+	/*
+     * Printing Tables:
+     * http://css-discuss.incutio.com/wiki/Printing_Tables
+     */
+	thead {
+		display: table-header-group;
+	}
+	tr,
+	img {
+		page-break-inside: avoid;
+		max-width: 50%;
+	}
+	p,
+	h2,
+	h3 {
+		orphans: 3;
+		widows: 3;
+	}
+	h2,
+	h3 {
+		page-break-after: avoid;
+	}
+}
+
+
+
 .o-hide-accessible {
 	position: absolute;
 	width: 1px;
@@ -266,9 +1353,39 @@ h2 {
 .c-waterlevel{
 	margin:0 auto; 	
 	max-width: 100px;
+	
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+.c-percentage{
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+@media (min-width: 1024px) {
+	.c-waterlevel{
+		-webkit-transform: rotate(0);
+		-moz-transform: rotate(0);
+		-o-transform: rotate(0);
+		-ms-transform: rotate(0);
+		transform: rotate(0);
+	}
+	.c-percentage{
+		-webkit-transform: rotate(0);
+		-moz-transform: rotate(0);
+		-o-transform: rotate(0);
+		-ms-transform: rotate(0);
+		transform: rotate(0);
+	}
+	
 }
 .c-app{
-	max-height: 700px;
+	min-height: 400px;
 }
 .c-hidden{
 	display: none;
