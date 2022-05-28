@@ -50,7 +50,8 @@ html {
 */
 
 img {
-	max-width: 100%;
+	max-width: 600px;
+	max-height: 400px;
 	vertical-align: top;
 }
 
