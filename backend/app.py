@@ -25,6 +25,7 @@ import time
 import smbus
 import numpy as np
 from helpers.i2c_helper import LCD
+from helpers.spi_class import spi_class
 
 NO_TOUCH = 0xFE
 max_val_wls = 100
@@ -35,6 +36,21 @@ sda = 1
 scl = 1
 
 GPIO.setmode(GPIO.BCM)
+
+def tmp():
+        spi = spi_class(0,0)
+        hz = 10 ** 5
+        data = spi.read_channel(hz,0)
+        volt = data/1023.0 *3.3
+        temp = (100 * volt) - 50
+        status = 1
+        prev_temp = DataRepository.get_latest_value(2)
+        if round(temp,0) != round(prev_temp['Waarde'],0):
+            data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
+            if data != 0:
+                print('gelukt tmp')
+        socketio.emit('B2F_tmp', {'current_tmp': temp})
+    
 
 def fsr(write_to_db):
     GPIO.setup(20, GPIO.IN)
@@ -183,6 +199,7 @@ def lcd_thread():
 def fsr_thread():
     while True:
         fsr(False)
+        tmp()
         time.sleep(1)
         
 
