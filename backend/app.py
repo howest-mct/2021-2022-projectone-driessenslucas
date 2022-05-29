@@ -48,8 +48,7 @@ def tmp():
         if round(temp,0) != round(prev_temp['Waarde'],0):
             data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
             if data != 0:
-                print('gelukt tmp')
-        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
+                socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
     
 
 def fsr():
@@ -59,9 +58,8 @@ def fsr():
     commentaar = "fsr uitlezen"
     if fsrval is not None:
             data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
-            if data != 0:
-                print('gelukt fsr')
-    socketio.emit('B2F_fsr', {'current_fsr': fsrval})
+            if data != 0:    
+                socketio.emit('B2F_coffepot', {'coffepot_status': fsrval})
     
 
 def write_lcd():
@@ -101,7 +99,7 @@ def wls():
         if data != 0:
             print('gelukt waterlevel')
             s = DataRepository.get_latest_value(1)
-        socketio.emit('B2F_waterlevel', {'current_waterlevel': s['Waarde']})
+            socketio.emit('B2F_waterlevel', {'current_waterlevel': s['Waarde']})
         
 
 
@@ -186,7 +184,7 @@ def wls_thread():
     while True:
         try:
             wls()
-            time.sleep(60)
+            time.sleep(20)
         except:
             pass
 
@@ -200,7 +198,7 @@ def fsr_thread():
     while True:
         fsr()
         tmp()
-        time.sleep(10)
+        time.sleep(1)
         
 
 
