@@ -1234,6 +1234,13 @@ html {
 .c-percentage__current:after {
 	content: '%';
 }
+.js-tmp{
+	border: 1px solid grey;
+}
+.js-tmp::after{
+	content: '%';
+
+}
 .c-percentage__goal {
 	margin-top: 0;
 	text-transform: uppercase;

@@ -25,10 +25,11 @@ import time
 import smbus
 import numpy as np
 from helpers.i2c_helper import LCD
+from helpers.spi_class import spi_class
 
 NO_TOUCH = 0xFE
 max_val_wls = 100
-min_weight = 1 #dit moet nog aangepast worden (nu 1 voor testen te kunnen doen)
+
 
 i2c = smbus.SMBus(1)
 sda = 1
@@ -36,22 +37,30 @@ scl = 1
 
 GPIO.setmode(GPIO.BCM)
 
-def fsr(write_to_db):
-    #tijdelijke code tot defitge weight sensor
+def tmp():
+        spi = spi_class(0,0)
+        hz = 10 ** 5
+        data = spi.read_channel(hz,0)
+        volt = data/1023.0 *3.3
+        temp = (100 * volt) - 50
+        status = 1
+        prev_temp = DataRepository.get_latest_value(2)
+        if round(temp,0) != round(prev_temp['Waarde'],0):
+            data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
+            if data != 0:
+                print('gelukt tmp')
+        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
+    
+
+def fsr():
     GPIO.setup(20, GPIO.IN)
     fsrval = GPIO.input(20)
-    status = 0
     commentaar = "fsr uitlezen"
-    if fsrval >= min_weight:
-        status = 1
-    else:
-        status = 0
     if fsrval is not None:
-        if write_to_db == True:
-            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)#hier het gewicht naar db sturen
+            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
             if data != 0:
                 print('gelukt fsr')
-    socketio.emit('B2F_coffepot', {'coffepot_status': status}) #hier de status doorsturen
+    socketio.emit('B2F_fsr', {'current_fsr': fsrval})
     
 
 def write_lcd():
@@ -92,7 +101,7 @@ def wls():
             print('gelukt waterlevel')
             s = DataRepository.get_latest_value(1)
         socketio.emit('B2F_waterlevel', {'current_waterlevel': s['Waarde']})
-        fsr(True)
+        
 
 
 
@@ -188,8 +197,9 @@ def lcd_thread():
 
 def fsr_thread():
     while True:
-        fsr(False)
-        time.sleep(1)
+        fsr()
+        tmp()
+        time.sleep(10)
         
 
 
