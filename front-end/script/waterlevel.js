@@ -14,7 +14,10 @@ const socketio = io(lanIP);
 //#endregion
 
 //#region ***  Callback-Visualisation - show___         ***********
-
+const updateTmp = function (value) {
+	console.log(value)
+	document.querySelector('.js-tmp').innerHTML = `temperature: ${value}`;
+}
 
 const backToIndex = function () {
 	window.location.href = './waterlevel.html';
@@ -100,6 +103,9 @@ const listenToSocket = function () {
 	});
 	socketio.on('B2F_coffepot', function (data) {
 		updateCoffeePot(data.coffepot_status)
+	});
+	socketio.on('B2F_tmp', function (data) {
+		updateTmp(data.current_tmp)
 	});
 };
 

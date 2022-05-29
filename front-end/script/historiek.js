@@ -10,12 +10,27 @@ const backToIndex = function () {
 
 const showHistoriek = function (jsonObject) {
 	console.log(jsonObject);
-  let html = '';
+	let html = '';
+	html += `<tr class="c-row js-header">
+	<th>volgnr</th>
+	<th>datum</th>
+	<th>waarde</th>
+	<th>deviceid</th>
+	<th>actieid</th>
+	<th>status</th>
+	  </tr>`
 	for (let log of jsonObject.historiek) {
-		html += `<tr class="c-row">
-        <td class="c-cell">${log.deviceID}</div>
+		
+		html += `
+		
+		<tr class="c-row">
+        <td class="c-cell">${log.volgnummer}</div>
         <td class="c-cell">${log.actiedatum}</div>
-        <td class="c-cell">${log.Waarde}</div>
+		<td class="c-cell">${log.Waarde}</div>
+        <td class="c-cell">${log.deviceID}</div>
+		<td class="c-cell">${log.actieID}</div>
+		<td class="c-cell">${log.status}</div>
+
         </tr>`;
 	}
 	htmlTable.innerHTML = html;

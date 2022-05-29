@@ -29,7 +29,7 @@ from helpers.spi_class import spi_class
 
 NO_TOUCH = 0xFE
 max_val_wls = 100
-min_weight = 1 #dit moet nog aangepast worden (nu 1 voor testen te kunnen doen)
+
 
 i2c = smbus.SMBus(1)
 sda = 1
@@ -52,22 +52,16 @@ def tmp():
         socketio.emit('B2F_tmp', {'current_tmp': temp})
     
 
-def fsr(write_to_db):
+def fsr():
     #tijdelijke code tot defitge weight sensor
     GPIO.setup(20, GPIO.IN)
     fsrval = GPIO.input(20)
-    status = 0
     commentaar = "fsr uitlezen"
-    if fsrval >= min_weight:
-        status = 1
-    else:
-        status = 0
     if fsrval is not None:
-        if write_to_db == True:
-            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)#hier het gewicht naar db sturen
+            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
             if data != 0:
                 print('gelukt fsr')
-    socketio.emit('B2F_coffepot', {'coffepot_status': status}) #hier de status doorsturen
+    socketio.emit('B2F_fsr', {'current_fsr': fsrval})
     
 
 def write_lcd():
@@ -108,7 +102,7 @@ def wls():
             print('gelukt waterlevel')
             s = DataRepository.get_latest_value(1)
         socketio.emit('B2F_waterlevel', {'current_waterlevel': s['Waarde']})
-        fsr(True)
+        
 
 
 
@@ -204,9 +198,9 @@ def lcd_thread():
 
 def fsr_thread():
     while True:
-        fsr(False)
+        fsr()
         tmp()
-        time.sleep(1)
+        time.sleep(10)
         
 
 
