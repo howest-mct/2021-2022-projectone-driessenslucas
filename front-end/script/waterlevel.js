@@ -53,7 +53,6 @@ const updateCoffeePot = function (data) {
 
 
 const updateView = function (value) {
-	console.log(value)
 	htmlPercentage.innerHTML = `${value}`;
 	htmlWave.style.transform = `translateY(${100-value}%)`;
 	getStatus()

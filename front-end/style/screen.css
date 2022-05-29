@@ -1230,6 +1230,9 @@ html {
 	font-variant-numeric: tabular-nums;
 	color: white;
 }
+.js-tmp::after{
+	content: '°C';
+}
 .c-percentage__current:after {
 	content: '%';
 }

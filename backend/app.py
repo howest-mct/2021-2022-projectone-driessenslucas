@@ -49,7 +49,7 @@ def tmp():
             data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
             if data != 0:
                 print('gelukt tmp')
-        socketio.emit('B2F_tmp', {'current_tmp': temp})
+        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
     
 
 def fsr():
