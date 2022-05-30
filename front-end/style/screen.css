@@ -450,6 +450,62 @@ a:focus {
   #COMPONENTS
 \*------------------------------------*/
 
+.c-grid{
+
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 60px 80px 200px 200px;
+	grid-template-areas: 
+			"header header"
+			"detected temp"
+			"btn btn"
+			"wls wls";
+}
+
+@media (min-width: 1024px) {
+	.c-grid{
+		display: grid;
+		grid-template-columns: 80px 1fr 1fr 80px;
+		grid-template-rows: 80px 80px 500px;
+		grid-template-areas: 
+		"header header header header"
+		"detected niets niets temp"
+		"niet btn wls neit";
+	}
+}
+.o-row--header{
+	grid-area: header;
+}
+.js-potdetected{
+	grid-area: detected;
+	padding-left: 12px;
+}
+.js-tmp{
+	grid-area: temp;
+	align-self: center;
+	
+}
+.js-temp{
+	text-align: center;
+}
+.o-coffeebtn{
+	grid-area: btn;
+	align-self: center;
+	margin: 0 auto;
+}
+.js-CoffePot{
+	align-self: center;
+	margin: 0 auto;
+	width: 50%;
+	grid-area: btn;
+}
+.c-waterlevel{
+	align-self: center;
+	margin: 0 auto;
+	grid-area: wls;
+}
+
+
 .c-button {
 	height: 46px;
 	width: 135px;

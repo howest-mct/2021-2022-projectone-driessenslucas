@@ -15,7 +15,12 @@ const socketio = io(lanIP);
 
 //#region ***  Callback-Visualisation - show___         ***********
 const updateTmp = function (value) {
-
+	if(value != null){
+		document.querySelector('.js-tmp').classList.remove("c-hidden");
+	}
+	else{
+		document.querySelector('.js-tmp').classList.add("c-hidden");
+	}
 	document.querySelector('.js-tmp').innerHTML = `temperature: ${value}`;
 }
 
@@ -39,14 +44,10 @@ const updateCoffeePot = function (data) {
 	statusFSR = data	
 	if (data == 1){
 		document.querySelector('.js-CoffePot').classList.add("c-hidden");
-		document.querySelector('.js-CoffePot').classList.remove("u-1-of-2-bp3");
-		document.querySelector('.o-coffeebtn').classList.add("u-1-of-2-bp3");
 		
 	}
 	else if (data == 0){
 		document.querySelector('.js-CoffePot').classList.remove("c-hidden");
-		document.querySelector('.js-CoffePot').classList.add("u-1-of-2-bp3");
-		document.querySelector('.o-coffeebtn').classList.remove("u-1-of-2-bp3");
 	}
 	checkbtn()
 }
@@ -65,9 +66,12 @@ const checkbtn = function () {
 	console.log(`fsrval:${statusFSR}`)
 	if (statusWLS == 1 & statusFSR == 1){
 		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
+		document.querySelector('.js-potdetected').classList.remove("c-hidden");
 	}
 	else{
 		document.querySelector('.js-coffeebtn').classList.add("c-hidden");
+		document.querySelector('.js-potdetected').classList.add("c-hidden");
+
 	}
 }
 
