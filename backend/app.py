@@ -34,41 +34,47 @@ max_val_wls = 100
 i2c = smbus.SMBus(1)
 sda = 1
 scl = 1
+lcd = LCD()
 
 GPIO.setmode(GPIO.BCM)
 
-def tmp():
+def init_lcd():
+    
+    lcd.reset_lcd()
+    lcd.init_LCD()
+
+def tmp(write_to_db):
         spi = spi_class(0,0)
         hz = 10 ** 5
         data = spi.read_channel(hz,0)
         volt = data/1023.0 *3.3
         temp = (100 * volt) - 50
         status = 1
-        prev_temp = DataRepository.get_latest_value(2)
-        if round(temp,0) != round(prev_temp['Waarde'],0):
+        if write_to_db == True:
             data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
             if data != 0:
-                socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
+                print('gelukt temperatuur wegschrijven')
+        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
     
 
-def fsr():
+def fsr(write_to_db):
     #tijdelijke code tot defitge weight sensor
     GPIO.setup(20, GPIO.IN)
     fsrval = GPIO.input(20)
     commentaar = "fsr uitlezen"
-    if fsrval is not None:
+    if fsrval is not None and write_to_db == True:
             data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
-            if data != 0:    
-                socketio.emit('B2F_coffepot', {'coffepot_status': fsrval})
+            if data != 0:
+                print('gelukt wegschrijven fsr')    
+    socketio.emit('B2F_coffepot', {'coffepot_status': fsrval})
     
 
 def write_lcd():
-        lcd = LCD()
-        lcd.reset_lcd()
-        lcd.init_LCD()
-        lcd.write_line("coffee machine  ")
-        lcd.next_line()
-        lcd.write_line("192.168.168.169 ")
+    init_lcd()
+  
+    lcd.write_line("coffee machine  ")
+    lcd.next_line()
+    lcd.write_line("192.168.168.169 ")
 
 def check_water_level():
     touch_val = 0
@@ -100,6 +106,8 @@ def wls():
             print('gelukt waterlevel')
             s = DataRepository.get_latest_value(1)
             socketio.emit('B2F_waterlevel', {'current_waterlevel': s['Waarde']})
+        fsr(True)
+        tmp(True)
         
 
 
@@ -196,8 +204,8 @@ def lcd_thread():
 
 def fsr_thread():
     while True:
-        fsr()
-        tmp()
+        fsr(False)
+        tmp(False)
         time.sleep(1)
         
 
