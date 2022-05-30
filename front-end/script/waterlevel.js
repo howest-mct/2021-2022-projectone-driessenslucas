@@ -14,6 +14,10 @@ const socketio = io(lanIP);
 //#endregion
 
 //#region ***  Callback-Visualisation - show___         ***********
+const showMakeCoffee = function () {
+	document.querySelector('.js-coffeebtn').innerHTML = 'stop';
+}
+
 const updateTmp = function (value) {
 	if(value != null){
 		document.querySelector('.js-tmp').classList.remove("c-hidden");
@@ -29,7 +33,6 @@ const backToIndex = function () {
 };
 
 const showStatus = function(jsonObject){
-	console.log(jsonObject)
 	for (const status of jsonObject.status) {
         if (status.deviceID == 1 & status.status == 1){
 			statusWLS = 1
@@ -37,7 +40,14 @@ const showStatus = function(jsonObject){
 		else if (status.deviceID == 1 & status.status == 0){
 			statusWLS = 0
 		}
+		if(status.deviceID == 4 & status.actieID == 5 & status.status == 0){
+			document.querySelector('.js-coffeebtn').innerHTML = 'make coffee';
+		}
+		else if (status.deviceID == 4 & status.actieID == 5 & status.status == 1){
+			document.querySelector('.js-coffeebtn').innerHTML = 'stop';
+		}	
     }
+	
 	checkbtn()
 }
 const updateCoffeePot = function (data) {
@@ -67,6 +77,7 @@ const checkbtn = function () {
 	if (statusWLS == 1 & statusFSR == 1){
 		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
 		document.querySelector('.js-potdetected').classList.remove("c-hidden");
+		
 	}
 	else{
 		document.querySelector('.js-coffeebtn').classList.add("c-hidden");
@@ -90,6 +101,13 @@ const getStatus = function () {
 //#endregion
 
 //#region ***  Event Listeners - listenTo___            ***********
+const listenToBtn = function(){
+	document.querySelector('.js-coffeebtn').addEventListener('click', function(){
+		console.log('coffee button clicked')
+		
+		socketio.emit('F2B_make_coffee')
+	});
+}
 const listenToUI = function () {
 	
 };
@@ -123,6 +141,7 @@ const init = function () {
 	getStatus();
 	listenToUI();
 	listenToSocket();
+	listenToBtn();
 };
 document.addEventListener('DOMContentLoaded', init);
 //#endregion

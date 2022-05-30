@@ -1,10 +1,13 @@
 from ast import Pass
 import json
 import time
+from turtle import delay
 from wsgiref.simple_server import demo_app
 from RPi import GPIO
+from h11 import Data
 from helpers.klasseknop import Button
 import threading
+from threading import Event
 
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, send
@@ -19,7 +22,7 @@ endpoint = '/api/v1'
 # from selenium.webdriver.chrome.options import Options
 
 
-
+intterupt_make_coffee = Event()
 # Code voor Hardware
 import time
 import smbus
@@ -29,6 +32,9 @@ from helpers.spi_class import spi_class
 
 NO_TOUCH = 0xFE
 max_val_wls = 100
+Coffee_machine_on = False
+relais_coffee_machine_pin = 21
+relais_make_coffee_pin = 23
 
 
 i2c = smbus.SMBus(1)
@@ -38,6 +44,22 @@ lcd = LCD()
 
 GPIO.setmode(GPIO.BCM)
 
+GPIO.setup(relais_coffee_machine_pin, GPIO.OUT)
+GPIO.setup(relais_make_coffee_pin, GPIO.OUT)
+
+def make_coffee():
+    print('turning on coffee machine')
+    GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
+    time.sleep(1)
+    print('coffee wordt gemaakt')
+    DataRepository.create_log(1,4,6,1,"coffee machine aan")
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(10)
+    GPIO.output(23, GPIO.LOW)
+    DataRepository.create_log(0,4,6,0,"coffee machine uit")
+    print('coffee is klaar')
+    DataRepository.create_log(1,4,5,1,"coffee gemaakt")
+    GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
 
 
 def tmp(write_to_db):
@@ -180,6 +202,25 @@ def get_status():
             return jsonify(message="foutive status"),400
 
 
+#niet met sockets maar met app.route !!!!!!!!!!
+# @socketio.on('F2B_turn_on_coffee_machine')
+# def Coffee_on():
+#     Coffee_machine_on = True
+#     if Coffee_machine_on:
+#         print("coffee machine on")
+#         GPIO.output(24, GPIO.HIGH)
+#     else:
+#         print("coffee machine off")
+#         GPIO.output(24, GPIO.LOW)
+
+# #@socketio.on('F2B_stop_coffee')
+# def Coffee_stop(pin):
+#     print('coffee stop')
+#     intterupt_make_coffee.set()
+
+@socketio.on('F2B_make_coffee')
+def turn_on():
+    make_coffee()
 
 
 
@@ -187,7 +228,6 @@ def get_status():
 def initial_connection():
     print('A new client connect')
     # # Send to the client!
-    # vraag de status op van de lampen uit de DB
     data = DataRepository.get_latest_value(1)
     if data['Waarde']:
         percentage = data['Waarde']
@@ -217,6 +257,11 @@ def fsr_thread():
         fsr(False)
         tmp(False)
         time.sleep(1)
+
+def relay_thread():
+        turn_on_coffee_machine(True)
+        time.sleep(60)
+        turn_on_coffee_machine(False)
         
 
 
@@ -232,6 +277,10 @@ def start_thread3():
     print("**** Starting THREADFSR ****")
     thread3 = threading.Thread(target=fsr_thread,args=(),daemon=True)
     thread3.start()
+
+def start_thread4():
+    thread4 = threading.Thread(target=relay_thread,args=(),daemon=True)
+    thread4.start()
 
 
 def start_chrome_kiosk():
@@ -271,10 +320,12 @@ def start_chrome_thread():
 
 
 # ANDERE FUNCTIES
+# GPIO.add_event_detect(stop_btn,GPIO.RISING,callback=Coffee_stop,bouncetime = 300)
 
 
 if __name__ == '__main__':
     try:
+        GPIO.output(23, GPIO.LOW)
         start_thread()
         start_thread2()
         start_thread3()
