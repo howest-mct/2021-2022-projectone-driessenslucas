@@ -38,10 +38,7 @@ lcd = LCD()
 
 GPIO.setmode(GPIO.BCM)
 
-def init_lcd():
-    
-    lcd.reset_lcd()
-    lcd.init_LCD()
+
 
 def tmp(write_to_db):
         spi = spi_class(0,0)
@@ -55,6 +52,7 @@ def tmp(write_to_db):
             if data != 0:
                 print('gelukt temperatuur wegschrijven')
         socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
+        return round(temp,0)
     
 
 def fsr(write_to_db):
@@ -67,14 +65,25 @@ def fsr(write_to_db):
             if data != 0:
                 print('gelukt wegschrijven fsr')    
     socketio.emit('B2F_coffepot', {'coffepot_status': fsrval})
+    return fsrval
     
 
 def write_lcd():
-    init_lcd()
-  
+    lcd.reset_lcd()
+    lcd.init_LCD()
     lcd.write_line("coffee machine  ")
-    lcd.next_line()
-    lcd.write_line("192.168.168.169 ")
+    
+    while True:
+        lcd.next_line()
+        lcd.write_line("192.168.168.169 ")
+        time.sleep(2)
+        lcd.next_line()
+        lcd.write_line(f"temp: {tmp(False)}C      ")
+        time.sleep(2)
+        lcd.next_line()
+        lcd.write_line(f"waterlevel: {wls(False)}%   ")
+        time.sleep(2)
+
 
 def check_water_level():
     touch_val = 0
@@ -92,7 +101,7 @@ def check_water_level():
     value = touch_val * 5
     return value
 
-def wls():
+def wls(write_to_db):
         percent = check_water_level()
         print(f"water level = {percent}%")
         status = 0
@@ -101,13 +110,14 @@ def wls():
         else:
             status - 0
         commentaar = "water niveau ophalen"
-        data = DataRepository.create_log(percent,1,2,status,commentaar)
-        if data != 0:
-            print('gelukt waterlevel')
-            s = DataRepository.get_latest_value(1)
-            socketio.emit('B2F_waterlevel', {'current_waterlevel': s['Waarde']})
+        if write_to_db == True:
+            data = DataRepository.create_log(percent,1,2,status,commentaar)
+            if data != 0:
+                print('gelukt waterlevel')
+        socketio.emit('B2F_waterlevel', {'current_waterlevel': percent})
         fsr(True)
         tmp(True)
+        return percent
         
 
 
@@ -191,7 +201,7 @@ def initial_connection():
 def wls_thread():
     while True:
         try:
-            wls()
+            wls(True)
             time.sleep(20)
         except:
             pass
