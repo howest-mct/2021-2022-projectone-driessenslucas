@@ -53,23 +53,26 @@ def make_coffee():
     time.sleep(1)
     print('coffee wordt gemaakt')
     DataRepository.create_log(1,4,6,1,"coffee machine aan")
+    socketio.emit('B2F_makecoffee', {'coffepot_status': 1})
     GPIO.output(23, GPIO.HIGH)
-    time.sleep(10)
+    time.sleep(120)
     GPIO.output(23, GPIO.LOW)
     DataRepository.create_log(0,4,6,0,"coffee machine uit")
     print('coffee is klaar')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
+    socketio.emit('B2F_coffeebtn', {'coffepot_status': 0})
     GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
 
 
 def tmp(write_to_db):
+        #print(f"tmp{write_to_db}")
         spi = spi_class(0,0)
         hz = 10 ** 5
         data = spi.read_channel(hz,0)
         volt = data/1023.0 *3.3
         temp = (100 * volt) - 50
         status = 1
-        if write_to_db == True:
+        if write_to_db:
             data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
             if data != 0:
                 print('gelukt temperatuur wegschrijven')
@@ -79,10 +82,11 @@ def tmp(write_to_db):
 
 def fsr(write_to_db):
     #tijdelijke code tot defitge weight sensor
+    #print(f"fsr{write_to_db}")
     GPIO.setup(20, GPIO.IN)
     fsrval = GPIO.input(20)
     commentaar = "fsr uitlezen"
-    if fsrval is not None and write_to_db == True:
+    if fsrval is not None and write_to_db:
             data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
             if data != 0:
                 print('gelukt wegschrijven fsr')    
@@ -124,6 +128,7 @@ def check_water_level():
     return value
 
 def wls(write_to_db):
+        #print(f"wls{write_to_db}")
         percent = check_water_level()
         print(f"water level = {percent}%")
         status = 0
@@ -132,13 +137,14 @@ def wls(write_to_db):
         else:
             status - 0
         commentaar = "water niveau ophalen"
-        if write_to_db == True:
+        if write_to_db:
             data = DataRepository.create_log(percent,1,2,status,commentaar)
             if data != 0:
                 print('gelukt waterlevel')
+                fsr(True)
+                tmp(True)
         socketio.emit('B2F_waterlevel', {'current_waterlevel': percent})
-        fsr(True)
-        tmp(True)
+        
         return percent
         
 
@@ -202,21 +208,6 @@ def get_status():
             return jsonify(message="foutive status"),400
 
 
-#niet met sockets maar met app.route !!!!!!!!!!
-# @socketio.on('F2B_turn_on_coffee_machine')
-# def Coffee_on():
-#     Coffee_machine_on = True
-#     if Coffee_machine_on:
-#         print("coffee machine on")
-#         GPIO.output(24, GPIO.HIGH)
-#     else:
-#         print("coffee machine off")
-#         GPIO.output(24, GPIO.LOW)
-
-# #@socketio.on('F2B_stop_coffee')
-# def Coffee_stop(pin):
-#     print('coffee stop')
-#     intterupt_make_coffee.set()
 
 @socketio.on('F2B_make_coffee')
 def turn_on():
@@ -240,11 +231,8 @@ def initial_connection():
 
 def wls_thread():
     while True:
-        try:
             wls(True)
-            time.sleep(20)
-        except:
-            pass
+            time.sleep(60)
 
 def lcd_thread():
     try:
@@ -258,10 +246,6 @@ def fsr_thread():
         tmp(False)
         time.sleep(1)
 
-def relay_thread():
-        turn_on_coffee_machine(True)
-        time.sleep(60)
-        turn_on_coffee_machine(False)
         
 
 
@@ -278,9 +262,6 @@ def start_thread3():
     thread3 = threading.Thread(target=fsr_thread,args=(),daemon=True)
     thread3.start()
 
-def start_thread4():
-    thread4 = threading.Thread(target=relay_thread,args=(),daemon=True)
-    thread4.start()
 
 
 def start_chrome_kiosk():

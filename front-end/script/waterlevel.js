@@ -14,8 +14,16 @@ const socketio = io(lanIP);
 //#endregion
 
 //#region ***  Callback-Visualisation - show___         ***********
-const showMakeCoffee = function () {
-	document.querySelector('.js-coffeebtn').innerHTML = 'stop';
+const showMakeCoffee = function (data) {
+	console.log(data)
+	if(data == 1){
+		document.querySelector('.js-coffeebtn').innerHTML = 'stop';
+		document.querySelector('.js-coffeegif').classList.remove("c-hidden");
+	}
+	else{
+		document.querySelector('.js-coffeebtn').innerHTML = 'make coffee';
+		document.querySelector('.js-coffeegif').classList.add("c-hidden");
+	}	
 }
 
 const updateTmp = function (value) {
@@ -40,12 +48,6 @@ const showStatus = function(jsonObject){
 		else if (status.deviceID == 1 & status.status == 0){
 			statusWLS = 0
 		}
-		if(status.deviceID == 4 & status.actieID == 5 & status.status == 0){
-			document.querySelector('.js-coffeebtn').innerHTML = 'make coffee';
-		}
-		else if (status.deviceID == 4 & status.actieID == 5 & status.status == 1){
-			document.querySelector('.js-coffeebtn').innerHTML = 'stop';
-		}	
     }
 	
 	checkbtn()
@@ -73,7 +75,7 @@ const updateView = function (value) {
 
 //#region ***  Callback-No Visualisation - callback___  ***********
 const checkbtn = function () {
-	console.log(`fsrval:${statusFSR}`)
+	//console.log(`fsrval:${statusFSR}`)
 	if (statusWLS == 1 & statusFSR == 1){
 		document.querySelector('.js-coffeebtn').classList.remove("c-hidden");
 		document.querySelector('.js-potdetected').classList.remove("c-hidden");
@@ -104,7 +106,7 @@ const getStatus = function () {
 const listenToBtn = function(){
 	document.querySelector('.js-coffeebtn').addEventListener('click', function(){
 		console.log('coffee button clicked')
-		
+		showMakeCoffee(1)
 		socketio.emit('F2B_make_coffee')
 	});
 }
@@ -116,11 +118,11 @@ const listenToSocket = function () {
 		console.log('verbonden met socket webserver');
 	});
 	socketio.on('B2F_connected', function (data) {
-        console.log(data)
+        //console.log(data)
 		updateView(data.current_waterlevel);
 	});
 	socketio.on('B2F_waterlevel', function (data) {
-        console.log(data)
+        //console.log(data)
 		updateView(data.current_waterlevel);
 	});
 	socketio.on('B2F_coffepot', function (data) {
@@ -129,9 +131,15 @@ const listenToSocket = function () {
 	socketio.on('B2F_tmp', function (data) {
 		updateTmp(data.current_tmp)
 	});
+	socketio.on('B2F_makecoffee', function (data) {
+		console.log(data)
+		showMakeCoffee(data.coffepot_status)
+	});
 };
 
 //#endregion
+
+
 
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
@@ -142,6 +150,7 @@ const init = function () {
 	listenToUI();
 	listenToSocket();
 	listenToBtn();
+	
 };
 document.addEventListener('DOMContentLoaded', init);
 //#endregion

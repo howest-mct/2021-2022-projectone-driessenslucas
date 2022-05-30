@@ -450,11 +450,155 @@ a:focus {
   #COMPONENTS
 \*------------------------------------*/
 
+/*
+    Component: mobile nav
+    ---
+    Dedicated mobile nav component
+*/
+
+.c-mobile-nav {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 100vh;
+	pointer-events: none;
+}
+
+.has-mobile-nav .c-mobile-nav {
+	pointer-events: auto;
+}
+
+.c-mobile-nav__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16px;
+}
+
+.c-mobile-nav__bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: #202024;
+	opacity: 0;
+	transition: opacity 0.25s ease;
+}
+
+.has-mobile-nav .c-mobile-nav__bg {
+	opacity: 0.5;
+}
+
+.c-mobile-nav__body {
+	position: relative;
+	padding: 24px;
+	height: 100vh;
+	width: 100vw;
+	background-color: #fff;
+	transform: translateX(-100%);
+	transition: transform 0.25s ease;
+}
+
+.has-mobile-nav .c-mobile-nav__body {
+	transform: translateX(0);
+}
+
+.c-page {
+	position: relative;
+	will-change: transform;
+	transition: transform 0.25 ease;
+}
+
+.has-mobile-nav .c-page {
+	transform: translateX(25%);
+}
+
+@media (min-width: 768px) {
+	.c-mobile-nav__body {
+		padding: 48px;
+	}
+}
+
+@media (min-width: 992px) {
+	/* Hide the mobile nav on larger viewports even whent it's open on smaller screens */
+	.c-mobile-nav {
+		display: none !important;
+	}
+}
+
+/*
+    Component: Logo
+    ---
+    Website main logo
+*/
+
+.c-logo {
+	height: 32px;
+	display: flex;
+	align-items: center;
+}
+
+.c-logo__symbol {
+	height: 100%;
+}
+
+@media (min-width: 768px) {
+	.c-logo {
+		height: 40px;
+	}
+}
+
+/*
+    Component: header
+    ---
+    Main header of the website
+*/
+
+.c-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.c-header__nav {
+	display: none;
+}
+
+@media (min-width: 992px) {
+	.c-header__nav {
+		display: block;
+	}
+	.c-header__nav {
+		display: block;
+	}
+
+	.c-header__nav--main {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		margin-top: 12px;
+	}
+
+	.c-header__mobile-nav-trigger {
+		display: none;
+	}
+}
+
+
+/*m*/
+.mobile-navigation{
+	display: none;
+}
+
+
 .c-grid{
 
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 60px 80px 200px 200px;
+	grid-template-rows: 60px 80px 1fr 1fr;
 	grid-template-areas: 
 			"header header"
 			"detected temp"
@@ -504,7 +648,12 @@ a:focus {
 	margin: 0 auto;
 	grid-area: wls;
 }
-
+.js-coffeegif{
+	grid-area: btn;
+	align-self: center;
+	margin: 0 auto;
+	width: 50%;
+}
 
 .c-button {
 	height: 46px;
