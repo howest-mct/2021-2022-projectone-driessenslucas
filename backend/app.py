@@ -1,11 +1,9 @@
 from ast import Pass
 import json
+from subprocess import check_output
 import time
-from turtle import delay
-from wsgiref.simple_server import demo_app
 from RPi import GPIO
 from h11 import Data
-from helpers.klasseknop import Button
 import threading
 from threading import Event
 
@@ -21,6 +19,20 @@ endpoint = '/api/v1'
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
 
+# Code voor Flask
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'geheim!'
+socketio = SocketIO(app, cors_allowed_origins="*", logger=False,
+                    engineio_logger=False, ping_timeout=1)
+
+CORS(app)
+
+
+@socketio.on_error()        # Handles the default namespace
+def error_handler(e):
+    print(e)
+
 
 intterupt_make_coffee = Event()
 # Code voor Hardware
@@ -35,6 +47,7 @@ max_val_wls = 100
 Coffee_machine_on = False
 relais_coffee_machine_pin = 21
 relais_make_coffee_pin = 23
+toggle_coffee_machine = False
 
 
 i2c = smbus.SMBus(1)
@@ -53,14 +66,12 @@ def make_coffee():
     time.sleep(1)
     print('coffee wordt gemaakt')
     DataRepository.create_log(1,4,6,1,"coffee machine aan")
-    socketio.emit('B2F_makecoffee', {'coffepot_status': 1})
     GPIO.output(23, GPIO.HIGH)
-    time.sleep(120)
+    time.sleep(20)
     GPIO.output(23, GPIO.LOW)
     DataRepository.create_log(0,4,6,0,"coffee machine uit")
     print('coffee is klaar')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
-    socketio.emit('B2F_coffeebtn', {'coffepot_status': 0})
     GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
 
 
@@ -98,10 +109,13 @@ def write_lcd():
     lcd.reset_lcd()
     lcd.init_LCD()
     lcd.write_line("coffee machine  ")
+    ips = str(check_output(['hostname','--all-ip-addresses']))
+    ip_addr = ips.split(' ')
+    print(ip_addr[0][2:])
     
     while True:
         lcd.next_line()
-        lcd.write_line("192.168.168.169 ")
+        lcd.write_line(f"{ip_addr[0][2:]}   ")
         time.sleep(2)
         lcd.next_line()
         lcd.write_line(f"temp: {tmp(False)}C      ")
@@ -130,7 +144,6 @@ def check_water_level():
 def wls(write_to_db):
         #print(f"wls{write_to_db}")
         percent = check_water_level()
-        print(f"water level = {percent}%")
         status = 0
         if percent > 10 & percent < 98:
             status = 1
@@ -141,31 +154,10 @@ def wls(write_to_db):
             data = DataRepository.create_log(percent,1,2,status,commentaar)
             if data != 0:
                 print('gelukt waterlevel')
-                fsr(True)
-                tmp(True)
         socketio.emit('B2F_waterlevel', {'current_waterlevel': percent})
         
         return percent
         
-
-
-
-
-# Code voor Flask
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'geheim!'
-socketio = SocketIO(app, cors_allowed_origins="*", logger=False,
-                    engineio_logger=False, ping_timeout=1)
-
-CORS(app)
-
-
-@socketio.on_error()        # Handles the default namespace
-def error_handler(e):
-    print(e)
-
-
 
 # API ENDPOINTS
 
@@ -209,9 +201,17 @@ def get_status():
 
 
 
+
+    
+
 @socketio.on('F2B_make_coffee')
 def turn_on():
-    make_coffee()
+    thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
+    emit('B2F_makecoffee', {'coffepot_status': 1})
+    thread4.start()
+    thread4.join()
+    emit('B2F_makecoffee', {'coffepot_status': 0})
+    
 
 
 
@@ -226,12 +226,11 @@ def initial_connection():
         percentage = 0
     emit('B2F_connected', {'current_waterlevel': percentage})
 
-
-
-
 def wls_thread():
     while True:
             wls(True)
+            fsr(True)
+            tmp(True)
             time.sleep(60)
 
 def lcd_thread():
@@ -244,6 +243,7 @@ def fsr_thread():
     while True:
         fsr(False)
         tmp(False)
+        wls(False)
         time.sleep(1)
 
         
@@ -261,7 +261,7 @@ def start_thread3():
     print("**** Starting THREADFSR ****")
     thread3 = threading.Thread(target=fsr_thread,args=(),daemon=True)
     thread3.start()
-
+    
 
 
 def start_chrome_kiosk():
@@ -302,11 +302,13 @@ def start_chrome_thread():
 
 # ANDERE FUNCTIES
 # GPIO.add_event_detect(stop_btn,GPIO.RISING,callback=Coffee_stop,bouncetime = 300)
-
+thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
 
 if __name__ == '__main__':
     try:
+        
         GPIO.output(23, GPIO.LOW)
+        GPIO.output(21, GPIO.LOW)
         start_thread()
         start_thread2()
         start_thread3()

@@ -598,7 +598,7 @@ a:focus {
 
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 60px 80px 1fr 1fr;
+	grid-template-rows: 60px 80px 250px 250px;
 	grid-template-areas: 
 			"header header"
 			"detected temp"
@@ -653,6 +653,9 @@ a:focus {
 	align-self: center;
 	margin: 0 auto;
 	width: 50%;
+  /*position: relative;
+  //position: fixed;*/
+	z-index: 0;
 }
 
 .c-button {

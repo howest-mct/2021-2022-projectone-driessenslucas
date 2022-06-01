@@ -55,7 +55,7 @@ const CallbackDeleteProgress = function (date) {
 
 const gethistoriek = function () {
 	const url = `http://192.168.168.169:5000/api/v1/historiek/`;
-	handleData(url, showHistoriek, null, 'GET', null);
+	handleData(url, showHistoriek);
 };
 // #endregion
 
