@@ -21,7 +21,9 @@ const showHistoriek = function (jsonObject) {
 	  </tr>`
 	for (let log of jsonObject.historiek) {
 		let icon = '';
+		let meeteenheid = '';
 		if(log.deviceID == 1){
+			meeteenheid = '%';
 			icon = `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20">
 			<g id="water_drop_black_24dp" transform="translate(0 -0.238)">
 			  <rect id="Rectangle_3" data-name="Rectangle 3" width="21" height="20" transform="translate(0 0.238)" fill="none"/>
@@ -31,6 +33,7 @@ const showHistoriek = function (jsonObject) {
 		  `;
 		}
 		else if (log.deviceID == 2){
+			meeteenheid = '°C';
 			icon = `<svg id="thermostat_black_24dp" xmlns="http://www.w3.org/2000/svg" width="20.636" height="20.636" viewBox="0 0 20.636 20.636">
 			<g id="Group_8" data-name="Group 8">
 			  <path id="Path_6" data-name="Path 6" d="M0,0H20.636V20.636H0Z" fill="none"/>
@@ -42,6 +45,7 @@ const showHistoriek = function (jsonObject) {
 		  `;
 		}
 		else if (log.deviceID == 3){
+			meeteenheid = 'g';
 			icon = `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
 			<g id="scale_black_24dp" transform="translate(0 0.02)">
 			  <g id="Group_12" data-name="Group 12" transform="translate(0 0)">
@@ -57,11 +61,13 @@ const showHistoriek = function (jsonObject) {
 		else{
 			icon = log.deviceID;
 		}
+	
+
 		html += `=
 		<tr class="c-row">
         <td class="c-cell">${log.volgnummer}</div>
         <td class="c-cell">${log.actiedatum}</div>
-		<td class="c-cell">${log.Waarde}</div>
+		<td class="c-cell">${Math.round( log.Waarde,2)} ${meeteenheid}</div>
         <td class="c-cell">${icon}</div>
 		<td class="c-cell">${log.actieID}</div>
 		<td class="c-cell">${log.status}</div>
@@ -101,12 +107,23 @@ const ListenToDelete = function () {
 	htmlDeletebtn.addEventListener('click', function () {
 		console.log('delete pressed');
 		var today = new Date();
-		var date =
+		var date = '';
+		if (today.getDate() < 10) {
+			date =
+			today.getFullYear() +
+			'-0' +
+			(today.getMonth() + 1) +
+			'-0' +
+			today.getDate();
+		}
+		else {
+			date =
 			today.getFullYear() +
 			'-0' +
 			(today.getMonth() + 1) +
 			'-' +
 			today.getDate();
+		}
 		CallbackDeleteProgress(date);
 	});
 };

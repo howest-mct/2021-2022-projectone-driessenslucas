@@ -600,12 +600,15 @@ a:focus {
 	display: none;
 }
 
+.clocldiv{
+	text-align: center;
+}
 
 .c-grid{
 
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 60px 80px 250px 250px;
+	grid-template-rows: 60px 100px 250px 250px;
 	grid-template-areas: 
 			"header header"
 			"detected temp"
@@ -616,12 +619,12 @@ a:focus {
 @media (min-width: 1024px) {
 	.c-grid{
 		display: grid;
-		grid-template-columns: 80px 1fr 1fr 80px;
+		grid-template-columns: 80px 1fr 80px;
 		grid-template-rows: 80px 80px 500px;
 		grid-template-areas: 
-		"header header header header"
-		"detected niets niets temp"
-		"niet btn wls neit";
+		"header header header"
+		"detected niets temp"
+		"niet btn wls";
 	}
 }
 .o-row--header{
@@ -633,21 +636,26 @@ a:focus {
 }
 .js-tmp{
 	grid-area: temp;
-	align-self: center;
-	
 }
-.js-temp{
-	text-align: center;
+.js-tmp{
+	text-align: end;
+	padding-right: 12px;
 }
 .o-coffeebtn{
 	grid-area: btn;
 	align-self: center;
 	margin: 0 auto;
 }
+.js-clear-amount-today{
+	margin: 0 auto;
+	display: flex;
+	padding: 10px;
+	border-radius: 20px;
+}
 .js-CoffePot{
 	align-self: center;
 	margin: 0 auto;
-	width: 50%;
+	width: 40%;
 	grid-area: btn;
 }
 .c-waterlevel{
@@ -659,7 +667,7 @@ a:focus {
 	grid-area: btn;
 	align-self: center;
 	margin: 0 auto;
-	width: 50%;
+	width: 60%;
   /*position: relative;
   //position: fixed;*/
 	z-index: 0;
@@ -715,6 +723,9 @@ a:focus {
 		color: #006aff;
 
 		text-align: center;
+	}
+	.js-temp{
+		align-self: center;
 	}
 }
 
@@ -1362,7 +1373,7 @@ html {
 	border: none;
 	border-radius: 100px;
 	outline: none;
-	background: #b71540;
+	background: darkblue;
 	color: white; 
 	cursor: pointer;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
@@ -1528,15 +1539,32 @@ h2 {
 }
 
 .c-dashboard {
-	max-width: 960px;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-right: 24px;
+
 }
 
+.c-dashboard > h1{
+	text-align: center;
+	margin-top: 0;
+	margin-bottom: 1rem;
+}
+
+@media (min-width: 768px){
+	.c-dashboard{
+		padding-right: 24px;
+		padding-left: 24px;
+	}
+
+}
 .c-table {
 	border: 1px solid #ddd;
 	border-radius: 4px;
+	margin: 0 auto;
+	align-self: center;
 }
 
 .c-row {
@@ -1575,7 +1603,6 @@ h2 {
 .c-waterlevel{
 	margin:0 auto; 	
 	max-width: 100px;
-	
 	-webkit-transform: rotate(90deg);
 	-moz-transform: rotate(90deg);
 	-o-transform: rotate(90deg);
@@ -1591,6 +1618,7 @@ h2 {
 }
 @media (min-width: 1024px) {
 	.c-waterlevel{
+		max-height: 700px;
 		-webkit-transform: rotate(0);
 		-moz-transform: rotate(0);
 		-o-transform: rotate(0);
@@ -1606,9 +1634,7 @@ h2 {
 	}
 	
 }
-.c-app{
-	min-height: 400px;
-}
+
 .c-hidden{
 	display: none;
 }

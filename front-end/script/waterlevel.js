@@ -19,6 +19,22 @@ const showMakeCoffee = function (data) {
 	if(data == 1){
 		
 		document.querySelector('.js-coffeegif').classList.remove("c-hidden");
+		var seconds=120;
+		var timer;
+		function myFunction() {
+		if(seconds < 120) { 
+			document.querySelector(".clockdiv").innerHTML = `time remaining: ${seconds} seconds`;
+		}
+		if (seconds >0 ) {
+			seconds--;
+		}
+		}
+		if(!timer) {
+			timer = window.setInterval(function() { 
+			myFunction();
+			}, 1000); 
+		}
+		document.querySelector(".clockdiv").innerHTML= `time remaining: 120 seconds`; 
 	}
 	else{
 		
@@ -96,8 +112,7 @@ const checkbtn = function () {
 const listenToBtn = function(){
 	document.querySelector('.js-coffeebtn').addEventListener('click', function(){
 		console.log('coffee button clicked')
-		showMakeCoffee(1);
-		socketio.emit('F2B_make_coffee')
+		socketio.emit('F2B_makecoffee')
 	});
 }
 const listenToUI = function () {

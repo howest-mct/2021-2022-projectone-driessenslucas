@@ -87,7 +87,7 @@ def tmp(write_to_db):
             data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
             if data != 0:
                 print('gelukt temperatuur wegschrijven')
-        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
+        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)},broadcast=True)
         return round(temp,0)
     
 
@@ -101,7 +101,7 @@ def fsr(write_to_db):
             data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
             if data != 0:
                 print('gelukt wegschrijven fsr')    
-    socketio.emit('B2F_coffepot', {'coffepot_status': fsrval})
+    socketio.emit('B2F_coffepot', {'coffepot_status': fsrval},broadcast=True)
     return fsrval
     
 
@@ -154,7 +154,7 @@ def wls(write_to_db):
             data = DataRepository.create_log(percent,1,2,status,commentaar)
             if data != 0:
                 print('gelukt waterlevel')
-        socketio.emit('B2F_waterlevel', {'current_waterlevel': percent})
+        socketio.emit('B2F_waterlevel', {'current_waterlevel': percent},broadcast=True)
         
         return percent
         
@@ -169,6 +169,7 @@ def hallo():
 @app.route(endpoint + '/historiek/', methods=['GET','DELETE'])
 def get_progress():
     if request.method == 'GET':
+        print('getting logs....')
         return jsonify(historiek=DataRepository.get_historiek()), 200
     elif request.method == 'DELETE':
         formmdata = DataRepository.json_or_formdata(request)
@@ -204,13 +205,13 @@ def get_status():
 
     
 
-@socketio.on('F2B_make_coffee')
+@socketio.on('F2B_makecoffee')
 def turn_on():
+    emit('B2F_makecoffee', {'coffepot_status': 1},broadcast=True)
     thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
-    emit('B2F_makecoffee', {'coffepot_status': 1})
     thread4.start()
     thread4.join()
-    emit('B2F_makecoffee', {'coffepot_status': 0})
+    emit('B2F_makecoffee', {'coffepot_status': 0},broadcast=True)
     
 
 
@@ -224,7 +225,7 @@ def initial_connection():
         percentage = data['Waarde']
     else:
         percentage = 0
-    emit('B2F_connected', {'current_waterlevel': percentage})
+    emit('B2F_connected', {'current_waterlevel': percentage},broadcast=True)
 
 def sensors_to_db():
     while True:
