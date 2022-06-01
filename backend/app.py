@@ -226,12 +226,15 @@ def initial_connection():
         percentage = 0
     emit('B2F_connected', {'current_waterlevel': percentage})
 
-def wls_thread():
+def sensors_to_db():
     while True:
+        try:
             wls(True)
             fsr(True)
             tmp(True)
             time.sleep(60)
+        except:
+            print("error wegschrijven naar db")
 
 def lcd_thread():
     try:
@@ -239,19 +242,22 @@ def lcd_thread():
     except:
         pass
 
-def fsr_thread():
+def sensors_to_frontend():
     while True:
-        fsr(False)
-        tmp(False)
-        wls(False)
-        time.sleep(1)
+        try:
+            fsr(False)
+            tmp(False)
+            wls(False)
+            time.sleep(1)
+        except:
+            print("error uitlezen sensors")
 
         
 
 
 def start_thread():
     print("**** Starting THREAD ****")
-    thread = threading.Thread(target=wls_thread, args=(), daemon=True)
+    thread = threading.Thread(target=sensors_to_db, args=(), daemon=True)
     thread.start()
 def start_thread2():
     print("**** Starting THREADlcd ****")
@@ -259,7 +265,7 @@ def start_thread2():
     thread2.start()
 def start_thread3():
     print("**** Starting THREADFSR ****")
-    thread3 = threading.Thread(target=fsr_thread,args=(),daemon=True)
+    thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
     thread3.start()
     
 
