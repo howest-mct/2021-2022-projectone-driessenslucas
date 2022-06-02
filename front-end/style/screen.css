@@ -728,6 +728,9 @@ a:focus {
 	.js-temp{
 		align-self: center;
 	}
+	.js-coffeegif{
+		width: 60%;
+	}
 }
 
 /*
