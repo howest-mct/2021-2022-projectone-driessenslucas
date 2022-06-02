@@ -15,6 +15,7 @@ from repositories.DataRepository import DataRepository
 from selenium import webdriver
 
 endpoint = '/api/v1'
+wls_deviceID = 1
 
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
@@ -34,7 +35,6 @@ def error_handler(e):
     print(e)
 
 
-intterupt_make_coffee = Event()
 # Code voor Hardware
 import time
 import smbus
@@ -62,6 +62,7 @@ GPIO.setup(relais_make_coffee_pin, GPIO.OUT)
 
 def make_coffee():
     print('turning on coffee machine')
+    socketio.emit('B2F_coffee', {'coffee_status': 1},broadcast=True)
     GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
     time.sleep(1)
     print('coffee wordt gemaakt')
@@ -73,37 +74,7 @@ def make_coffee():
     print('coffee is klaar')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
     GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
-
-
-def tmp(write_to_db):
-        #print(f"tmp{write_to_db}")
-        spi = spi_class(0,0)
-        hz = 10 ** 5
-        data = spi.read_channel(hz,0)
-        volt = data/1023.0 *3.3
-        temp = (100 * volt) - 50
-        status = 1
-        if write_to_db:
-            data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
-            if data != 0:
-                print('gelukt temperatuur wegschrijven')
-        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)},broadcast=True)
-        return round(temp,0)
-    
-
-def fsr(write_to_db):
-    #tijdelijke code tot defitge weight sensor
-    #print(f"fsr{write_to_db}")
-    GPIO.setup(20, GPIO.IN)
-    fsrval = GPIO.input(20)
-    commentaar = "fsr uitlezen"
-    if fsrval is not None and write_to_db:
-            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
-            if data != 0:
-                print('gelukt wegschrijven fsr')    
-    socketio.emit('B2F_coffepot', {'coffepot_status': fsrval},broadcast=True)
-    return fsrval
-    
+    socketio.emit('B2F_coffee', {'coffee_status': 0},broadcast=True)
 
 def write_lcd():
     lcd.reset_lcd()
@@ -124,7 +95,6 @@ def write_lcd():
         lcd.write_line(f"waterlevel: {wls(False)}%   ")
         time.sleep(2)
 
-
 def check_water_level():
     touch_val = 0
     low_data =  i2c.read_i2c_block_data(0x77, 0x01, 8)
@@ -141,6 +111,34 @@ def check_water_level():
     value = touch_val * 5
     return value
 
+def tmp(write_to_db):
+        #print(f"tmp{write_to_db}")
+        spi = spi_class(0,0)
+        hz = 10 ** 5
+        data = spi.read_channel(hz,0)
+        volt = data/1023.0 *3.3
+        temp = (100 * volt) - 50
+        status = 1
+        if write_to_db:
+            data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
+            if data != 0:
+                print('gelukt temperatuur wegschrijven')
+        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)},broadcast=True)
+        return round(temp,0)
+    
+def fsr(write_to_db):
+    #tijdelijke code tot defitge weight sensor
+    #print(f"fsr{write_to_db}")
+    GPIO.setup(20, GPIO.IN)
+    fsrval = GPIO.input(20)
+    commentaar = "fsr uitlezen"
+    if fsrval is not None and write_to_db:
+            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
+            if data != 0:
+                print('gelukt wegschrijven fsr')    
+    socketio.emit('B2F_coffepot', {'coffepot_status': fsrval},broadcast=True)
+    return fsrval
+    
 def wls(write_to_db):
         #print(f"wls{write_to_db}")
         percent = check_water_level()
@@ -201,31 +199,29 @@ def get_status():
             return jsonify(message="foutive status"),400
 
 
-
-
+#socketio
     
-
-@socketio.on('F2B_makecoffee')
-def turn_on():
-    emit('B2F_makecoffee', {'coffepot_status': 1},broadcast=True)
-    thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
-    thread4.start()
-    thread4.join()
-    emit('B2F_makecoffee', {'coffepot_status': 0},broadcast=True)
-    
-
-
 
 @socketio.on('connect')
 def initial_connection():
     print('A new client connect')
     # # Send to the client!
-    data = DataRepository.get_latest_value(1)
+    data = DataRepository.get_latest_value(wls_deviceID)
     if data['Waarde']:
         percentage = data['Waarde']
     else:
         percentage = 0
     emit('B2F_connected', {'current_waterlevel': percentage},broadcast=True)
+
+@socketio.on('F2B_makecoffee')
+def turn_on():
+    thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
+    thread4.start()
+    thread4.join()
+
+
+
+#threads
 
 def sensors_to_db():
     while True:
@@ -309,7 +305,7 @@ def start_chrome_thread():
 
 # ANDERE FUNCTIES
 # GPIO.add_event_detect(stop_btn,GPIO.RISING,callback=Coffee_stop,bouncetime = 300)
-thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
+
 
 if __name__ == '__main__':
     try:

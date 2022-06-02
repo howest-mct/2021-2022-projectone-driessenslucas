@@ -10,14 +10,13 @@ let currentProgress = 0; // in milliliter
 // !!
 const lanIP = `${window.location.hostname}:5000`; //!!! PAS DIT AAN ZODAT DIT dynamisch wordt !!!
 // !!
+
 const socketio = io(lanIP);
 //#endregion
 
 //#region ***  Callback-Visualisation - show___         ***********
 const showMakeCoffee = function (data) {
-	console.log(data)
 	if(data == 1){
-		
 		document.querySelector('.js-coffeegif').classList.remove("c-hidden");
 		var seconds=120;
 		var timer;
@@ -27,6 +26,8 @@ const showMakeCoffee = function (data) {
 		}
 		if (seconds >0 ) {
 			seconds--;
+		}else if (seconds == 0){
+			showMakeCoffee(0)
 		}
 		}
 		if(!timer) {
@@ -98,9 +99,6 @@ const checkbtn = function () {
 
 	}
 }
-
-
-
 //#endregion
 
 //#region ***  Data Access - get___                     ***********
@@ -132,14 +130,15 @@ const listenToSocket = function () {
 		updateView(data.current_waterlevel);
 	});
 	socketio.on('B2F_coffepot', function (data) {
+		//console.log(data)
 		updateCoffeePot(data.coffepot_status)
 	});
 	socketio.on('B2F_tmp', function (data) {
 		updateTmp(data.current_tmp)
 	});
-	socketio.on('B2F_makecoffee', function (data) {
+	socketio.on('B2F_coffee', function (data) {
 		console.log(data)
-		showMakeCoffee(data.coffepot_status)
+		showMakeCoffee(data.coffee_status)
 	});
 };
 
@@ -152,8 +151,6 @@ const init = function () {
 	console.log('dom loaded')
 	htmlWave = document.querySelector('.js-waves');
 	htmlPercentage = document.querySelector('.js-percentage');
-	
-	listenToUI();
 	listenToSocket();
 	listenToBtn();
 	checkbtn();
