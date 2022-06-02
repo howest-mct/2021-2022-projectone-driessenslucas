@@ -450,11 +450,165 @@ a:focus {
   #COMPONENTS
 \*------------------------------------*/
 
+.c-legende{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+/*
+    Component: mobile nav
+    ---
+    Dedicated mobile nav component
+*/
+
+.c-mobile-nav {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 100vh;
+	pointer-events: none;
+}
+
+.has-mobile-nav .c-mobile-nav {
+	pointer-events: auto;
+}
+
+.c-mobile-nav__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16px;
+}
+
+.c-mobile-nav__bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: #202024;
+	opacity: 0;
+	transition: opacity 0.25s ease;
+}
+
+.has-mobile-nav .c-mobile-nav__bg {
+	opacity: 0.5;
+}
+
+.c-mobile-nav__body {
+	position: relative;
+	padding: 24px;
+	height: 100vh;
+	width: 100vw;
+	background-color: #fff;
+	transform: translateX(-100%);
+	transition: transform 0.25s ease;
+}
+
+.has-mobile-nav .c-mobile-nav__body {
+	transform: translateX(0);
+}
+
+.c-page {
+	position: relative;
+	will-change: transform;
+	transition: transform 0.25 ease;
+}
+
+.has-mobile-nav .c-page {
+	transform: translateX(25%);
+}
+
+@media (min-width: 768px) {
+	.c-mobile-nav__body {
+		padding: 48px;
+	}
+}
+
+@media (min-width: 992px) {
+	/* Hide the mobile nav on larger viewports even whent it's open on smaller screens */
+	.c-mobile-nav {
+		display: none !important;
+	}
+}
+
+/*
+    Component: Logo
+    ---
+    Website main logo
+*/
+
+.c-logo {
+	height: 32px;
+	display: flex;
+	align-items: center;
+}
+
+.c-logo__symbol {
+	height: 100%;
+}
+
+@media (min-width: 768px) {
+	.c-logo {
+		height: 40px;
+	}
+}
+
+/*
+    Component: header
+    ---
+    Main header of the website
+*/
+
+.c-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.c-header__nav {
+	display: none;
+}
+
+@media (min-width: 992px) {
+	.c-header__nav {
+		display: block;
+	}
+	.c-header__nav {
+		display: block;
+	}
+
+	.c-header__nav--main {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		margin-top: 12px;
+	}
+
+	.c-header__mobile-nav-trigger {
+		display: none;
+	}
+}
+
+
+/*m*/
+.mobile-navigation{
+	display: none;
+}
+
+.clocldiv{
+	text-align: center;
+}
+
 .c-grid{
 
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 60px 80px 200px 200px;
+	grid-template-rows: 60px 125px 280px 150px;
 	grid-template-areas: 
 			"header header"
 			"detected temp"
@@ -465,12 +619,12 @@ a:focus {
 @media (min-width: 1024px) {
 	.c-grid{
 		display: grid;
-		grid-template-columns: 80px 1fr 1fr 80px;
+		grid-template-columns: 80px 1fr 80px;
 		grid-template-rows: 80px 80px 500px;
 		grid-template-areas: 
-		"header header header header"
-		"detected niets niets temp"
-		"niet btn wls neit";
+		"header header header"
+		"detected niets temp"
+		"niet btn wls";
 	}
 }
 .o-row--header{
@@ -482,35 +636,49 @@ a:focus {
 }
 .js-tmp{
 	grid-area: temp;
-	align-self: center;
-	
 }
-.js-temp{
-	text-align: center;
+.js-tmp{
+	text-align: end;
+	padding-right: 12px;
 }
 .o-coffeebtn{
 	grid-area: btn;
 	align-self: center;
 	margin: 0 auto;
 }
+.js-clear-amount-today{
+	margin: 0 auto;
+	display: flex;
+	padding: 10px;
+	border-radius: 20px;
+}
 .js-CoffePot{
 	align-self: center;
 	margin: 0 auto;
-	width: 50%;
 	grid-area: btn;
+	height: auto;
+	width: auto;
 }
 .c-waterlevel{
 	align-self: center;
 	margin: 0 auto;
 	grid-area: wls;
 }
-
+.js-coffeegif{
+	grid-area: btn;
+	align-self: center;
+	margin: 0 auto;
+	width: 60%;
+  /*position: relative;
+  //position: fixed;*/
+	z-index: 0;
+}
 
 .c-button {
 	height: 46px;
 	width: 135px;
 	padding-top: 10px;
-	background-color: #006aff;
+	background-color: #6f4e37;
 	color: white;
 	border-radius: 6px;
 	text-align: center;
@@ -556,6 +724,9 @@ a:focus {
 		color: #006aff;
 
 		text-align: center;
+	}
+	.js-temp{
+		align-self: center;
 	}
 }
 
@@ -620,13 +791,13 @@ a:focus {
 */
 .navbar {
 	overflow: hidden;
-	background-color: #333;
+	background-color: #ede2db;
   }
   
   .navbar a {
 	float: left;
 	font-size: 16px;
-	color: white;
+	color: #36261b;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
@@ -641,15 +812,17 @@ a:focus {
 	font-size: 16px;  
 	border: none;
 	outline: none;
-	color: white;
+	color: #3c2a1d;
 	padding: 14px 16px;
 	background-color: inherit;
 	font-family: inherit;
 	margin: 0;
+	height: 52px;
   }
   
   .navbar a:hover, .dropdown:hover .dropbtn {
-	background-color: red;
+	background-color: #3c2a1d;
+	color: #faf8f6
   }
   
   .dropdown-content {
@@ -1181,7 +1354,7 @@ a:focus {
 body,
 html {
 	font: 16px/1.5 Oswald, sans-serif;
-	background: lightblue;
+	background-color: #ccae9a;
 	-webkit-font-smoothing: antialiased;
 
 }
@@ -1203,7 +1376,7 @@ html {
 	border: none;
 	border-radius: 100px;
 	outline: none;
-	background: #b71540;
+	background: #3c2a1d;
 	color: white; 
 	cursor: pointer;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
@@ -1247,8 +1420,8 @@ html {
 	margin-left: auto;
 	margin-right: auto;
 	color: #fafafa;
-	background: #205d8c;
-	background: linear-gradient(180deg, #205d8c 0, #002949);
+	background: #d7c0af;
+	background: linear-gradient(180deg, #d7c0af, #2b1e15);
 	box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
 }
 .c-water-amounts {
@@ -1281,7 +1454,7 @@ html {
 }
 .c-percentage__current {
 	margin: 0;
-	font-size: 32px;
+	font-size: 26px;
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
 	color: white;
@@ -1320,7 +1493,7 @@ html {
 	left: 0;
 	height: 100%;
 	width: 100%;
-	background: #1990c7;
+	background: #3c2a1d;
 	will-change: transform;
 	-webkit-transform: translateY(50%);
 	transform: translateY(50%);
@@ -1334,14 +1507,14 @@ html {
 }
 .c-water__wave--back {
 	right: 0;
-	fill: #082e3f;
+	fill: #100b08;
 	-webkit-animation: wave-back 1.6s linear infinite;
 	animation: wave-back 1.6s linear infinite;
 }
 .c-water__wave--front {
 	left: 0;
 	margin-bottom: -1px;
-	fill: #1990c7;
+	fill:#3c2a1d;
 	-webkit-animation: wave-front 1.1s linear infinite;
 	animation: wave-front 1.1s linear infinite;
 }
@@ -1369,15 +1542,32 @@ h2 {
 }
 
 .c-dashboard {
-	max-width: 960px;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-right: 24px;
+
 }
 
+.c-dashboard > h1{
+	text-align: center;
+	margin-top: 0;
+	margin-bottom: 1rem;
+}
+
+@media (min-width: 768px){
+	.c-dashboard{
+		padding-right: 24px;
+		padding-left: 24px;
+	}
+
+}
 .c-table {
 	border: 1px solid #ddd;
 	border-radius: 4px;
+	margin: 0 auto;
+	align-self: center;
 }
 
 .c-row {
@@ -1401,6 +1591,10 @@ h2 {
 	padding: 1rem;
 	font-family: sans-serif;
 	font-variant-numeric: tabular-nums;
+	width: 80px;
+}
+.c-cell:nth-child(2){
+	width: 220px;
 }
 .c-row.is-header + .c-cell {
 	font-family: Oswald, sans-serif;
@@ -1412,7 +1606,6 @@ h2 {
 .c-waterlevel{
 	margin:0 auto; 	
 	max-width: 100px;
-	
 	-webkit-transform: rotate(90deg);
 	-moz-transform: rotate(90deg);
 	-o-transform: rotate(90deg);
@@ -1428,6 +1621,7 @@ h2 {
 }
 @media (min-width: 1024px) {
 	.c-waterlevel{
+		max-height: 700px;
 		-webkit-transform: rotate(0);
 		-moz-transform: rotate(0);
 		-o-transform: rotate(0);
@@ -1443,9 +1637,7 @@ h2 {
 	}
 	
 }
-.c-app{
-	min-height: 400px;
-}
+
 .c-hidden{
 	display: none;
 }

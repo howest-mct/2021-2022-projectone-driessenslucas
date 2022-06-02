@@ -1,10 +1,11 @@
 from ast import Pass
 import json
+from subprocess import check_output
 import time
-from wsgiref.simple_server import demo_app
 from RPi import GPIO
-from helpers.klasseknop import Button
+from h11 import Data
 import threading
+from threading import Event
 
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, send
@@ -14,10 +15,24 @@ from repositories.DataRepository import DataRepository
 from selenium import webdriver
 
 endpoint = '/api/v1'
+wls_deviceID = 1
 
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
 
+# Code voor Flask
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'geheim!'
+socketio = SocketIO(app, cors_allowed_origins="*", logger=False,
+                    engineio_logger=False, ping_timeout=1)
+
+CORS(app)
+
+
+@socketio.on_error()        # Handles the default namespace
+def error_handler(e):
+    print(e)
 
 
 # Code voor Hardware
@@ -29,6 +44,10 @@ from helpers.spi_class import spi_class
 
 NO_TOUCH = 0xFE
 max_val_wls = 100
+Coffee_machine_on = False
+relais_coffee_machine_pin = 21
+relais_make_coffee_pin = 23
+toggle_coffee_machine = False
 
 
 i2c = smbus.SMBus(1)
@@ -38,44 +57,35 @@ lcd = LCD()
 
 GPIO.setmode(GPIO.BCM)
 
+GPIO.setup(relais_coffee_machine_pin, GPIO.OUT)
+GPIO.setup(relais_make_coffee_pin, GPIO.OUT)
 
-
-def tmp(write_to_db):
-        spi = spi_class(0,0)
-        hz = 10 ** 5
-        data = spi.read_channel(hz,0)
-        volt = data/1023.0 *3.3
-        temp = (100 * volt) - 50
-        status = 1
-        if write_to_db == True:
-            data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
-            if data != 0:
-                print('gelukt temperatuur wegschrijven')
-        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)})
-        return round(temp,0)
-    
-
-def fsr(write_to_db):
-    #tijdelijke code tot defitge weight sensor
-    GPIO.setup(20, GPIO.IN)
-    fsrval = GPIO.input(20)
-    commentaar = "fsr uitlezen"
-    if fsrval is not None and write_to_db == True:
-            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
-            if data != 0:
-                print('gelukt wegschrijven fsr')    
-    socketio.emit('B2F_coffepot', {'coffepot_status': fsrval})
-    return fsrval
-    
+def make_coffee():
+    print('turning on coffee machine')
+    GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
+    time.sleep(1)
+    print('coffee wordt gemaakt')
+    DataRepository.create_log(1,4,6,1,"coffee machine aan")
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(10)
+    GPIO.output(23, GPIO.LOW)
+    DataRepository.create_log(0,4,6,0,"coffee machine uit")
+    print('coffee is klaar')
+    DataRepository.create_log(1,4,5,1,"coffee gemaakt")
+    GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
+    socketio.emit('B2F_coffee', {'coffee_status': 0})
 
 def write_lcd():
     lcd.reset_lcd()
     lcd.init_LCD()
     lcd.write_line("coffee machine  ")
+    ips = str(check_output(['hostname','--all-ip-addresses']))
+    ip_addr = ips.split(' ')
+    print(ip_addr[0][2:])
     
     while True:
         lcd.next_line()
-        lcd.write_line("192.168.168.169 ")
+        lcd.write_line(f"{ip_addr[0][2:]}   ")
         time.sleep(2)
         lcd.next_line()
         lcd.write_line(f"temp: {tmp(False)}C      ")
@@ -83,7 +93,6 @@ def write_lcd():
         lcd.next_line()
         lcd.write_line(f"waterlevel: {wls(False)}%   ")
         time.sleep(2)
-
 
 def check_water_level():
     touch_val = 0
@@ -101,43 +110,51 @@ def check_water_level():
     value = touch_val * 5
     return value
 
+def tmp(write_to_db):
+        #print(f"tmp{write_to_db}")
+        spi = spi_class(0,0)
+        hz = 10 ** 5
+        data = spi.read_channel(hz,0)
+        volt = data/1023.0 *3.3
+        temp = (100 * volt) - 50
+        status = 1
+        if write_to_db:
+            data = DataRepository.create_log(temp,2,1,status,"temperatuur ophalen")
+            if data != 0:
+                print('gelukt temperatuur wegschrijven')
+        socketio.emit('B2F_tmp', {'current_tmp': round(temp,0)},broadcast=True)
+        return round(temp,0)
+    
+def fsr(write_to_db):
+    #tijdelijke code tot defitge weight sensor
+    #print(f"fsr{write_to_db}")
+    GPIO.setup(20, GPIO.IN)
+    fsrval = GPIO.input(20)
+    commentaar = "fsr uitlezen"
+    if fsrval is not None and write_to_db:
+            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
+            if data != 0:
+                print('gelukt wegschrijven fsr')    
+    socketio.emit('B2F_coffepot', {'coffepot_status': fsrval},broadcast=True)
+    return fsrval
+    
 def wls(write_to_db):
+        #print(f"wls{write_to_db}")
         percent = check_water_level()
-        print(f"water level = {percent}%")
         status = 0
         if percent > 10 & percent < 98:
             status = 1
         else:
             status - 0
         commentaar = "water niveau ophalen"
-        if write_to_db == True:
+        if write_to_db:
             data = DataRepository.create_log(percent,1,2,status,commentaar)
             if data != 0:
                 print('gelukt waterlevel')
-        socketio.emit('B2F_waterlevel', {'current_waterlevel': percent})
-        fsr(True)
-        tmp(True)
+        socketio.emit('B2F_waterlevel', {'current_waterlevel': percent},broadcast=True)
+        
         return percent
         
-
-
-
-
-# Code voor Flask
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'geheim!'
-socketio = SocketIO(app, cors_allowed_origins="*", logger=False,
-                    engineio_logger=False, ping_timeout=1)
-
-CORS(app)
-
-
-@socketio.on_error()        # Handles the default namespace
-def error_handler(e):
-    print(e)
-
-
 
 # API ENDPOINTS
 
@@ -149,6 +166,7 @@ def hallo():
 @app.route(endpoint + '/historiek/', methods=['GET','DELETE'])
 def get_progress():
     if request.method == 'GET':
+        print('getting logs....')
         return jsonify(historiek=DataRepository.get_historiek()), 200
     elif request.method == 'DELETE':
         formmdata = DataRepository.json_or_formdata(request)
@@ -180,31 +198,42 @@ def get_status():
             return jsonify(message="foutive status"),400
 
 
-
-
+#socketio
+    
 
 @socketio.on('connect')
 def initial_connection():
     print('A new client connect')
     # # Send to the client!
-    # vraag de status op van de lampen uit de DB
-    data = DataRepository.get_latest_value(1)
+    data = DataRepository.get_latest_value(wls_deviceID)
     if data['Waarde']:
         percentage = data['Waarde']
     else:
         percentage = 0
-    emit('B2F_connected', {'current_waterlevel': percentage})
+    emit('B2F_connected', {'current_waterlevel': percentage},broadcast=True)
+
+@socketio.on('F2B_makecoffee')
+def turn_on():
+    print("turn_on")
+    socketio.emit('B2F_coffee', {'coffee_status': 1})
+    # time.sleep(0.001)
+    thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
+    thread4.start()
+    # thread4.join()
 
 
 
+#threads
 
-def wls_thread():
+def sensors_to_db():
     while True:
         try:
             wls(True)
-            time.sleep(20)
+            fsr(True)
+            tmp(True)
+            time.sleep(60)
         except:
-            pass
+            print("error wegschrijven naar db")
 
 def lcd_thread():
     try:
@@ -212,17 +241,22 @@ def lcd_thread():
     except:
         pass
 
-def fsr_thread():
+def sensors_to_frontend():
     while True:
-        fsr(False)
-        tmp(False)
-        time.sleep(1)
+        try:
+            fsr(False)
+            tmp(False)
+            wls(False)
+            time.sleep(1)
+        except:
+            print("error uitlezen sensors")
+
         
 
 
 def start_thread():
     print("**** Starting THREAD ****")
-    thread = threading.Thread(target=wls_thread, args=(), daemon=True)
+    thread = threading.Thread(target=sensors_to_db, args=(), daemon=True)
     thread.start()
 def start_thread2():
     print("**** Starting THREADlcd ****")
@@ -230,8 +264,9 @@ def start_thread2():
     thread2.start()
 def start_thread3():
     print("**** Starting THREADFSR ****")
-    thread3 = threading.Thread(target=fsr_thread,args=(),daemon=True)
+    thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
     thread3.start()
+    
 
 
 def start_chrome_kiosk():
@@ -271,10 +306,14 @@ def start_chrome_thread():
 
 
 # ANDERE FUNCTIES
+# GPIO.add_event_detect(stop_btn,GPIO.RISING,callback=Coffee_stop,bouncetime = 300)
 
 
 if __name__ == '__main__':
     try:
+        
+        GPIO.output(23, GPIO.LOW)
+        GPIO.output(21, GPIO.LOW)
         start_thread()
         start_thread2()
         start_thread3()

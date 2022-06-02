@@ -1,0 +1,8 @@
+<svg id="thermostat_black_24dp" xmlns="http://www.w3.org/2000/svg" width="20.636" height="20.636" viewBox="0 0 20.636 20.636">
+  <g id="Group_8" data-name="Group 8">
+    <path id="Path_6" data-name="Path 6" d="M0,0H20.636V20.636H0Z" fill="none"/>
+  </g>
+  <g id="Group_9" data-name="Group 9" transform="translate(6.019 1.72)">
+    <path id="Path_7" data-name="Path 7" d="M13.879,11.458V4.58a2.58,2.58,0,1,0-5.159,0v6.879a4.3,4.3,0,1,0,5.159,0Zm-3.439-1.72V4.58a.86.86,0,1,1,1.72,0v.86H11.3V6.3h.86v1.72H11.3v.86h.86v.86Z" transform="translate(-7 -2)"/>
+  </g>
+</svg>
