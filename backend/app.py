@@ -62,19 +62,18 @@ GPIO.setup(relais_make_coffee_pin, GPIO.OUT)
 
 def make_coffee():
     print('turning on coffee machine')
-    socketio.emit('B2F_coffee', {'coffee_status': 1},broadcast=True)
     GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
     time.sleep(1)
     print('coffee wordt gemaakt')
     DataRepository.create_log(1,4,6,1,"coffee machine aan")
     GPIO.output(23, GPIO.HIGH)
-    time.sleep(20)
+    time.sleep(10)
     GPIO.output(23, GPIO.LOW)
     DataRepository.create_log(0,4,6,0,"coffee machine uit")
     print('coffee is klaar')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
     GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
-    socketio.emit('B2F_coffee', {'coffee_status': 0},broadcast=True)
+    socketio.emit('B2F_coffee', {'coffee_status': 0})
 
 def write_lcd():
     lcd.reset_lcd()
@@ -215,9 +214,12 @@ def initial_connection():
 
 @socketio.on('F2B_makecoffee')
 def turn_on():
+    print("turn_on")
+    socketio.emit('B2F_coffee', {'coffee_status': 1})
+    # time.sleep(0.001)
     thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
     thread4.start()
-    thread4.join()
+    # thread4.join()
 
 
 

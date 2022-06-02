@@ -18,10 +18,10 @@ const socketio = io(lanIP);
 const showMakeCoffee = function (data) {
 	if(data == 1){
 		document.querySelector('.js-coffeegif').classList.remove("c-hidden");
-		var seconds=120;
+		var seconds=10;
 		var timer;
 		function myFunction() {
-		if(seconds < 120) { 
+		if(seconds < 10) { 
 			document.querySelector(".clockdiv").innerHTML = `time remaining: ${seconds} seconds`;
 		}
 		if (seconds >0 ) {
@@ -35,7 +35,7 @@ const showMakeCoffee = function (data) {
 			myFunction();
 			}, 1000); 
 		}
-		document.querySelector(".clockdiv").innerHTML= `time remaining: 120 seconds`; 
+		document.querySelector(".clockdiv").innerHTML= `time remaining: 10 seconds`; 
 	}
 	else{
 		
