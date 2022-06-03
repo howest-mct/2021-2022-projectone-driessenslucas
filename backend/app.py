@@ -71,10 +71,12 @@ def make_coffee():
     GPIO.output(23, GPIO.HIGH)
     time.sleep(10)#120 seconden na development
     GPIO.output(23, GPIO.LOW)
+    time.sleep(1)
     DataRepository.create_log(0,4,6,0,"coffee machine uit")
     print('coffee is klaar')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
     GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
+    time.sleep(1)
     socketio.emit('B2F_coffee', {'coffee_status': 0})
     
 
