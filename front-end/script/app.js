@@ -7,7 +7,10 @@ let htmlbrewButton,
 	htmlOnSwitch,
 	htmlWave,
 	htmlPercentage,
-	htmlWelcome;
+	htmlWelcome,
+	htmlFSRCheck,
+	htmlWLSCheck,
+	htmlStartbtn;
 let statusWLS = 0;
 let statusFSR = 0;
 
@@ -16,7 +19,6 @@ let isTurnedOn = 0;
 // !!
 const lanIP = `${window.location.hostname}:5000`; //!!! PAS DIT AAN ZODAT DIT dynamisch wordt !!!
 // !!
-
 const socketio = io(lanIP);
 //#endregion
 
@@ -77,17 +79,26 @@ const updateView = function (value) {
 //#endregion
 
 //#region ***  Data Access - get___                     ***********
-const getTurnOnValue = function () {
-	return isTurnedOn;
-};
 
 //checks if there is water and if there is a coffee pot
 const checkCoffeePrerequisites = function () {
-	if (getTurnOnValue() == 1) {
-		RemoveTurnOnMsg();
-		htmlBrewingPopUp.classlist.remove('c-hidden');
-		if ((statusFSR == 1) & (statusWLS == 1)) {
+	if (isTurnedOn == 1) {
+		//RemoveTurnOnMsg();
+		document.querySelector('.js-brewingpopup').classList.remove('c-hidden');
+
+		console.log(statusWLS);
+		if (statusWLS == 1) {
+			htmlWLSCheck.checked = true;
+		} else if (statusWLS == 0) {
+			htmlWLSCheck.checked = false;
 		}
+		if (statusFSR == 1) {
+			htmlFSRCheck.checked = true;
+			console.log(statusFSR);
+		} else if (statusFSR == 0) {
+			htmlFSRCheck.checked = false;
+		}
+		listenToStart();
 	} else {
 		document.querySelector(
 			'.js-turnonspan'
@@ -114,6 +125,11 @@ const checkWelcomeMsg = function () {
 //#endregion
 
 //#region ***  Event Listeners - listenTo___            ***********
+const listenToStart = function () {
+	htmlStartbtn.addEventListener('click', function () {
+		socketio.emit('F2B_brew');
+	});
+};
 const listenToUI = function () {
 	// starts the brewing process
 	htmlbrewButton.addEventListener('click', function () {
@@ -123,7 +139,6 @@ const listenToUI = function () {
 	htmlOnSwitch.addEventListener('change', function () {
 		if (this.checked) {
 			isTurnedOn = 1;
-			RemoveTurnOnMsg();
 		} else {
 			isTurnedOn = 0;
 		}
@@ -137,17 +152,18 @@ const listenToSocket = function () {
 
 	socketio.on('B2F_WLS', function (data) {
 		//console.log(data)
+		statusWLS = data.current_waterlevel;
 		updateView(data.current_waterlevel);
 	});
 	socketio.on('B2F_coffepot', function (data) {
 		//console.log(data)
-		updateCoffeePot(data.coffepot_status);
+		statusFSR = data.coffepot_status;
 	});
 	socketio.on('B2F_temp', function (data) {
 		updateTemp(data.current_temp);
 	});
 	socketio.on('B2F_brewingStatus', function (data) {
-		console.log(data);
+		console.log(data.coffepot_status);
 	});
 };
 
@@ -162,9 +178,12 @@ const init = function () {
 	htmlbrewButton = document.querySelector('.js-brewbtn');
 	htmlOnSwitch = document.querySelector('.js-onswitch');
 	htmlBrewingPopUp = document.querySelector('.js-brewingpopup');
+	htmlWLSCheck = document.querySelector('.js-wlscheck');
+	htmlFSRCheck = document.querySelector('.js-fsrcheck');
+	htmlStartbtn = document.querySelector('.js-startbtn');
 	listenToSocket();
 	listenToUI();
 	checkWelcomeMsg();
 };
 document.addEventListener('DOMContentLoaded', init);
-//#endregion
+//#endregio

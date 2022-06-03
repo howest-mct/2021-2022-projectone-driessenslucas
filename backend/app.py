@@ -63,6 +63,7 @@ GPIO.setup(relais_coffee_machine_pin, GPIO.OUT)
 GPIO.setup(relais_make_coffee_pin, GPIO.OUT)
 
 def make_coffee():
+    #aanpassen zodat we coffeemachine apart kunnen aanzetten
     print('turning on coffee machine')
     GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
     time.sleep(1)
@@ -132,8 +133,8 @@ def tmp(write_to_db):
 def fsr(write_to_db):
     #tijdelijke code tot defitge weight sensor
     #print(f"fsr{write_to_db}")
-    GPIO.setup(20, GPIO.IN)
-    fsrval = GPIO.input(20)
+    GPIO.setup(16, GPIO.IN)
+    fsrval = GPIO.input(16)
     commentaar = "read coffee pot weight"
     if fsrval is not None and write_to_db:
             data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
@@ -210,7 +211,7 @@ def initial_connection():
 @socketio.on('F2B_brew')
 def turn_on():
     print("turn_on")
-    socketio.emit('B2F_coffee', {'coffee_status': 1})
+    socketio.emit('B2F_brewingStatus', {'coffee_status': 1})
     thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
     thread4.start()
     
@@ -221,12 +222,13 @@ def turn_on():
 def sensors_to_db():
     while True:
         try:
-            wls(True)
-            fsr(True)
-            tmp(True)
+            # wls(True)
+            # fsr(True)
+            # tmp(True)
             time.sleep(60)
         except:
-            print("error while writing to db")
+            pass
+            # print("error while writing to db")
 
 def lcd_thread():
     try:
@@ -242,7 +244,8 @@ def sensors_to_frontend():
             wls(False)
             time.sleep(1)
         except:
-            print("error uitlezen sensors")
+            #print("error uitlezen sensors")\
+            pass
 
         
 
