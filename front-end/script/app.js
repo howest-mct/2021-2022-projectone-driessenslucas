@@ -2,7 +2,12 @@
 
 //#region ***  DOM references                           ***********
 
-let htmlAddButton, htmlWave, htmlPercentage, htmlWelcome;
+let htmlbrewButton,
+	htmlBrewingPopUp,
+	htmlOnSwitch,
+	htmlWave,
+	htmlPercentage,
+	htmlWelcome;
 let statusWLS = 0;
 let statusFSR = 0;
 
@@ -15,9 +20,15 @@ const socketio = io(lanIP);
 //#endregion
 
 //#region ***  Callback-Visualisation - show___         ***********
+const showTurnOnMsg = function () {
+	//htmlBrewingPopUp.classlist.add('c-hidden');
+	document.querySelector(
+		'.c-welcome'
+	).innerHTML = `<span> Please turn on the coffee machine </span>`;
+};
+
 const showMakeCoffee = function (data) {
 	if (data == 1) {
-		document.querySelector('.js-coffeegif').classList.remove('c-hidden');
 		var seconds = 10; //120 seconden na development
 		var timer;
 		function myFunction() {
@@ -42,16 +53,12 @@ const showMakeCoffee = function (data) {
 	}
 };
 
-const updateTmp = function (value) {
+const updateTemp = function (value) {
 	document.querySelector('.js-temp').innerHTML = `temp: ${value}`;
 };
 
 const backToIndex = function () {
-	window.location.href = './waterlevel.html';
-};
-
-const updateCoffeePot = function (data) {
-	statusFSR = data;
+	window.location.href = './index.html';
 };
 
 const updateView = function (value) {
@@ -70,32 +77,47 @@ const updateView = function (value) {
 //#endregion
 
 //#region ***  Data Access - get___                     ***********
+//checks if there is water and if there is a coffee pot
+const checkCoffeePrerequisites = function () {
+	if (htmlOnSwitch.value == 1) {
+		htmlBrewingPopUp.classlist.remove('c-hidden');
+		if ((statusFSR == 1) & (statusWLS == 1)) {
+		}
+	} else {
+		showTurnOnMsg();
+	}
+};
+
 const checkWelcomeMsg = function () {
 	var today = new Date();
 	var hour = today.getHours();
 
 	if (hour < 12) {
-		document.querySelector('.js-welcome').innerHTML = 'Good morning';
+		htmlWelcome.innerHTML = 'Good morning';
 	} else if (hour < 18) {
-		document.querySelector('.js-welcome').innerHTML = 'Good afternoon';
+		htmlWelcome.innerHTML = 'Good afternoon';
 	} else {
-		document.querySelector('.js-welcome').innerHTML = 'Good evening';
+		htmlWelcome.innerHTML = 'Good evening';
 	}
 };
 
 //#endregion
 
 //#region ***  Event Listeners - listenTo___            ***********
+const listenToUI = function () {
+	// starts the brewing process
+	htmlbrewButton.addEventListener('click', function () {
+		console.log('brewing process started');
+		checkCoffeePrerequisites();
+	});
+};
 
 const listenToSocket = function () {
 	socketio.on('connect', function () {
 		console.log('verbonden met socket webserver');
 	});
-	socketio.on('B2F_connected', function (data) {
-		//console.log(data)
-		updateView(data.current_waterlevel);
-	});
-	socketio.on('B2F_waterlevel', function (data) {
+
+	socketio.on('B2F_WLS', function (data) {
 		//console.log(data)
 		updateView(data.current_waterlevel);
 	});
@@ -103,12 +125,11 @@ const listenToSocket = function () {
 		//console.log(data)
 		updateCoffeePot(data.coffepot_status);
 	});
-	socketio.on('B2F_tmp', function (data) {
-		updateTmp(data.current_tmp);
+	socketio.on('B2F_temp', function (data) {
+		updateTemp(data.current_temp);
 	});
-	socketio.on('B2F_coffee', function (data) {
+	socketio.on('B2F_brewingStatus', function (data) {
 		console.log(data);
-		showMakeCoffee(data.coffee_status);
 	});
 };
 
@@ -120,7 +141,11 @@ const init = function () {
 	htmlWelcome = document.querySelector('.js-welcome');
 	htmlWave = document.querySelector('.js-waves');
 	htmlPercentage = document.querySelector('.js-percentage');
+	htmlbrewButton = document.querySelector('.js-brewbtn');
+	htmlOnSwitch = document.querySelector('.js-onswitch');
+	htmlBrewingPopUp = document.querySelector('.js-brewingpopup');
 	listenToSocket();
+	listenToUI();
 	checkWelcomeMsg();
 };
 document.addEventListener('DOMContentLoaded', init);

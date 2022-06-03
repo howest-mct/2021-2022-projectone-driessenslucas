@@ -165,6 +165,10 @@ a:focus {
 	color: #3e3ea8;
 }
 
+span {
+	color: red;
+}
+
 /*------------------------------------*\
   #OBJECTS
 \*------------------------------------*/
@@ -408,7 +412,7 @@ a:focus {
 	padding-right: 44px;
 }
 
-.toggle {
+.js-onswitch {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
@@ -425,7 +429,7 @@ a:focus {
 	transition: background-color ease 0.3s;
 }
 
-.toggle:before {
+.js-onswitch:before {
 	content: 'on off';
 	display: block;
 	position: absolute;
@@ -448,11 +452,11 @@ a:focus {
 	transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
 }
 
-.toggle:checked {
+.js-onswitch:checked {
 	background-color: #eb7944;
 }
 
-.toggle:checked:before {
+.js-onswitch:checked:before {
 	left: 24.6px;
 	text-indent: -20px;
 }
@@ -554,6 +558,18 @@ a:focus {
 */
 .c-brew-coffee {
 	align-self: flex-end;
+}
+.js-startbtn {
+	width: 230px;
+	height: 75px;
+	padding-left: 70px;
+	padding-right: 70px;
+	padding-top: 16px;
+	padding-bottom: 25px;
+	border-radius: 8px;
+	background-color: #eb7944;
+	border-color: #eb7944;
+	text-align: center;
 }
 .js-brewbtn {
 	width: 230px;
