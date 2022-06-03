@@ -25,6 +25,12 @@ const showTurnOnMsg = function () {
 	document.querySelector(
 		'.c-welcome'
 	).innerHTML = `<span> Please turn on the coffee machine </span>`;
+	if(getTurnOnValue() == 1){
+		document.querySelector(
+			'.c-welcome'
+		).innerHTML = `<h1 clas>`;
+		checkCoffeePrerequisites();
+	};
 };
 
 const showMakeCoffee = function (data) {
