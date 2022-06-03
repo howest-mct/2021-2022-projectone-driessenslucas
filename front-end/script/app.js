@@ -24,9 +24,22 @@ const socketio = io(lanIP);
 
 //#region ***  Callback-Visualisation - show___         ***********
 
+const updatePrerequisites = function () {
+	if (statusWLS == 1) {
+		htmlWLSCheck.checked = true;
+	} else if (statusWLS == 0) {
+		htmlWLSCheck.checked = false;
+	}
+	if (statusFSR == 1) {
+		htmlFSRCheck.checked = true;
+	} else if (statusFSR == 0) {
+		htmlFSRCheck.checked = false;
+	}
+};
+
 const RemoveTurnOnMsg = function () {
 	document.querySelector('.js-turnonspan').innerHTML = '';
-	checkCoffeePrerequisites();
+	updatePrerequisites();
 };
 
 const showMakeCoffee = function (data) {
@@ -85,16 +98,6 @@ const checkCoffeePrerequisites = function () {
 	if (isTurnedOn == 1) {
 		//RemoveTurnOnMsg();
 		document.querySelector('.js-brewingpopup').classList.remove('c-hidden');
-		if (statusWLS == 1) {
-			htmlWLSCheck.checked = true;
-		} else if (statusWLS == 0) {
-			htmlWLSCheck.checked = false;
-		}
-		if (statusFSR == 1) {
-			htmlFSRCheck.checked = true;
-		} else if (statusFSR == 0) {
-			htmlFSRCheck.checked = false;
-		}
 	} else {
 		document.querySelector(
 			'.js-turnonspan'
@@ -152,12 +155,13 @@ const listenToSocket = function () {
 	socketio.on('B2F_WLS', function (data) {
 		//console.log(data)
 		statusWLS = data.current_waterlevel;
+		updatePrerequisites();
 		updateView(data.current_waterlevel);
 	});
 	socketio.on('B2F_coffepot', function (data) {
 		//console.log(data)
 		statusFSR = data.coffepot_status;
-		checkCoffeePrerequisites();
+		updatePrerequisites();
 	});
 	socketio.on('B2F_temp', function (data) {
 		updateTemp(data.current_temp);
