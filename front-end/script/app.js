@@ -85,8 +85,6 @@ const checkCoffeePrerequisites = function () {
 	if (isTurnedOn == 1) {
 		//RemoveTurnOnMsg();
 		document.querySelector('.js-brewingpopup').classList.remove('c-hidden');
-
-		console.log(statusWLS);
 		if (statusWLS == 1) {
 			htmlWLSCheck.checked = true;
 		} else if (statusWLS == 0) {
@@ -94,11 +92,9 @@ const checkCoffeePrerequisites = function () {
 		}
 		if (statusFSR == 1) {
 			htmlFSRCheck.checked = true;
-			console.log(statusFSR);
 		} else if (statusFSR == 0) {
 			htmlFSRCheck.checked = false;
 		}
-		listenToStart();
 	} else {
 		document.querySelector(
 			'.js-turnonspan'
@@ -139,8 +135,11 @@ const listenToUI = function () {
 	htmlOnSwitch.addEventListener('change', function () {
 		if (this.checked) {
 			isTurnedOn = 1;
+			RemoveTurnOnMsg();
+			socketio.emit('F2B_turn_on');
 		} else {
 			isTurnedOn = 0;
+			socketio.emit('F2B_turn_off');
 		}
 	});
 };
@@ -158,12 +157,13 @@ const listenToSocket = function () {
 	socketio.on('B2F_coffepot', function (data) {
 		//console.log(data)
 		statusFSR = data.coffepot_status;
+		checkCoffeePrerequisites();
 	});
 	socketio.on('B2F_temp', function (data) {
 		updateTemp(data.current_temp);
 	});
 	socketio.on('B2F_brewingStatus', function (data) {
-		console.log(data.coffepot_status);
+		console.log(data.coffe_status);
 	});
 };
 
@@ -184,6 +184,7 @@ const init = function () {
 	listenToSocket();
 	listenToUI();
 	checkWelcomeMsg();
+	listenToStart();
 };
 document.addEventListener('DOMContentLoaded', init);
 //#endregio

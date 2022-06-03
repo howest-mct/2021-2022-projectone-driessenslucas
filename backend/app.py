@@ -59,25 +59,32 @@ lcd = LCD()
 
 GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(relais_coffee_machine_pin, GPIO.OUT)
-GPIO.setup(relais_make_coffee_pin, GPIO.OUT)
+GPIO.setup(23, GPIO.OUT)
+GPIO.setup(24, GPIO.OUT)
+
+def turn_on_coffee_machine():
+    time.sleep(1)
+    print('turning on coffee machine')
+    DataRepository.create_log(1,4,6,1,"coffee machine aan")
+    GPIO.output(23, GPIO.LOW)
+    time.sleep(1)
+
+def turn_off_coffee_machine():
+    time.sleep(1)
+    print('turning off coffee machine')
+    DataRepository.create_log(1,4,6,0,"coffee machine uit")
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(1)
 
 def make_coffee():
     #aanpassen zodat we coffeemachine apart kunnen aanzetten
-    print('turning on coffee machine')
-    GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
-    time.sleep(1)
     print('brewing coffee')
-    DataRepository.create_log(1,4,6,1,"coffee machine aan")
-    GPIO.output(23, GPIO.HIGH)
+    GPIO.output(24, GPIO.LOW)
     time.sleep(10)#120 seconden na development
-    GPIO.output(23, GPIO.LOW)
+    GPIO.output(24, GPIO.HIGH)
     time.sleep(1)
-    DataRepository.create_log(0,4,6,0,"coffee machine uit")
     print('coffee is done')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
-    GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
-    time.sleep(1)
     socketio.emit('B2F_brewingStatus', {'coffee_status': 0})
     
 
@@ -209,12 +216,21 @@ def initial_connection():
     print('A new client connect')
 
 @socketio.on('F2B_brew')
-def turn_on():
-    print("turn_on")
+def brew():
+    print('brew')
     socketio.emit('B2F_brewingStatus', {'coffee_status': 1})
     thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
     thread4.start()
     
+@socketio.on('F2B_turn_on')
+def turn_on():
+    print('turn on')
+    turn_on_coffee_machine()
+
+@socketio.on('F2B_turn_off')
+def turn_off():
+    print('turn off')
+    turn_off_coffee_machine()
 
 
 #threads
@@ -222,9 +238,9 @@ def turn_on():
 def sensors_to_db():
     while True:
         try:
-            # wls(True)
-            # fsr(True)
-            # tmp(True)
+            wls(True)
+            fsr(True)
+            tmp(True)
             time.sleep(60)
         except:
             pass
@@ -307,9 +323,8 @@ def start_chrome_thread():
 
 if __name__ == '__main__':
     try:
-        
-        GPIO.output(23, GPIO.LOW)
-        GPIO.output(24, GPIO.LOW)
+        GPIO.output(23, GPIO.HIGH)
+        GPIO.output(24, GPIO.HIGH)
         start_thread()
         start_thread2()
         start_thread3()
