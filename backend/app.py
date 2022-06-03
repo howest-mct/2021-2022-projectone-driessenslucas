@@ -208,7 +208,7 @@ def get_status():
 @socketio.on('connect')
 def initial_connection():
     print('A new client connect')
-    # # Send to the client!
+    # Send to the client!
     data = DataRepository.get_latest_value(wls_deviceID)
     if data['Waarde']:
         percentage = data['Waarde']
@@ -315,11 +315,10 @@ if __name__ == '__main__':
     try:
         
         GPIO.output(23, GPIO.LOW)
-        GPIO.output(21, GPIO.LOW)
+        GPIO.output(24, GPIO.LOW)
         start_thread()
         start_thread2()
         start_thread3()
-        # start_thread()
         start_chrome_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')
