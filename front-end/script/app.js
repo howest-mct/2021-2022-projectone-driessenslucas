@@ -12,6 +12,7 @@ let statusWLS = 0;
 let statusFSR = 0;
 
 let currentProgress = 0; // in milliliter
+let isTurnedOn = 0;
 // !!
 const lanIP = `${window.location.hostname}:5000`; //!!! PAS DIT AAN ZODAT DIT dynamisch wordt !!!
 // !!
@@ -20,17 +21,10 @@ const socketio = io(lanIP);
 //#endregion
 
 //#region ***  Callback-Visualisation - show___         ***********
-const showTurnOnMsg = function () {
-	//htmlBrewingPopUp.classlist.add('c-hidden');
-	document.querySelector(
-		'.c-welcome'
-	).innerHTML = `<span> Please turn on the coffee machine </span>`;
-	if(getTurnOnValue() == 1){
-		document.querySelector(
-			'.c-welcome'
-		).innerHTML = `<h1 clas>`;
-		checkCoffeePrerequisites();
-	};
+
+const RemoveTurnOnMsg = function () {
+	document.querySelector('.js-turnonspan').innerHTML = '';
+	checkCoffeePrerequisites();
 };
 
 const showMakeCoffee = function (data) {
@@ -83,14 +77,21 @@ const updateView = function (value) {
 //#endregion
 
 //#region ***  Data Access - get___                     ***********
+const getTurnOnValue = function () {
+	return isTurnedOn;
+};
+
 //checks if there is water and if there is a coffee pot
 const checkCoffeePrerequisites = function () {
-	if (htmlOnSwitch.value == 1) {
+	if (getTurnOnValue() == 1) {
+		RemoveTurnOnMsg();
 		htmlBrewingPopUp.classlist.remove('c-hidden');
 		if ((statusFSR == 1) & (statusWLS == 1)) {
 		}
 	} else {
-		showTurnOnMsg();
+		document.querySelector(
+			'.js-turnonspan'
+		).innerHTML = `<span> Please turn on the coffee machine </span>`;
 	}
 };
 
@@ -99,11 +100,14 @@ const checkWelcomeMsg = function () {
 	var hour = today.getHours();
 
 	if (hour < 12) {
-		htmlWelcome.innerHTML = 'Good morning';
+		htmlWelcome.innerHTML = `Good morning`;
+		console.log('good morning');
 	} else if (hour < 18) {
-		htmlWelcome.innerHTML = 'Good afternoon';
+		htmlWelcome.innerHTML = `Good afternoon`;
+		console.log('good afternoon');
 	} else {
-		htmlWelcome.innerHTML = 'Good evening';
+		htmlWelcome.innerHTML = `Good evening`;
+		console.log('good evening');
 	}
 };
 
@@ -115,6 +119,14 @@ const listenToUI = function () {
 	htmlbrewButton.addEventListener('click', function () {
 		console.log('brewing process started');
 		checkCoffeePrerequisites();
+	});
+	htmlOnSwitch.addEventListener('change', function () {
+		if (this.checked) {
+			isTurnedOn = 1;
+			RemoveTurnOnMsg();
+		} else {
+			isTurnedOn = 0;
+		}
 	});
 };
 

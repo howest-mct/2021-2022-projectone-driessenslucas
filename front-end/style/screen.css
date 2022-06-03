@@ -926,6 +926,10 @@ h2 {
 .c-lead {
 	font-weight: 200;
 }
+.c-lead-sm {
+	font-weight: 200;
+	font-size: 12px;
+}
 .c-lead-bt {
 	font-weight: 600;
 }
