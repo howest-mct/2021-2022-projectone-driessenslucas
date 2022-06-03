@@ -18,16 +18,14 @@ const socketio = io(lanIP);
 const showMakeCoffee = function (data) {
 	if(data == 1){
 		document.querySelector('.js-coffeegif').classList.remove("c-hidden");
-		var seconds=10;
+		var seconds=10; //120 seconden na development
 		var timer;
 		function myFunction() {
-		if(seconds < 10) { 
+		if(seconds < 10) { //(seconds < 120) na development
 			document.querySelector(".clockdiv").innerHTML = `time remaining: ${seconds} seconds`;
 		}
 		if (seconds >0 ) {
 			seconds--;
-		}else if (seconds == 0){
-			showMakeCoffee(0)
 		}
 		}
 		if(!timer) {

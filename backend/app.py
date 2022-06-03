@@ -1,7 +1,9 @@
 from ast import Pass
+from email.utils import formatdate
 import json
 from subprocess import check_output
 import time
+from wsgiref.handlers import format_date_time
 from RPi import GPIO
 from h11 import Data
 import threading
@@ -45,7 +47,7 @@ from helpers.spi_class import spi_class
 NO_TOUCH = 0xFE
 max_val_wls = 100
 Coffee_machine_on = False
-relais_coffee_machine_pin = 21
+relais_coffee_machine_pin = 24
 relais_make_coffee_pin = 23
 toggle_coffee_machine = False
 
@@ -67,13 +69,14 @@ def make_coffee():
     print('coffee wordt gemaakt')
     DataRepository.create_log(1,4,6,1,"coffee machine aan")
     GPIO.output(23, GPIO.HIGH)
-    time.sleep(10)
+    time.sleep(10)#120 seconden na development
     GPIO.output(23, GPIO.LOW)
     DataRepository.create_log(0,4,6,0,"coffee machine uit")
     print('coffee is klaar')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
     GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
     socketio.emit('B2F_coffee', {'coffee_status': 0})
+    
 
 def write_lcd():
     lcd.reset_lcd()
@@ -166,16 +169,17 @@ def hallo():
 @app.route(endpoint + '/historiek/', methods=['GET','DELETE'])
 def get_progress():
     if request.method == 'GET':
-        print('getting logs....')
         return jsonify(historiek=DataRepository.get_historiek()), 200
     elif request.method == 'DELETE':
         formmdata = DataRepository.json_or_formdata(request)
         print(formmdata)
         id = DataRepository.delete_readings_today(formmdata['datum'])
         if id >0:
+            print('gelukt verwijderen')
             return jsonify(status='success'),201
         else:
-            return jsonify(status="no update", id=id), 201
+            print('niet gelukt verwijderen')
+            return jsonify(status="no update",id=id), 201
     
 @app.route(endpoint + '/historiek/<volgnummer>/', methods=['GET'])
 def get_specific_historiek(volgnummer):
@@ -216,11 +220,9 @@ def initial_connection():
 def turn_on():
     print("turn_on")
     socketio.emit('B2F_coffee', {'coffee_status': 1})
-    # time.sleep(0.001)
     thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
     thread4.start()
-    # thread4.join()
-
+    
 
 
 #threads
