@@ -24,11 +24,6 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-body {
-	max-height: 658px;
-	max-width: 303px;
-	margin: 0 auto;
-}
 
 *,
 *:before,
@@ -182,16 +177,19 @@ span {
 */
 
 .o-row--body {
-	position: relative;
 	padding: 24px 24px 0;
-	height: 340px;
-	display: flow-root;
+	height: 40vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .o-row--footer {
 	position: relative;
 	padding: 24px 24px 0;
 	height: 220px;
-	display: flow-root;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
 }
 
 .o-row--header {
@@ -256,7 +254,6 @@ span {
 	display: -ms-flexbox;
 	display: flex;
 	flex-wrap: wrap;
-	flex-direction: column;
 }
 
 .o-layout__item {
@@ -501,9 +498,9 @@ span {
 	width: 232px; /* Full width */
 	height: 345px; /* Full height */
 	overflow: hidden; /* Enable scroll if needed */
-	top: 80px;
+
 	padding-top: 24px;
-	margin-left: 10px;
+	margin-left: 0px;
 	border-radius: 20px;
 }
 body > .js-brewingpopup {
