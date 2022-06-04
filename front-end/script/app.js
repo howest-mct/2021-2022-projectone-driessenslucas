@@ -10,7 +10,8 @@ let htmlbrewButton,
 	htmlWelcome,
 	htmlFSRCheck,
 	htmlWLSCheck,
-	htmlStartbtn;
+	htmlStartbtn,
+	htmlClosePopUp;
 let statusWLS = 0;
 let statusFSR = 0;
 
@@ -145,6 +146,9 @@ const listenToUI = function () {
 			socketio.emit('F2B_turn_off');
 		}
 	});
+	htmlClosePopUp.addEventListener('click', function () {
+		document.querySelector('.js-brewingpopup').classList.add('c-hidden');
+	});
 };
 
 const listenToSocket = function () {
@@ -185,6 +189,7 @@ const init = function () {
 	htmlWLSCheck = document.querySelector('.js-wlscheck');
 	htmlFSRCheck = document.querySelector('.js-fsrcheck');
 	htmlStartbtn = document.querySelector('.js-startbtn');
+	htmlClosePopUp = document.querySelector('.c-closepopup');
 	listenToSocket();
 	listenToUI();
 	checkWelcomeMsg();

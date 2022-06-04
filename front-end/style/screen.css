@@ -401,6 +401,24 @@ span {
   #COMPONENTS
 \*------------------------------------*/
 
+/*
+    Component: popup
+    ---
+    brewing popup
+*/
+.c-closepopup {
+	color: #7c7573;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+.c-closepopup:hover,
+.c-closepopup:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
 .js-brewingpopup {
 	/* Hidden by default */
 	position: fixed; /* Stay in place */
