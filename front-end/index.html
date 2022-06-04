@@ -25,21 +25,47 @@
 		<title>COF-FI</title>
 	</head>
 	<body>
-		<div class="js-brewingpopup c-hidden">
-			<div class="js-brewingpopup-content">
-				<span class="c-closepopup">&times;</span>
-				<a>water level <input class="js-wlscheck" type="checkbox" /></a>
-				<a>coffee pot <input class="js-fsrcheck" type="checkbox" /></a>
-				<button class="js-startbtn c-lead--xxl">Start</button>
-			</div>
-		</div>
-		<header class="o-row">
+		<header class="o-row--header">
 			<div class="c-welcome">
 				<h1 class="js-welcome c-lead-bt">Good Morning</h1>
 				<span class="js-turnonspan c-lead-sm"></span>
 			</div>
 		</header>
-		<div class="o-row">
+		<div class="o-row--body">
+			<div class="js-brewingpopup c-hidden">
+				<div class="js-brewingpopup-content">
+					<div class="c-popupgrid">
+						<div class="c-popup-header">
+							<h2 class="c-popup-header--text">Brew</h2>
+							<span class="c-closepopup">&times;</span>
+						</div>
+						<div class="wls">
+							<a class="c-lead-tiny"
+								>water-level<br />
+								<input class="js-wlscheck" type="checkbox" disabled="disabled"
+							/></a>
+						</div>
+						<div class="fsr">
+							<a class="c-lead-tiny"
+								>coffee-pot<br />
+								<input class="js-fsrcheck" type="checkbox" disabled="disabled"
+							/></a>
+						</div>
+						<div class="beans">
+							<a class="c-lead-tiny"
+								>beans<br />
+								<input
+									class="js-beanscheck"
+									type="checkbox"
+									disabled="disabled"
+							/></a>
+						</div>
+						<div class="startdiv">
+							<button class="js-startbtn c-lead--xxl">Start</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="o-layout o-layout--align-center">
 				<div class="c-coffee--bg o-layout__item u-1-of-2-bp3">
 					<div class="top-balk">
@@ -137,7 +163,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="o-row">
+		<div class="o-row--footer">
 			<div class="o-container-btn">
 				<div class="c-brew-coffee">
 					<button class="js-brewbtn c-lead-bt c-lead--xxl">Brew</button>

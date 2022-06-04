@@ -120,6 +120,7 @@ def check_water_level():
             touch_val += 1
     
     value = touch_val * 5
+    socketio.emit('B2F_WLS', {'current_waterlevel': value},broadcast=True)
     return value
 
 def tmp(write_to_db):
@@ -163,7 +164,6 @@ def wls(write_to_db):
             data = DataRepository.create_log(percent,1,2,status,commentaar)
             if data != 0:
                 print('gelukt waterlevel')
-        socketio.emit('B2F_WLS', {'current_waterlevel': percent},broadcast=True)
         return percent
 # API ENDPOINTS
 

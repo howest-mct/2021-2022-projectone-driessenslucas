@@ -25,7 +25,9 @@ html {
 	-moz-osx-font-smoothing: grayscale;
 }
 body {
-	max-height: 100vh;
+	max-height: 658px;
+	max-width: 303px;
+	margin: 0 auto;
 }
 
 *,
@@ -179,20 +181,25 @@ span {
     Creates a horizontal row that stretches the viewport and adds padding around children
 */
 
-.o-row {
+.o-row--body {
 	position: relative;
 	padding: 24px 24px 0;
-	margin-bottom: 70px;
+	height: 340px;
+	display: flow-root;
+}
+.o-row--footer {
+	position: relative;
+	padding: 24px 24px 0;
+	height: 220px;
 	display: flow-root;
 }
 
-.o-row--gradient {
-	color: white;
-	background: linear-gradient(to right top, #5051db 0%, #3887f7 100%);
-}
-
-.o-row--neutral-x-light {
-	background-color: #f7f7f7;
+.o-row--header {
+	position: relative;
+	padding: 24px 24px 0;
+	display: flow-root;
+	margin-bottom: 50px;
+	height: 90px;
 }
 
 /* size modifiers */
@@ -203,7 +210,6 @@ span {
 
 @media (min-width: 768px) {
 	.o-row {
-		padding-left: 48px;
 		padding-right: 48px;
 	}
 
@@ -249,7 +255,7 @@ span {
 	display: -webkit-flex;
 	display: -ms-flexbox;
 	display: flex;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	flex-direction: column;
 }
 
@@ -406,11 +412,77 @@ span {
     ---
     brewing popup
 */
+.c-popupgrid {
+	display: grid;
+	grid-template-columns: repeat(3, 76.666px);
+	grid-template-rows: 40px 195px 85px;
+	grid-template-areas:
+		'header header header'
+		'wls fsr beans'
+		'start start start';
+}
+.wls {
+	border: 3px solid #7c7573;
+	border-radius: 40px;
+	width: 64px;
+	height: 64px;
+	grid-area: wls;
+	text-align: center;
+	align-self: center;
+	margin-left: 6px;
+}
+.fsr {
+	border: 3px solid #7c7573;
+	border-radius: 40px;
+	width: 64px;
+	height: 64px;
+	grid-area: fsr;
+	text-align: center;
+	align-self: center;
+	margin-left: 6px;
+}
+.beans {
+	border: 3px solid #7c7573;
+	border-radius: 40px;
+	width: 64px;
+	height: 64px;
+	grid-area: beans;
+	text-align: center;
+	align-self: center;
+	margin-left: 6px;
+}
+.js-startbtn {
+	grid-area: start;
+}
+.c-popup-header {
+	grid-area: header;
+	display: grid;
+	grid-template-columns: 35px 195px;
+	grid-template-rows: 40px;
+	grid-template-areas: 'closepop title';
+	background-color: #eb7944;
+	width: 232px;
+	height: 39px;
+	border-radius: 20px;
+}
+.c-popup-header--text {
+	grid-area: title;
+	order: 1;
+	color: #462f20;
+	text-align: center;
+	padding-right: 32px;
+	font-weight: bold;
+}
+
 .c-closepopup {
+	grid-area: closepop;
+	padding-left: 12px;
+	align-self: center;
 	color: #7c7573;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
+	text-align: center;
 }
 .c-closepopup:hover,
 .c-closepopup:focus {
@@ -421,25 +493,35 @@ span {
 
 .js-brewingpopup {
 	/* Hidden by default */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	position: fixed; /* Stay in place */
 	z-index: 25; /* Sit on top */
-	padding-top: 100px; /* Location of the box */
-	left: 0;
-	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0, 0, 0); /* Fallback color */
+	width: 232px; /* Full width */
+	height: 345px; /* Full height */
+	overflow: hidden; /* Enable scroll if needed */
+	top: 80px;
+	padding-top: 24px;
+	margin-left: 10px;
+	border-radius: 20px;
+}
+body > .js-brewingpopup {
 	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .js-brewingpopup-content {
-	background-color: #fefefe;
+	background-color: #fdf3ee;
 	margin: auto;
-	padding: 20px;
 	border: 1px solid #888;
-	width: 80%;
+	width: 100%;
+	height: 100%;
+	color: #462f20;
+	border-radius: 20px;
+}
+.js-brewingpopup-content a {
+	color: #462f20;
 }
 
 /*
@@ -600,14 +682,20 @@ span {
 .c-brew-coffee {
 	align-self: flex-end;
 }
-.js-startbtn {
+.startdiv {
+	display: flex;
+	justify-content: center;
 	width: 230px;
+	height: 85px;
+}
+.js-startbtn {
+	width: 210px;
 	height: 75px;
 	padding-left: 70px;
 	padding-right: 70px;
 	padding-top: 16px;
 	padding-bottom: 25px;
-	border-radius: 8px;
+	border-radius: 20px;
 	background-color: #eb7944;
 	border-color: #eb7944;
 	text-align: center;
@@ -790,14 +878,6 @@ h2 {
 	align-self: center;
 }
 
-.c-row {
-}
-
-.c-row + .c-row {
-}
-.c-row.is-header + .c-row {
-}
-
 .is-header {
 	padding-top: 1rem;
 
@@ -826,12 +906,6 @@ h2 {
 .c-waterlevel {
 	width: 50px;
 	height: 225px;
-}
-.c-percentage {
-}
-@media (min-width: 1024px) {
-	.c-waterlevel {
-	}
 }
 
 @-webkit-keyframes wave-front {
@@ -966,6 +1040,12 @@ h2 {
 
 .c-lead {
 	font-weight: 200;
+}
+.c-lead-tiny {
+	display: block;
+	padding-top: 8px;
+	font-size: 14px;
+	line-height: 14px;
 }
 .c-lead-sm {
 	font-weight: 200;
