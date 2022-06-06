@@ -24,7 +24,7 @@
 		<script src="script/app.js"></script>
 		<title>COF-FI</title>
 	</head>
-	<body>
+	<body class="homepage">
 		<header class="o-row--header">
 			<div class="c-welcome">
 				<h1 class="js-welcome c-lead-bt">Good Morning</h1>
@@ -40,35 +40,32 @@
 								<h2 class="c-popup-header--text">Brew</h2>
 								<span class="c-closepopup">&times;</span>
 							</div>
-							<div class="wls">
-								<a class="c-lead-tiny"
-									>water-level<br />
-									<input
-										class="js-wlscheck"
-										type="checkbox"
-										disabled="disabled"
-								/></a>
+							<div class="c-coffeestatus"></div>
+							<div class="c-checkdiv">
+								<div class="wls">
+									<a class="c-lead-tiny"
+										>water-level<br />
+										<input
+											class="js-wlscheck"
+											type="checkbox"
+											disabled="disabled"
+									/></a>
+								</div>
+								<div class="fsr">
+									<a class="c-lead-tiny"
+										>coffee-pot<br />
+										<input
+											class="js-fsrcheck"
+											type="checkbox"
+											disabled="disabled"
+									/></a>
+								</div>
 							</div>
-							<div class="fsr">
-								<a class="c-lead-tiny"
-									>coffee-pot<br />
-									<input
-										class="js-fsrcheck"
-										type="checkbox"
-										disabled="disabled"
-								/></a>
-							</div>
-							<div class="beans">
-								<a class="c-lead-tiny"
-									>beans<br />
-									<input
-										class="js-beanscheck"
-										type="checkbox"
-										disabled="disabled"
-								/></a>
-							</div>
+
 							<div class="startdiv">
-								<button class="js-startbtn c-lead--xxl">Start</button>
+								<button class="js-startbtn c-lead--xxl" disabled="disabled">
+									Start
+								</button>
 							</div>
 						</div>
 					</div>

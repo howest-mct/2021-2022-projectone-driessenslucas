@@ -24,17 +24,27 @@ const socketio = io(lanIP);
 //#endregion
 
 //#region ***  Callback-Visualisation - show___         ***********
+const ResetPopUpHtml = function () {
+	document.querySelector('.c-coffeestatus').innerHTML = '';
+	document.querySelector('.c-checkdiv').classList.remove('c-hidden');
+	htmlStartbtn.disabled = false;
+	htmlStartbtn.innerHTML = `Start`;
+};
 
-const updatePrerequisites = function () {
-	if (statusWLS == 1) {
-		htmlWLSCheck.checked = true;
-	} else if (statusWLS == 0) {
-		htmlWLSCheck.checked = false;
-	}
-	if (statusFSR == 1) {
-		htmlFSRCheck.checked = true;
-	} else if (statusFSR == 0) {
-		htmlFSRCheck.checked = false;
+const showCoffeeStatus = function (status) {
+	document.querySelector('.c-checkdiv').classList.add('c-hidden');
+	if (status == 1) {
+		document.querySelector(
+			'.c-coffeestatus'
+		).innerHTML = `<span>Coffee is brewing</span>`;
+		htmlStartbtn.disabled = true;
+		htmlStartbtn.innerHTML = `Brewing...`;
+	} else if (status == 0) {
+		document.querySelector(
+			'.c-coffeestatus'
+		).innerHTML = `<span>Coffee is done</span>`;
+		htmlStartbtn.disabled = true;
+		htmlStartbtn.innerHTML = `Enjoy!`;
 	}
 };
 
@@ -89,6 +99,19 @@ const updateView = function (value) {
 //#endregion
 
 //#region ***  Callback-No Visualisation - callback___  ***********
+const updatePrerequisites = function () {
+	// console.log('checking sensors');
+	if (statusWLS == 1) {
+		htmlWLSCheck.checked = true;
+	} else if (statusWLS == 0) {
+		htmlWLSCheck.checked = false;
+	}
+	if (statusFSR == 1) {
+		htmlFSRCheck.checked = true;
+	} else if (statusFSR == 0) {
+		htmlFSRCheck.checked = false;
+	}
+};
 
 //#endregion
 
@@ -99,10 +122,15 @@ const checkCoffeePrerequisites = function () {
 	if (isTurnedOn == 1) {
 		//RemoveTurnOnMsg();
 		document.querySelector('.js-brewingpopup').classList.remove('c-hidden');
+		htmlbrewButton.disabled = true;
+		updatePrerequisites();
+		htmlStartbtn.disabled = false;
+		listenToStart();
 	} else {
 		document.querySelector(
 			'.js-turnonspan'
 		).innerHTML = `<span> Please turn on the coffee machine </span>`;
+		htmlbrewButton.disabled = false;
 	}
 };
 
@@ -125,6 +153,10 @@ const checkWelcomeMsg = function () {
 //#endregion
 
 //#region ***  Event Listeners - listenTo___            ***********
+const listenToContinue = function () {
+	console.log('welcome');
+};
+
 const listenToStart = function () {
 	htmlStartbtn.addEventListener('click', function () {
 		socketio.emit('F2B_brew');
@@ -148,6 +180,8 @@ const listenToUI = function () {
 	});
 	htmlClosePopUp.addEventListener('click', function () {
 		document.querySelector('.js-brewingpopup').classList.add('c-hidden');
+		htmlbrewButton.disabled = false;
+		ResetPopUpHtml();
 	});
 };
 
@@ -171,7 +205,12 @@ const listenToSocket = function () {
 		updateTemp(data.current_temp);
 	});
 	socketio.on('B2F_brewingStatus', function (data) {
-		console.log(data.coffe_status);
+		console.log(data.coffee_status);
+		if (data.coffee_status == 0) {
+			showCoffeeStatus(0);
+		} else {
+			showCoffeeStatus(1);
+		}
 	});
 };
 
@@ -180,20 +219,24 @@ const listenToSocket = function () {
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
 	console.log('dom loaded');
-	htmlWelcome = document.querySelector('.js-welcome');
-	htmlWave = document.querySelector('.js-waves');
-	htmlPercentage = document.querySelector('.js-percentage');
-	htmlbrewButton = document.querySelector('.js-brewbtn');
-	htmlOnSwitch = document.querySelector('.js-onswitch');
-	htmlBrewingPopUp = document.querySelector('.js-brewingpopup');
-	htmlWLSCheck = document.querySelector('.js-wlscheck');
-	htmlFSRCheck = document.querySelector('.js-fsrcheck');
-	htmlStartbtn = document.querySelector('.js-startbtn');
-	htmlClosePopUp = document.querySelector('.c-closepopup');
-	listenToSocket();
-	listenToUI();
-	checkWelcomeMsg();
-	listenToStart();
+	if (document.querySelector('.homepage')) {
+		htmlWelcome = document.querySelector('.js-welcome');
+		htmlWave = document.querySelector('.js-waves');
+		htmlPercentage = document.querySelector('.js-percentage');
+		htmlbrewButton = document.querySelector('.js-brewbtn');
+		htmlOnSwitch = document.querySelector('.js-onswitch');
+		htmlBrewingPopUp = document.querySelector('.js-brewingpopup');
+		htmlWLSCheck = document.querySelector('.js-wlscheck');
+		htmlFSRCheck = document.querySelector('.js-fsrcheck');
+		htmlStartbtn = document.querySelector('.js-startbtn');
+		htmlClosePopUp = document.querySelector('.c-closepopup');
+		listenToSocket();
+		listenToUI();
+		checkWelcomeMsg();
+	}
+	if (document.querySelector('.welcome')) {
+		listenToContinue();
+	}
 };
 document.addEventListener('DOMContentLoaded', init);
 //#endregio
