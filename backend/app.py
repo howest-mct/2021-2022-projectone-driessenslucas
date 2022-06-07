@@ -154,9 +154,8 @@ def tmp(write_to_db):
 def fsr(write_to_db):
     #tijdelijke code tot defitge weight sensor
     #print(f"fsr{write_to_db}")
-    
+
     weight = hx.get_weight_mean(20)
-    print(weight)
     commentaar = "read coffee pot weight"
     if weight < 0:
         weight = 0

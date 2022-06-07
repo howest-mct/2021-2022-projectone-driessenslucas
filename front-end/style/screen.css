@@ -19,7 +19,7 @@ html {
 	line-height: 1.5;
 	font-family: 'Titillium Web', sans-serif;
 	color: #fdf3ee;
-	background-color: #462f22;
+	background-color: #462f20;
 	box-sizing: border-box;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -525,7 +525,7 @@ body > .js-brewingpopup {
 
 /* Modal Content */
 .js-brewingpopup-content {
-	background-color: #fdf3ee;
+	background-color: #cabdaf;
 	margin: auto;
 	border: 1px solid #888;
 	width: 100%;
@@ -635,9 +635,10 @@ body > .js-brewingpopup {
 	width: 230px;
 	height: 45px;
 	border-radius: 4px;
-	background-color: #7c7573;
+	background-color: #cabdaf;
 }
 .tinytop {
+	color: #462f20;
 	grid-area: tiny;
 	display: flex;
 	justify-content: center;
@@ -646,7 +647,7 @@ body > .js-brewingpopup {
 	width: 130px;
 	height: 20px;
 	border-radius: 4px;
-	background-color: #7c7573;
+	background-color: #cabdaf;
 }
 .sidebar--wls {
 	align-self: center;
@@ -656,14 +657,14 @@ body > .js-brewingpopup {
 	border-radius: 4px;
 
 	z-index: 10;
-	border: 4px solid #7c7573;
+	border: 4px solid #cabdaf;
 }
 .bottom-balk {
 	grid-area: bottom;
 	width: 230px;
 	height: 25px;
 	border-radius: 4px;
-	background-color: #7c7573;
+	background-color: #cabdaf;
 }
 
 /*
