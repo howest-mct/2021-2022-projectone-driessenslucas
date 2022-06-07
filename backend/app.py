@@ -44,6 +44,12 @@ import smbus
 import numpy as np
 from helpers.i2c_helper import LCD
 from helpers.spi_class import spi_class
+import os
+import pickle
+
+from hx711 import HX711
+
+GPIO.setmode(GPIO.BCM)
 
 NO_TOUCH = 0xFE
 max_val_wls = 95
@@ -58,7 +64,11 @@ sda = 1
 scl = 1
 lcd = LCD()
 
-GPIO.setmode(GPIO.BCM)
+hx = HX711(dout_pin=21, pd_sck_pin=20)
+swap_file_name = 'swap_file.swp'
+if os.path.isfile(swap_file_name):
+    with open(swap_file_name, 'rb') as swap_file:
+        hx = pickle.load(swap_file)
 
 GPIO.setup(23, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
@@ -144,15 +154,22 @@ def tmp(write_to_db):
 def fsr(write_to_db):
     #tijdelijke code tot defitge weight sensor
     #print(f"fsr{write_to_db}")
-    GPIO.setup(16, GPIO.IN)
-    fsrval = GPIO.input(16)
+    
+    weight = hx.get_weight_mean(20)
+    print(weight)
     commentaar = "read coffee pot weight"
-    if fsrval is not None and write_to_db:
-            data = DataRepository.create_log(randint(900,1100),3,3,fsrval,commentaar)
+    if weight < 0:
+        weight = 0
+    if weight > 0:
+            status = 1
+    if weight is not None and write_to_db:
+        
+            data = DataRepository.create_log(weight,3,3,status,commentaar)
             if data != 0:
-                print('gelukt wegschrijven gewicht')    
-    socketio.emit('B2F_coffepot', {'coffepot_status': fsrval},broadcast=True)
-    return fsrval
+                print('gelukt weight wegschrijven')
+            print('gelukt wegschrijven gewicht')  
+    socketio.emit('B2F_coffepot', {'coffepot_status': status},broadcast=True)
+    return weight
     
 def wls(write_to_db):
         #print(f"wls{write_to_db}")
