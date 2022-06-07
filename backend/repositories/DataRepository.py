@@ -39,11 +39,15 @@ class DataRepository:
         params = [value,deviceid,actieid,status,commentaar]
         return Database.execute_sql(sql,params)
 
-    
-
     @staticmethod
     def delete_readings_today(datum):
         sql = "delete from logs where actiedatum like %s"
         params = [str(datum)+"%"]
         return Database.execute_sql(sql,params)
+
+    @staticmethod
+    def get_weekly_weight(week_nr):
+        sql = "SELECT Waarde, date_format(actiedatum, %s) as day from logs WHERE YEARWEEK(actiedatum)=YEARWEEK(NOW() - interval %s week) and deviceID = 3 order by volgnummer asc"
+        params = ["%d",week_nr]
+        return Database.get_rows(sql,params)
         

@@ -1,12 +1,12 @@
 const lanIP = `${window.location.hostname}:5000`;
 
-
+// !!
+const socketio = io(lanIP);
+//#endregion
 // #region ***  Callback-Visualisation - show___         ***********
 const backToIndex = function () {
 	window.location.href = './historiek.html';
 };
-
-
 
 const showHistoriek = function (jsonObject) {
 	console.log(jsonObject);
@@ -18,11 +18,11 @@ const showHistoriek = function (jsonObject) {
 	<th>deviceid</th>
 	<th>actieid</th>
 	<th>status</th>
-	  </tr>`
+	  </tr>`;
 	for (let log of jsonObject.historiek) {
 		let icon = '';
 		let meeteenheid = '';
-		if(log.deviceID == 1){
+		if (log.deviceID == 1) {
 			meeteenheid = '%';
 			icon = `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20">
 			<g id="water_drop_black_24dp" transform="translate(0 -0.238)">
@@ -31,8 +31,7 @@ const showHistoriek = function (jsonObject) {
 			</g>
 		  </svg>
 		  `;
-		}
-		else if (log.deviceID == 2){
+		} else if (log.deviceID == 2) {
 			meeteenheid = '°C';
 			icon = `<svg id="thermostat_black_24dp" xmlns="http://www.w3.org/2000/svg" width="20.636" height="20.636" viewBox="0 0 20.636 20.636">
 			<g id="Group_8" data-name="Group 8">
@@ -43,8 +42,7 @@ const showHistoriek = function (jsonObject) {
 			</g>
 		  </svg>
 		  `;
-		}
-		else if (log.deviceID == 3){
+		} else if (log.deviceID == 3) {
 			meeteenheid = 'g';
 			icon = `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
 			<g id="scale_black_24dp" transform="translate(0 0.02)">
@@ -57,17 +55,15 @@ const showHistoriek = function (jsonObject) {
 			</g>
 		  </svg>
 		  `;
-		}
-		else{
+		} else {
 			icon = log.deviceID;
 		}
-	
 
 		html += `=
 		<tr class="c-row">
         <td class="c-cell">${log.volgnummer}</div>
         <td class="c-cell">${log.actiedatum}</div>
-		<td class="c-cell">${Math.round( log.Waarde,2)} ${meeteenheid}</div>
+		<td class="c-cell">${Math.round(log.Waarde, 2)} ${meeteenheid}</div>
         <td class="c-cell">${icon}</div>
 		<td class="c-cell">${log.actieID}</div>
 		<td class="c-cell">${log.status}</div>
@@ -75,7 +71,6 @@ const showHistoriek = function (jsonObject) {
         </tr>`;
 	}
 	htmlTable.innerHTML = html;
-
 };
 // #endregion
 
@@ -102,7 +97,6 @@ const gethistoriek = function () {
 
 //#region ***  Event Listeners - listenTo___            ***********
 
-
 const ListenToDelete = function () {
 	htmlDeletebtn.addEventListener('click', function () {
 		console.log('delete pressed');
@@ -110,19 +104,18 @@ const ListenToDelete = function () {
 		var date = '';
 		if (today.getDate() < 10) {
 			date =
-			today.getFullYear() +
-			'-0' +
-			(today.getMonth() + 1) +
-			'-0' +
-			today.getDate();
-		}
-		else {
+				today.getFullYear() +
+				'-0' +
+				(today.getMonth() + 1) +
+				'-0' +
+				today.getDate();
+		} else {
 			date =
-			today.getFullYear() +
-			'-0' +
-			(today.getMonth() + 1) +
-			'-' +
-			today.getDate();
+				today.getFullYear() +
+				'-0' +
+				(today.getMonth() + 1) +
+				'-' +
+				today.getDate();
 		}
 		CallbackDeleteProgress(date);
 	});
@@ -130,14 +123,14 @@ const ListenToDelete = function () {
 
 //#endregion
 
-
 // #region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
-  htmlTable = document.querySelector('.js-table');
-  htmlDeletebtn = document.querySelector('.js-clear-amount-today');
-  console.log('hello')
-  ListenToDelete();
-  gethistoriek();
+	htmlTable = document.querySelector('.js-table');
+	htmlDeletebtn = document.querySelector('.js-clear-amount-today');
+	console.log('hello');
+	ListenToDelete();
+	gethistoriek();
+	socketio.emit('F2B_graph', { week: 0 });
 };
 
 document.addEventListener('DOMContentLoaded', init);

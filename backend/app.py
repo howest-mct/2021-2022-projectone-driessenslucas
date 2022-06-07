@@ -41,7 +41,6 @@ def error_handler(e):
 # Code voor Hardware
 import time
 import smbus
-import numpy as np
 from helpers.i2c_helper import LCD
 from helpers.spi_class import spi_class
 import os
@@ -227,6 +226,7 @@ def get_status():
             return jsonify(message="foutive status"),400
 
 
+
 #socketio
     
 
@@ -250,6 +250,33 @@ def turn_on():
 def turn_off():
     print('turn off')
     turn_off_coffee_machine()
+
+@socketio.on('F2B_graph')
+def weekly_graph(week_nr):
+    print('creating graph..')
+    data = DataRepository.get_weekly_weight(week_nr['week'])
+    if data is not None:
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        x = data['Waarde']
+        # corresponding y axis values
+        y = data['day']
+        
+        # plotting the points 
+        plt.plot(x, y)
+        
+        # naming the x axis
+        plt.xlabel('x - axis')
+        # naming the y axis
+        plt.ylabel('y - axis')
+        
+        # giving a title to my graph
+        plt.title('My first graph!')
+        
+        # function to show the plot
+        fig= plt.plot(x,y)
+        fig.savefig('my_plot.png')
+        print(data)
 
 
 #threads
