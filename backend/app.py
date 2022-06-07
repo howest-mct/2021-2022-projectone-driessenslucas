@@ -1,6 +1,7 @@
 from ast import Pass
 from email.utils import formatdate
 import json
+from random import randint
 from subprocess import check_output
 import time
 from wsgiref.handlers import format_date_time
@@ -45,7 +46,7 @@ from helpers.i2c_helper import LCD
 from helpers.spi_class import spi_class
 
 NO_TOUCH = 0xFE
-max_val_wls = 100
+max_val_wls = 95
 Coffee_machine_on = False
 relais_coffee_machine_pin = 24
 relais_make_coffee_pin = 23
@@ -86,6 +87,7 @@ def make_coffee():
     print('coffee is done')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
     socketio.emit('B2F_brewingStatus', {'coffee_status': 0})
+    fsr(True)
     
 
 def write_lcd():
@@ -121,6 +123,7 @@ def check_water_level():
     
     value = touch_val * 5
     socketio.emit('B2F_WLS', {'current_waterlevel': value},broadcast=True)
+    # print(f"waterlevel: {value}")
     return value
 
 def tmp(write_to_db):
@@ -145,7 +148,7 @@ def fsr(write_to_db):
     fsrval = GPIO.input(16)
     commentaar = "read coffee pot weight"
     if fsrval is not None and write_to_db:
-            data = DataRepository.create_log(fsrval,3,3,fsrval,commentaar)
+            data = DataRepository.create_log(randint(900,1100),3,3,fsrval,commentaar)
             if data != 0:
                 print('gelukt wegschrijven gewicht')    
     socketio.emit('B2F_coffepot', {'coffepot_status': fsrval},broadcast=True)
@@ -239,7 +242,6 @@ def sensors_to_db():
     while True:
         try:
             wls(True)
-            fsr(True)
             tmp(True)
             time.sleep(60)
         except:

@@ -53,31 +53,31 @@ const RemoveTurnOnMsg = function () {
 	updatePrerequisites();
 };
 
-const showMakeCoffee = function (data) {
-	if (data == 1) {
-		var seconds = 10; //120 seconden na development
-		var timer;
-		function myFunction() {
-			if (seconds < 10) {
-				//(seconds < 120) na development
-				document.querySelector(
-					'.clockdiv'
-				).innerHTML = `time remaining: ${seconds} seconds`;
-			}
-			if (seconds > 0) {
-				seconds--;
-			}
-		}
-		if (!timer) {
-			timer = window.setInterval(function () {
-				myFunction();
-			}, 1000);
-		}
-		document.querySelector(
-			'.clockdiv'
-		).innerHTML = `time remaining: 10 seconds`;
-	}
-};
+// const showMakeCoffee = function (data) {
+// 	if (data == 1) {
+// 		var seconds = 10; //120 seconden na development
+// 		var timer;
+// 		function myFunction() {
+// 			if (seconds < 10) {
+// 				//(seconds < 120) na development
+// 				document.querySelector(
+// 					'.clockdiv'
+// 				).innerHTML = `time remaining: ${seconds} seconds`;
+// 			}
+// 			if (seconds > 0) {
+// 				seconds--;
+// 			}
+// 		}
+// 		if (!timer) {
+// 			timer = window.setInterval(function () {
+// 				myFunction();
+// 			}, 1000);
+// 		}
+// 		document.querySelector(
+// 			'.clockdiv'
+// 		).innerHTML = `time remaining: 10 seconds`;
+// 	}
+// };
 
 const updateTemp = function (value) {
 	document.querySelector('.js-temp').innerHTML = `temp: ${value}`;
