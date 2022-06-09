@@ -100,6 +100,11 @@ const getData = function () {
 	socketio.emit('F2B_getWeightLogs', { weeknr: 0 });
 	socketio.emit('F2B_getCoffeeLogs', { weeknr: 0 });
 };
+const listenToMobileNav = function () {
+	document.querySelector('.hamburger').addEventListener('click', function () {
+		document.querySelector('.mobile-dropdown').classList.toggle('c-hidden');
+	});
+};
 socketio.on('B2F_coffeeLogs', function (data) {
 	console.log(data);
 	updateCoffeMade(data.coffee_logs);
@@ -111,6 +116,7 @@ socketio.on('B2F_weightLogs', function (data) {
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
 	getData();
+	listenToMobileNav();
 };
 document.addEventListener('DOMContentLoaded', init);
 //#endregio

@@ -230,6 +230,12 @@ const checkWelcomeMsg = function () {
 //#endregion
 
 //#region ***  Event Listeners - listenTo___            ***********
+const listenToMobileNav = function () {
+	document.querySelector('.hamburger').addEventListener('click', function () {
+		document.querySelector('.mobile-dropdown').classList.toggle('c-hidden');
+	});
+};
+
 const ListenToDelete = function () {
 	htmlDeletebtn.addEventListener('click', function () {
 		console.log('delete pressed');
@@ -323,6 +329,7 @@ const listenToSocket = function () {
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
 	console.log('dom loaded');
+	listenToMobileNav();
 	if (document.querySelector('.log-page')) {
 		console.log('getting logs...');
 		htmlTable = document.querySelector('.js-table');
