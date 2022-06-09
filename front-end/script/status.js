@@ -1,41 +1,78 @@
+const lanIP = `${window.location.hostname}:5000`; //!!! PAS DIT AAN ZODAT DIT dynamisch wordt !!!
+// !!
+const socketio = io(lanIP);
 
-const showStatus = function(jsonObject){
-    console.log(jsonObject)
-    
-    for (const status of jsonObject.status) {
-        console.log(status)
-        console.log(status.deviceID)
-        if (htmlWls.getAttribute('data-id') == status.deviceID){
-            htmlWls.innerHTML = `<p>water level sensor status: ${status.status} </p>`
-        }
-        else if (htmlTemp.getAttribute('data-id') == status.deviceID){
-            htmlTemp.innerHTML = `<p>temperatuur status: ${status.status} </p>`
-        }
-        else if (htmlFsr.getAttribute('data-id') == status.deviceID){
-            htmlFsr.innerHTML = `<p>fsr status: ${status.status} </p>`
-        }
-    }
-}
+let data1 = [];
+let data2 = [];
+let LabelsArr = [];
 
+const createChart = function () {
+	const labels = LabelsArr;
+	const data = {
+		labels: labels,
+		datasets: [
+			{
+				label: 'Weight pot',
+				data: data2,
+				backgroundColor: 'rgb(255, 99, 132)',
+				borderColor: 'rgb(255, 99, 132)',
+			},
+		],
+	};
 
-// #region ***  Data Access - get___                     ***********
-const getStatus = function () {
-	const url = `http://192.168.168.169:5000/api/v1/status/`;
-	handleData(url, showStatus);
+	const config = {
+		type: 'line',
+		data: data,
+		options: {
+			responsive: true,
+			plugins: {
+				legend: {
+					position: 'top',
+				},
+				title: {
+					display: true,
+					text: 'Weight of coffee pot this week',
+				},
+			},
+		},
+	};
+
+	const ctx = document.getElementById('myChart');
+	const myChart = new Chart(ctx, config);
 };
 
-// #endregion
+const updateCoffeMade = function (data) {
+	console.log(data);
+	for (const log of data) {
+		data1.push(log['Waarde']);
+	}
+	createChart();
+};
+const updateWeightData = function (data) {
+	console.log(data);
+	for (const log of data) {
+		if (log['Waarde'] > 0) {
+			data2.push(log['Waarde']);
+			LabelsArr.push(log['day']);
+		}
+	}
+	console.log(data2);
+};
 
-// #region ***  Init / DOMContentLoaded                  ***********
+const getData = function () {
+	socketio.emit('F2B_getWeightLogs', { weeknr: 0 });
+	socketio.emit('F2B_getCoffeeLogs', { weeknr: 0 });
+};
+socketio.on('B2F_coffeeLogs', function (data) {
+	updateCoffeMade(data.coffee_logs);
+});
+socketio.on('B2F_weightLogs', function (data) {
+	updateWeightData(data.weight_logs);
+});
+
+//#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
-    htmlTemp = document.querySelector('.js-temp')
-    htmlFsr = document.querySelector('.js-fsr')
-    htmlWls = document.querySelector('.js-wls')
-    
-    console.log('hello')
-    
-    getStatus();
-  };
-  
-  document.addEventListener('DOMContentLoaded', init);
-  // #endregion
+	getData();
+};
+document.addEventListener('DOMContentLoaded', init);
+//#endregio

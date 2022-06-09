@@ -18,8 +18,8 @@ html {
 	font-size: 16px;
 	line-height: 1.5;
 	font-family: 'Titillium Web', sans-serif;
-	color: #fdf3ee;
-	background-color: #462f20;
+	color: #3b4727;
+	background-color: #e9ded1;
 	box-sizing: border-box;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -473,7 +473,7 @@ span {
 	grid-template-columns: 35px 195px;
 	grid-template-rows: 40px;
 	grid-template-areas: 'closepop title';
-	background-color: #eb7944;
+	background-color: #357560;
 	width: 232px;
 	height: 39px;
 	border-radius: 20px;
@@ -491,7 +491,7 @@ span {
 	grid-area: closepop;
 	padding-left: 12px;
 	align-self: center;
-	color: #7c7573;
+	color: #e9ded1;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
@@ -525,16 +525,16 @@ body > .js-brewingpopup {
 
 /* Modal Content */
 .js-brewingpopup-content {
-	background-color: #cabdaf;
+	background-color: #e9ded1;
 	margin: auto;
 	border: 1px solid #888;
 	width: 100%;
 	height: 100%;
-	color: #462f20;
+	color: #3b4727;
 	border-radius: 20px;
 }
 .js-brewingpopup-content a {
-	color: #462f20;
+	color: #3b4727;
 }
 
 /*
@@ -589,7 +589,7 @@ body > .js-brewingpopup {
 }
 
 .js-onswitch:checked {
-	background-color: #eb7944;
+	background-color: #357560;
 }
 
 .js-onswitch:checked:before {
@@ -635,7 +635,7 @@ body > .js-brewingpopup {
 	width: 230px;
 	height: 45px;
 	border-radius: 4px;
-	background-color: #cabdaf;
+	background-color: #fdf3ee;
 }
 .tinytop {
 	color: #462f20;
@@ -647,7 +647,7 @@ body > .js-brewingpopup {
 	width: 130px;
 	height: 20px;
 	border-radius: 4px;
-	background-color: #cabdaf;
+	background-color: #fdf3ee;
 }
 .sidebar--wls {
 	align-self: center;
@@ -657,14 +657,14 @@ body > .js-brewingpopup {
 	border-radius: 4px;
 
 	z-index: 10;
-	border: 4px solid #cabdaf;
+	border: 4px solid #fdf3ee;
 }
 .bottom-balk {
 	grid-area: bottom;
 	width: 230px;
 	height: 25px;
 	border-radius: 4px;
-	background-color: #cabdaf;
+	background-color: #fdf3ee;
 }
 
 /*
@@ -708,8 +708,8 @@ body > .js-brewingpopup {
 	padding-top: 16px;
 	padding-bottom: 25px;
 	border-radius: 20px;
-	background-color: #eb7944;
-	border-color: #eb7944;
+	background-color: #357560;
+	border-color: #357560;
 	text-align: center;
 }
 .js-brewbtn {
@@ -718,8 +718,8 @@ body > .js-brewingpopup {
 	padding-top: 16px;
 	padding-bottom: 25px;
 	border-radius: 8px;
-	background-color: #eb7944;
-	border-color: #eb7944;
+	background-color: #357560;
+	border-color: #357560;
 	text-align: center;
 }
 
@@ -813,7 +813,7 @@ body > .js-brewingpopup {
 	left: 0;
 	height: 100%;
 	width: 100%;
-	background: #eb7944;
+	background: #357560;
 	will-change: transform;
 	-webkit-transform: translateY(50%);
 	transform: translateY(50%);
@@ -834,7 +834,7 @@ body > .js-brewingpopup {
 .c-water__wave--front {
 	left: 0;
 	margin-bottom: -1px;
-	fill: #eb7944;
+	fill: #357560;
 	-webkit-animation: wave-front 1.1s linear infinite;
 	animation: wave-front 1.1s linear infinite;
 }
@@ -867,6 +867,12 @@ h2 {
 	flex-wrap: wrap;
 	justify-content: center;
 	margin-right: 24px;
+}
+.js-clear-amount-today {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: 100px;
 }
 
 .c-dashboard > h1 {

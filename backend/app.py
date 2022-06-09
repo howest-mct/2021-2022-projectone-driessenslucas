@@ -9,7 +9,7 @@ from RPi import GPIO
 from h11 import Data
 import threading
 from threading import Event
-
+import matplotlib.pyplot as plt
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, send
 from flask import Flask, jsonify, request
@@ -190,10 +190,10 @@ def wls(write_to_db):
 def hallo():
     return "Server is running, er zijn momenteel geen API endpoints beschikbaar."
 
-@app.route(endpoint + '/historiek/', methods=['GET','DELETE'])
-def get_progress():
+@app.route(endpoint + '/logs/', methods=['GET','DELETE'])
+def get_all_logs():
     if request.method == 'GET':
-        return jsonify(historiek=DataRepository.get_historiek()), 200
+        return jsonify(logs=DataRepository.get_logs()), 200
     elif request.method == 'DELETE':
         formmdata = DataRepository.json_or_formdata(request)
         print(formmdata)
@@ -205,11 +205,11 @@ def get_progress():
             print('niet gelukt verwijderen')
             return jsonify(status="no update",id=id), 201
     
-@app.route(endpoint + '/historiek/<volgnummer>/', methods=['GET'])
-def get_specific_historiek(volgnummer):
+@app.route(endpoint + '/logs/<volgnummer>/', methods=['GET'])
+def get_specific_log(volgnummer):
     if request.method == 'GET':
         if volgnummer != 0:
-            data = DataRepository.get_specific_historiek(volgnummer)
+            data = DataRepository.get_specific_log(volgnummer)
             if data is not None:
                 return jsonify(data=data),200
             else:
@@ -251,35 +251,19 @@ def turn_off():
     print('turn off')
     turn_off_coffee_machine()
 
-@socketio.on('F2B_graph')
-def weekly_graph(week_nr):
-    print('creating graph..')
-    data = DataRepository.get_weekly_weight(week_nr['week'])
-    if data is not None:
-        import pandas as pd
-        import matplotlib.pyplot as plt
-        x = data['Waarde']
-        # corresponding y axis values
-        y = data['day']
-        
-        # plotting the points 
-        plt.plot(x, y)
-        
-        # naming the x axis
-        plt.xlabel('x - axis')
-        # naming the y axis
-        plt.ylabel('y - axis')
-        
-        # giving a title to my graph
-        plt.title('My first graph!')
-        
-        # function to show the plot
-        fig= plt.plot(x,y)
-        fig.savefig('my_plot.png')
-        print(data)
+@socketio.on('F2B_getWeightLogs')
+def get_weight_logs(data):
+    print('getting weight logs')
+    socketio.emit('B2F_weightLogs', {'weight_logs': DataRepository.get_weekly_weight(data['weeknr'])})
+
+@socketio.on('F2B_getCoffeeLogs')
+def get_coffee_logs(data):
+    print('getting coffee logs')
+    socketio.emit('B2F_coffeeLogs', {'coffee_logs': DataRepository.get_weekly_coffee_made(data['weeknr'])})
 
 
 #threads
+
 
 def sensors_to_db():
     while True:
@@ -370,9 +354,9 @@ if __name__ == '__main__':
     try:
         GPIO.output(23, GPIO.HIGH)
         GPIO.output(24, GPIO.HIGH)
-        start_thread()
-        start_thread2()
-        start_thread3()
+        # start_thread()
+        # start_thread2()
+        # start_thread3()
         start_chrome_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')

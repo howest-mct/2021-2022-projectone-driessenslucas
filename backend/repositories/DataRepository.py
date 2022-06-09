@@ -17,12 +17,12 @@ class DataRepository:
         return Database.get_rows(sql)
 
     @staticmethod
-    def get_historiek():
+    def get_logs():
         sql = "select * from logs order by actiedatum desc"
         return Database.get_rows(sql)
 
     @staticmethod
-    def get_specific_historiek(id):
+    def get_specific_log(id):
         sql = "select * from logs where volgnummer = %s"
         params = [id]
         return Database.get_one_row(sql,params)
@@ -48,6 +48,12 @@ class DataRepository:
     @staticmethod
     def get_weekly_weight(week_nr):
         sql = "SELECT Waarde, date_format(actiedatum, %s) as day from logs WHERE YEARWEEK(actiedatum)=YEARWEEK(NOW() - interval %s week) and deviceID = 3 order by volgnummer asc"
+        params = ["%d",week_nr]
+        return Database.get_rows(sql,params)
+
+    @staticmethod
+    def get_weekly_coffee_made(week_nr):
+        sql = "SELECT Waarde, date_format(actiedatum, %s) as day from logs WHERE YEARWEEK(actiedatum)=YEARWEEK(NOW() - interval %s week) and deviceID = 4 and actieID = 5 order by volgnummer asc"
         params = ["%d",week_nr]
         return Database.get_rows(sql,params)
         

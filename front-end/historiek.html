@@ -9,16 +9,15 @@
   <link href="https://fonts.googleapis.com/css?family=Oswald:400,700" rel="stylesheet" />
   <script src="script/dataHandler.js"></script>
   <script
-			src="https://cdn.socket.io/4.4.1/socket.io.min.js"
-			integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
-			crossorigin="anonymous"
-		></script>
-  <script src="script/historiek.js"></script>
-  <title>sensors uitlezen</title>
+  src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+  integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+  crossorigin="anonymous"
+></script>
+  <script src="script/app.js"></script>
+  <title>COF-FI | logs</title>
 </head>
-<body>
+<body class="log-page">
   <main class="c-dashboard">
-    <h1>verwijder gemeten waarden vandaag</h1>
     <button class="js-clear-amount-today">🚽 delete logs vandaag</button>
     <div class="c-legende">
       <p>temperatuur sensor = <svg id="thermostat_black_24dp" xmlns="http://www.w3.org/2000/svg" width="20.636" height="20.636" viewBox="0 0 20.636 20.636">
@@ -58,8 +57,5 @@
       <td class="c-cell">200ml</div>
       </tr> -->
     </table>
-    <div class="graphdiv">
-      <img src='my_plot.png'/>
-    </div>
   </main>
 </html>
