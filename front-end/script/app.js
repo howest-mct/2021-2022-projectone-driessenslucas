@@ -20,7 +20,7 @@ let statusFSR = 0;
 let currentProgress = 0; // in milliliter
 let isTurnedOn = 0;
 // !!
-const lanIP = `${window.location.hostname}:5000`; //!!! PAS DIT AAN ZODAT DIT dynamisch wordt !!!
+const lanIP = `http://${window.location.hostname}:5000`; //!!! PAS DIT AAN ZODAT DIT dynamisch wordt !!!
 // !!
 const socketio = io(lanIP);
 //#endregion
@@ -190,7 +190,7 @@ const updatePrerequisites = function () {
 
 //#region ***  Data Access - get___                     ***********
 const getLogs = function () {
-	const url = `http://192.168.168.169:5000/api/v1/logs/`;
+	const url = `${lanIP}/api/v1/logs/`;
 	handleData(url, showLogs);
 };
 
