@@ -6,6 +6,8 @@ let CoffeeData = [];
 let weightData = [];
 let WeightLabels = [];
 let CoffeeLabels = [];
+let CoffeeChart;
+let weightChart;
 
 const createWeightChart = function () {
 	const labels = WeightLabels;
@@ -39,7 +41,7 @@ const createWeightChart = function () {
 	};
 
 	const ctx = document.querySelector('.coffee-weight');
-	const myChart = new Chart(ctx, config);
+	weightChart = new Chart(ctx, config);
 };
 
 const createCoffeeMadeChart = function () {
@@ -75,16 +77,16 @@ const createCoffeeMadeChart = function () {
 	};
 
 	const ctx = document.querySelector('.coffee-made');
-	const myChart = new Chart(ctx, config);
+	CoffeeChart = new Chart(ctx, config);
 };
 
 const updateCoffeMade = function (data) {
-	console.log(data);
 	for (const log of data) {
 		CoffeeData.push(log['Waarde']);
 		CoffeeLabels.push(log['day']);
 	}
-	createCoffeeMadeChart();
+	// console.log(CoffeeData);
+	CoffeeChart.update();
 };
 const updateWeightData = function (data) {
 	for (const log of data) {
@@ -93,7 +95,8 @@ const updateWeightData = function (data) {
 			WeightLabels.push(log['day']);
 		}
 	}
-	createWeightChart();
+	// console.log(weightData);
+	weightChart.update();
 };
 
 const getData = function () {
@@ -105,8 +108,26 @@ const listenToMobileNav = function () {
 		document.querySelector('.mobile-dropdown').classList.toggle('c-hidden');
 	});
 };
+const listenToBtn = function () {
+	document
+		.querySelector('.js-prev-week-btn')
+		.addEventListener('click', function () {
+			weightData.length = 0;
+			WeightLabels.length = 0;
+			CoffeeData.length = 0;
+			CoffeeLabels.length = 0;
+			socketio.emit('F2B_getWeightLogs', { weeknr: 1 });
+			socketio.emit('F2B_getCoffeeLogs', { weeknr: 1 });
+		});
+	document
+		.querySelector('.js-next-week-btn')
+		.addEventListener('click', function () {
+			socketio.emit('F2B_getWeightLogs', { weeknr: 0 });
+			socketio.emit('F2B_getCoffeeLogs', { weeknr: 0 });
+		});
+};
+
 socketio.on('B2F_coffeeLogs', function (data) {
-	console.log(data);
 	updateCoffeMade(data.coffee_logs);
 });
 socketio.on('B2F_weightLogs', function (data) {
@@ -115,8 +136,11 @@ socketio.on('B2F_weightLogs', function (data) {
 
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
+	createCoffeeMadeChart();
+	createWeightChart();
 	getData();
 	listenToMobileNav();
+	listenToBtn();
 };
 document.addEventListener('DOMContentLoaded', init);
 //#endregio
