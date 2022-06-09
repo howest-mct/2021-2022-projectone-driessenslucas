@@ -1,3 +1,4 @@
+from sqlite3 import paramstyle
 from .Database import Database
 
 
@@ -12,20 +13,21 @@ class DataRepository:
 
     
     @staticmethod
-    def get_status():
-        sql = "SELECT deviceID, status from logs"
-        return Database.get_rows(sql)
+    def get_logs_from_device(deviceID):
+        sql = "SELECT * from logs where deviceID = %s"
+        params = [deviceID]
+        return Database.get_rows(sql,params)
 
     @staticmethod
-    def get_historiek():
+    def get_logs():
         sql = "select * from logs order by actiedatum desc"
         return Database.get_rows(sql)
 
-    @staticmethod
-    def get_specific_historiek(id):
-        sql = "select * from logs where volgnummer = %s"
-        params = [id]
-        return Database.get_one_row(sql,params)
+    # @staticmethod
+    # def get_specific_log(id):
+    #     sql = "select * from logs where volgnummer = %s"
+    #     params = [id]
+    #     return Database.get_one_row(sql,params)
 
     @staticmethod
     def get_latest_value(id):
@@ -39,11 +41,21 @@ class DataRepository:
         params = [value,deviceid,actieid,status,commentaar]
         return Database.execute_sql(sql,params)
 
-    
-
     @staticmethod
     def delete_readings_today(datum):
         sql = "delete from logs where actiedatum like %s"
         params = [str(datum)+"%"]
         return Database.execute_sql(sql,params)
+
+    @staticmethod
+    def get_weekly_weight(week_nr):
+        sql = "SELECT Waarde,  dayname(actiedatum) as day from logs WHERE YEARWEEK(actiedatum)=YEARWEEK(NOW() - interval %s week) and deviceID = 3 order by volgnummer asc"
+        params = [week_nr]
+        return Database.get_rows(sql,params)
+
+    @staticmethod
+    def get_weekly_coffee_made(week_nr):
+        sql = "SELECT sum(Waarde) as Waarde, dayname(actiedatum) as day from logs WHERE YEARWEEK(actiedatum)=YEARWEEK(NOW() - interval %s week) and deviceID = 4 and actieID = 5 group by `day` order by volgnummer asc"
+        params = [week_nr]
+        return Database.get_rows(sql,params)
         
