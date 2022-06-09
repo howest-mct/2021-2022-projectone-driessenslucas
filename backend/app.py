@@ -207,14 +207,15 @@ def get_all_logs():
             return jsonify(status="no update",id=id), 201
     
 @app.route(endpoint + '/logs/<volgnummer>/', methods=['GET'])
-def get_specific_log(volgnummer):
+def get_logs_from_device(volgnummer):
     if request.method == 'GET':
         if volgnummer != 0:
-            data = DataRepository.get_specific_log(volgnummer)
+            data = DataRepository.get_logs_from_device(volgnummer)
             if data is not None:
                 return jsonify(data=data),200
             else:
                 return jsonify(message="niet gevonden, foutive id"),400
+    
     
 
 @app.route(endpoint + '/status/', methods=['GET'])

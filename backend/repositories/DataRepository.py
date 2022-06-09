@@ -1,3 +1,4 @@
+from sqlite3 import paramstyle
 from .Database import Database
 
 
@@ -12,20 +13,21 @@ class DataRepository:
 
     
     @staticmethod
-    def get_status():
-        sql = "SELECT deviceID, status from logs"
-        return Database.get_rows(sql)
+    def get_logs_from_device(deviceID):
+        sql = "SELECT * from logs where deviceID = %s"
+        params = [deviceID]
+        return Database.get_rows(sql,params)
 
     @staticmethod
     def get_logs():
         sql = "select * from logs order by actiedatum desc"
         return Database.get_rows(sql)
 
-    @staticmethod
-    def get_specific_log(id):
-        sql = "select * from logs where volgnummer = %s"
-        params = [id]
-        return Database.get_one_row(sql,params)
+    # @staticmethod
+    # def get_specific_log(id):
+    #     sql = "select * from logs where volgnummer = %s"
+    #     params = [id]
+    #     return Database.get_one_row(sql,params)
 
     @staticmethod
     def get_latest_value(id):

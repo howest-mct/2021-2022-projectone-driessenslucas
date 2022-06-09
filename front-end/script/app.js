@@ -194,6 +194,11 @@ const getLogs = function () {
 	handleData(url, showLogs);
 };
 
+const getLogsFromDevice = function (deviceID) {
+	const url = `${lanIP}/api/v1/logs/${deviceID}`;
+	handleData(url, showLogs);
+};
+
 //checks if there is water and if there is a coffee pot
 const checkCoffeePrerequisites = function () {
 	if (isTurnedOn == 1) {
@@ -336,6 +341,7 @@ const init = function () {
 		htmlDeletebtn = document.querySelector('.js-clear-amount-today');
 		getLogs();
 		ListenToDelete();
+		listenToID();
 	} else if (document.querySelector('.homepage')) {
 		console.log('homepage');
 		htmlWelcome = document.querySelector('.js-welcome');
