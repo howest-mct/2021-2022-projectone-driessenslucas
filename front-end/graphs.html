@@ -15,9 +15,25 @@
 		<script src="./script/graph.js"></script>
 	</head>
 	<body>
-		<div
-			class="o-layout o-layout--justify-center o-layout--align-center o-layout--align-content-center"
-		>
+		<header class="">
+			<div class="navbar">
+				<a href="./index.html">Home</a>
+				<a href="#">about</a>
+				<div class="dropdown">
+					<button class="dropbtn">
+						logs
+						<i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-content">
+						<a href="./historiek.html">all logs</a>
+						<a href="#">weekly logs</a>
+						<a href="#">coffee drank</a>
+						<a href="#">pot weight</a>
+					</div>
+				</div>
+			</div>
+		</header>
+		<div class="o-layout o-layout--align-center o-layout--align-content-center">
 			<div class="weightgraph">
 				<canvas class="coffee-weight"></canvas>
 			</div>
