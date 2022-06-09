@@ -12,7 +12,7 @@ const createChart = function () {
 		labels: labels,
 		datasets: [
 			{
-				label: 'Weight pot',
+				label: 'Weight in grams',
 				data: data2,
 				backgroundColor: 'rgb(255, 99, 132)',
 				borderColor: 'rgb(255, 99, 132)',
