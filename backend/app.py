@@ -193,6 +193,7 @@ def hallo():
 @app.route(endpoint + '/logs/', methods=['GET','DELETE'])
 def get_all_logs():
     if request.method == 'GET':
+        print('getting all logs')
         return jsonify(logs=DataRepository.get_logs()), 200
     elif request.method == 'DELETE':
         formmdata = DataRepository.json_or_formdata(request)

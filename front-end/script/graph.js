@@ -2,20 +2,21 @@ const lanIP = `${window.location.hostname}:5000`; //!!! PAS DIT AAN ZODAT DIT dy
 // !!
 const socketio = io(lanIP);
 
-let data1 = [];
-let data2 = [];
-let LabelsArr = [];
+let CoffeeData = [];
+let weightData = [];
+let WeightLabels = [];
+let CoffeeLabels = [];
 
-const createChart = function () {
-	const labels = LabelsArr;
+const createWeightChart = function () {
+	const labels = WeightLabels;
 	const data = {
 		labels: labels,
 		datasets: [
 			{
 				label: 'Weight in grams',
-				data: data2,
-				backgroundColor: 'rgb(255, 99, 132)',
-				borderColor: 'rgb(255, 99, 132)',
+				data: weightData,
+				backgroundColor: '#357560',
+				borderColor: '#357560',
 			},
 		],
 	};
@@ -37,26 +38,62 @@ const createChart = function () {
 		},
 	};
 
-	const ctx = document.getElementById('myChart');
+	const ctx = document.querySelector('.coffee-weight');
+	const myChart = new Chart(ctx, config);
+};
+
+const createCoffeeMadeChart = function () {
+	const labels = CoffeeLabels;
+	const data = {
+		labels: labels,
+		datasets: [
+			{
+				label: 'coffee made',
+				data: CoffeeData,
+				backgroundColor: '#357560',
+				borderColor: '#357560',
+				barThickness: 25,
+			},
+		],
+	};
+
+	const config = {
+		type: 'bar',
+		data: data,
+		options: {
+			responsive: true,
+			plugins: {
+				legend: {
+					position: 'top',
+				},
+				title: {
+					display: true,
+					text: 'coffee made per day this week',
+				},
+			},
+		},
+	};
+
+	const ctx = document.querySelector('.coffee-made');
 	const myChart = new Chart(ctx, config);
 };
 
 const updateCoffeMade = function (data) {
 	console.log(data);
 	for (const log of data) {
-		data1.push(log['Waarde']);
+		CoffeeData.push(log['Waarde']);
+		CoffeeLabels.push(log['day']);
 	}
-	createChart();
+	createCoffeeMadeChart();
 };
 const updateWeightData = function (data) {
-	console.log(data);
 	for (const log of data) {
 		if (log['Waarde'] > 0) {
-			data2.push(log['Waarde']);
-			LabelsArr.push(log['day']);
+			weightData.push(log['Waarde']);
+			WeightLabels.push(log['day']);
 		}
 	}
-	console.log(data2);
+	createWeightChart();
 };
 
 const getData = function () {
@@ -64,6 +101,7 @@ const getData = function () {
 	socketio.emit('F2B_getCoffeeLogs', { weeknr: 0 });
 };
 socketio.on('B2F_coffeeLogs', function (data) {
+	console.log(data);
 	updateCoffeMade(data.coffee_logs);
 });
 socketio.on('B2F_weightLogs', function (data) {

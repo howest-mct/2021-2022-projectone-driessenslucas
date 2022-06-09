@@ -411,6 +411,15 @@ span {
   #COMPONENTS
 \*------------------------------------*/
 
+.weightgraph {
+	width: 800px;
+	height: 100%;
+}
+.coffeegraph {
+	width: 800px;
+	height: 100%;
+}
+
 .c-welcome-container {
 	display: flex;
 	flex-direction: column;

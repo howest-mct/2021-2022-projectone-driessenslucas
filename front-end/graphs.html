@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>graphs</title>
+		<title>COF-FI | Coffee pot weight</title>
 		<link rel="stylesheet" href="./style/screen.css" />
 		<script
 			src="https://cdn.socket.io/4.4.1/socket.io.min.js"
@@ -12,9 +12,18 @@
 			crossorigin="anonymous"
 		></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-		<script src="./script/status.js"></script>
+		<script src="./script/graph.js"></script>
 	</head>
 	<body>
-		<canvas id="myChart" max-width="400" max-height="400"></canvas>
+		<div
+			class="o-layout o-layout--justify-center o-layout--align-center o-layout--align-content-center"
+		>
+			<div class="weightgraph">
+				<canvas class="coffee-weight"></canvas>
+			</div>
+			<div class="coffeegraph">
+				<canvas class="coffee-made"></canvas>
+			</div>
+		</div>
 	</body>
 </html>
