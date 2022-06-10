@@ -6,7 +6,6 @@ let htmlbrewButton,
 	htmlBrewingPopUp,
 	htmlOnSwitch,
 	htmlTable,
-	htmlDeletebtn,
 	htmlWave,
 	htmlPercentage,
 	htmlWelcome,
@@ -320,15 +319,6 @@ const updateView = function (value) {
 //#endregion
 
 //#region ***  Callback-No Visualisation - callback___  ***********
-const CallbackDeleteProgress = function (date) {
-	let datum = String(date);
-	console.log(datum);
-	const url = `http://192.168.168.169:5000/api/v1/historiek/`;
-	const body = JSON.stringify({
-		datum: datum,
-	});
-	handleData(url, backToIndex, null, 'DELETE', body);
-};
 
 const updatePrerequisites = function () {
 	// console.log('checking sensors');
@@ -409,30 +399,6 @@ const listenToMobileNav = function () {
 	});
 };
 
-const ListenToDelete = function () {
-	htmlDeletebtn.addEventListener('click', function () {
-		console.log('delete pressed');
-		var today = new Date();
-		var date = '';
-		if (today.getDate() < 10) {
-			date =
-				today.getFullYear() +
-				'-0' +
-				(today.getMonth() + 1) +
-				'-0' +
-				today.getDate();
-		} else {
-			date =
-				today.getFullYear() +
-				'-0' +
-				(today.getMonth() + 1) +
-				'-' +
-				today.getDate();
-		}
-		CallbackDeleteProgress(date);
-	});
-};
-
 const listenToContinue = function () {
 	console.log('welcome');
 };
@@ -506,9 +472,7 @@ const init = function () {
 	if (document.querySelector('.log-page')) {
 		console.log('getting logs...');
 		htmlTable = document.querySelector('.js-table');
-		htmlDeletebtn = document.querySelector('.js-clear-amount-today');
 		getLogs();
-		ListenToDelete();
 		ListenToDeviceIDPicker();
 	} else if (document.querySelector('.homepage')) {
 		console.log('homepage');
