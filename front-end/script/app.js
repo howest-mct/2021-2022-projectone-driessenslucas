@@ -23,6 +23,7 @@ let htmlbrewButton,
 	htmlTurnOnSpan;
 let statusWLS = 0;
 let statusFSR = 0;
+let canStart = 0;
 
 let currentProgress = 0; // in milliliter
 let isTurnedOn = 0;
@@ -307,6 +308,11 @@ const updatePrerequisites = function () {
 	} else if (statusFSR == 0) {
 		htmlFSRCheck.checked = false;
 	}
+	if (statusFSR == 1 && statusWLS == 1) {
+		htmlStartbtn.disabled = false;
+	} else {
+		htmlStartbtn.disabled = true;
+	}
 };
 
 //#endregion
@@ -330,8 +336,6 @@ const checkCoffeePrerequisites = function () {
 		htmlBrewingPopUp.classList.remove('c-hidden');
 		htmlbrewButton.disabled = true;
 		updatePrerequisites();
-		htmlStartbtn.disabled = false;
-		listenToStart();
 	} else {
 		htmlTurnOnSpan.innerHTML = `<span> Please turn on the coffee machine </span>`;
 		htmlbrewButton.disabled = false;
@@ -383,6 +387,7 @@ const listenToContinue = function () {
 
 const listenToStart = function () {
 	htmlStartbtn.addEventListener('click', function () {
+		console.log('start');
 		socketio.emit('F2B_brew');
 	});
 };
@@ -473,6 +478,7 @@ const init = function () {
 		htmlCoffeeStatus = document.querySelector('.c-coffeestatus');
 		htmlTurnOnSpan = document.querySelector('.js-turnonspan');
 		listenToSocket();
+		listenToStart();
 		listenToUI();
 		checkWelcomeMsg();
 	} else if (document.querySelector('.welcome')) {

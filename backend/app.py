@@ -241,7 +241,7 @@ def get_status():
 
 @socketio.on('connect')
 def initial_connection():
-    print('A new client connect')
+    pass
 
 @socketio.on('F2B_brew')
 def brew():

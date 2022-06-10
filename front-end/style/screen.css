@@ -426,9 +426,16 @@ span {
 
 .js-next-week-btn {
 	max-width: 80px;
+	border-radius: 2em;
+	background-color: #357560;
+	color: #fbf1e5;
 }
 .js-prev-week-btn {
 	max-width: 80px;
+	border-radius: 2em;
+
+	background-color: #357560;
+	color: #fbf1e5;
 }
 
 /*
@@ -547,7 +554,7 @@ span {
 	grid-area: closepop;
 	padding-left: 12px;
 	align-self: center;
-	color: #e9ded1;
+	color: #fbf1e5;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
@@ -637,7 +644,7 @@ body > .js-brewingpopup {
 	font-weight: bold;
 	text-indent: -28px;
 	word-spacing: 37px;
-	color: #fdf3ee;
+	color: #fbf1e5;
 	text-shadow: -1px -1px rgba(0, 0, 0, 0.15);
 	white-space: nowrap;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -819,7 +826,7 @@ body > .js-brewingpopup {
 	height: 225px;
 	margin-left: auto;
 	margin-right: auto;
-	color: #fafafa;
+	color: #fbf1e5;
 	background: #462f21;
 	background: linear-gradient(180deg, #462f21, #2b1e15);
 	box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
@@ -859,7 +866,7 @@ body > .js-brewingpopup {
 	font-size: 26px;
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
-	color: white;
+	color: #fbf1e5;
 }
 .c-tmp::after {
 	content: '°C';
@@ -980,10 +987,10 @@ h2 {
 
 .c-row:nth-child(even) {
 	background-color: #357560;
-	color: #e9ded1;
+	color: #fbf1e5;
 }
 .c-row:nth-child(even) > .c-cell {
-	color: #e9ded1;
+	color: #fbf1e5;
 }
 
 .c-cell {
@@ -1115,7 +1122,7 @@ h2 {
 .c-link-cta--inverse,
 .c-link-cta--inverse:visited,
 .c-link-cta--inverse:active {
-	color: #fff;
+	color: #fbf1e5;
 }
 
 .c-link-cta--inverse:after {
@@ -1233,7 +1240,7 @@ h2 {
 .navbar a {
 	float: left;
 	font-size: 16px;
-	color: #e9ded1;
+	color: #fbf1e5;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
@@ -1248,7 +1255,7 @@ h2 {
 	font-size: 16px;
 	border: none;
 	outline: none;
-	color: #e9ded1;
+	color: #fbf1e5;
 	padding: 14px 16px;
 	background-color: inherit;
 	font-family: inherit;
@@ -1293,7 +1300,7 @@ h2 {
 
 .dropdown-content a:hover {
 	background-color: #357560;
-	color: #e9ded1;
+	color: #fbf1e5;
 }
 
 .dropdown:hover .dropdown-content {
@@ -1325,7 +1332,7 @@ h2 {
 .mobile-dropdown a {
 	float: left;
 	font-size: 16px;
-	color: #e9ded1;
+	color: #fbf1e5;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
@@ -1341,7 +1348,7 @@ h2 {
 
 .mobile-dropdown a:hover {
 	background-color: #357560;
-	color: #e9ded1;
+	color: #fbf1e5;
 }
 .mobile-nav {
 	display: flex;
