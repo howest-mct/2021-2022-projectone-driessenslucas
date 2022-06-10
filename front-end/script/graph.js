@@ -8,6 +8,7 @@ let WeightLabels = [];
 let CoffeeLabels = [];
 let CoffeeChart;
 let weightChart;
+let weekIndex = 0;
 
 const createWeightChart = function () {
 	const labels = WeightLabels;
@@ -116,14 +117,20 @@ const listenToBtn = function () {
 			WeightLabels.length = 0;
 			CoffeeData.length = 0;
 			CoffeeLabels.length = 0;
-			socketio.emit('F2B_getWeightLogs', { weeknr: 1 });
-			socketio.emit('F2B_getCoffeeLogs', { weeknr: 1 });
+			weekIndex++;
+			socketio.emit('F2B_getWeightLogs', { weeknr: weekIndex });
+			socketio.emit('F2B_getCoffeeLogs', { weeknr: weekIndex });
 		});
 	document
 		.querySelector('.js-next-week-btn')
 		.addEventListener('click', function () {
-			socketio.emit('F2B_getWeightLogs', { weeknr: 0 });
-			socketio.emit('F2B_getCoffeeLogs', { weeknr: 0 });
+			weightData.length = 0;
+			WeightLabels.length = 0;
+			CoffeeData.length = 0;
+			CoffeeLabels.length = 0;
+			weekIndex--;
+			socketio.emit('F2B_getWeightLogs', { weeknr: weekIndex });
+			socketio.emit('F2B_getCoffeeLogs', { weeknr: weekIndex });
 		});
 };
 

@@ -193,7 +193,6 @@ def hallo():
 @app.route(endpoint + '/logs/', methods=['GET','DELETE'])
 def get_all_logs():
     if request.method == 'GET':
-        print('getting all logs')
         return jsonify(logs=DataRepository.get_logs()), 200
     elif request.method == 'DELETE':
         formmdata = DataRepository.json_or_formdata(request)
@@ -255,12 +254,10 @@ def turn_off():
 
 @socketio.on('F2B_getWeightLogs')
 def get_weight_logs(data):
-    print('getting weight logs')
     socketio.emit('B2F_weightLogs', {'weight_logs': DataRepository.get_weekly_weight(data['weeknr'])})
 
 @socketio.on('F2B_getCoffeeLogs')
 def get_coffee_logs(data):
-    print('getting coffee logs')
     socketio.emit('B2F_coffeeLogs', {'coffee_logs': DataRepository.get_weekly_coffee_made(data['weeknr'])})
 
 
