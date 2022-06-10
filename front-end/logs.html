@@ -28,9 +28,8 @@
         </button>
         <div class="dropdown-content">
           <a href="./logs.html">all logs</a>
-						<a href="./graphs.html">weekly logs</a>
-						<a href="./graphs.html">coffee drank</a>
-						<a href="./graphs.html">pot weight</a>
+					<a href="./weeklylogs.html">weekly logs</a>
+					<a href="./graphs.html">graphs</a>
         </div>
       </div>
     </div>
@@ -51,8 +50,8 @@
         <a href="./index.html">Home</a>
         <a href="#">about</a>
         <a href="./logs.html">all logs</a>
-        <a href="./graphs.html">coffee drank</a>
-        <a href="./graphs.html">pot weight</a>
+				<a href="./weeklylogs.html">weekly logs</a>
+				<a href="./graphs.html">graphs</a>
       </div>
     </div>
   </header>
@@ -69,7 +68,14 @@
           <button class="js-clear-amount-today">🚽 delete logs vandaag</button>
         </div>
         <div class="deviceInput">
-          <input type="number" name="deviceid" id="">
+          <label for="deviceid">select device: </label>
+          <select name="deviceid" class="deviceID_picker">
+            <option value="0">all devices</option>
+            <option value="1">water level</option>
+            <option value="2">temperature</option>
+            <option value="3">weight</option>
+            <option value="4">coffee machine</option>
+          </select>
         </div>
       </div>
       <div class="o-layout__item u-1-of-2">
@@ -102,6 +108,46 @@
               </g>
             </svg>
             </p>
+            <p>coffee machine = <svg
+              id='coffee_maker_black_24dp'
+              xmlns='http://www.w3.org/2000/svg'
+              width='31'
+              height='31'
+              viewBox='0 0 139.204 128.469'
+            >
+              <g id='Group_3' data-name='Group 3'>
+                <path
+                  id='Path_1'
+                  data-name='Path 1'
+                  d='M0,0H139.2V128.469H0Z'
+                  fill='none'
+                />
+              </g>
+              <g
+                id='Group_5'
+                data-name='Group 5'
+                transform='translate(23.201 10.706)'
+              >
+                <g id='Group_4' data-name='Group 4'>
+                  <path
+                    id='Path_2'
+                    data-name='Path 2'
+                    d='M85.2,23.412V12.706H96.8V2H15.6C9.22,2,4,6.818,4,12.706V98.352c0,5.888,5.22,10.706,11.6,10.706H96.8V98.352H73.428C80.562,93.481,85.2,85.719,85.2,76.94V50.176h-58V76.94c0,8.779,4.7,16.54,11.774,21.412H15.6V12.706H27.2V23.412A5.607,5.607,0,0,0,33,28.764H79.4A5.606,5.606,0,0,0,85.2,23.412Z'
+                    transform='translate(-4 -2)'
+                  />
+                  <ellipse
+                    id='Ellipse_2'
+                    data-name='Ellipse 2'
+                    cx='5.536'
+                    cy='5.109'
+                    rx='5.536'
+                    ry='5.109'
+                    transform='translate(45.45 34.257)'
+                  />
+                </g>
+              </g>
+            </svg>
+          </p>
           </div>
         </div>
     

@@ -14,7 +14,7 @@ class DataRepository:
     
     @staticmethod
     def get_logs_from_device(deviceID):
-        sql = "SELECT * from logs where deviceID = %s"
+        sql = "SELECT * from logs where deviceID = %s order by volgnummer desc"
         params = [deviceID]
         return Database.get_rows(sql,params)
 

@@ -414,6 +414,16 @@ span {
 /*------------------------------------*\
   #COMPONENTS
 \*------------------------------------*/
+
+/*
+	Components: graphs/logs
+	---
+	displays logs in a graph format
+  */
+
+.deviceID_picker {
+}
+
 .c-graph-buttons {
 	display: flex;
 	justify-content: center;
