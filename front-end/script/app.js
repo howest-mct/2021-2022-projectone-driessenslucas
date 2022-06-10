@@ -15,7 +15,12 @@ let htmlbrewButton,
 	specificDeviceID,
 	meeteenheid,
 	icon,
-	htmlClosePopUp;
+	htmlClosePopUp,
+	htmlDeviceIDPicker,
+	htmlWeekSelector,
+	htmlHamburger,
+	htmlCoffeeStatus,
+	htmlTurnOnSpan;
 let statusWLS = 0;
 let statusFSR = 0;
 
@@ -245,7 +250,7 @@ const showLogs = function (data) {
 };
 
 const ResetPopUpHtml = function () {
-	document.querySelector('.c-coffeestatus').innerHTML = '';
+	htmlCoffeeStatus.innerHTML = '';
 	document.querySelector('.c-checkdiv').classList.remove('c-hidden');
 	htmlStartbtn.disabled = false;
 	htmlStartbtn.innerHTML = `Start`;
@@ -254,50 +259,20 @@ const ResetPopUpHtml = function () {
 const showCoffeeStatus = function (status) {
 	document.querySelector('.c-checkdiv').classList.add('c-hidden');
 	if (status == 1) {
-		document.querySelector(
-			'.c-coffeestatus'
-		).innerHTML = `<span>Coffee is brewing</span>`;
+		htmlCoffeeStatus.innerHTML = `<span>Coffee is brewing</span>`;
 		htmlStartbtn.disabled = true;
 		htmlStartbtn.innerHTML = `Brewing...`;
 	} else if (status == 0) {
-		document.querySelector(
-			'.c-coffeestatus'
-		).innerHTML = `<span>Coffee is done</span>`;
+		htmlCoffeeStatus.innerHTML = `<span>Coffee is done</span>`;
 		htmlStartbtn.disabled = true;
 		htmlStartbtn.innerHTML = `Enjoy!`;
 	}
 };
 
 const RemoveTurnOnMsg = function () {
-	document.querySelector('.js-turnonspan').innerHTML = '';
+	htmlTurnOnSpan.innerHTML = '';
 	updatePrerequisites();
 };
-
-// const showMakeCoffee = function (data) {
-// 	if (data == 1) {
-// 		var seconds = 10; //120 seconden na development
-// 		var timer;
-// 		function myFunction() {
-// 			if (seconds < 10) {
-// 				//(seconds < 120) na development
-// 				document.querySelector(
-// 					'.clockdiv'
-// 				).innerHTML = `time remaining: ${seconds} seconds`;
-// 			}
-// 			if (seconds > 0) {
-// 				seconds--;
-// 			}
-// 		}
-// 		if (!timer) {
-// 			timer = window.setInterval(function () {
-// 				myFunction();
-// 			}, 1000);
-// 		}
-// 		document.querySelector(
-// 			'.clockdiv'
-// 		).innerHTML = `time remaining: 10 seconds`;
-// 	}
-// };
 
 const updateTemp = function (value) {
 	document.querySelector('.js-temp').innerHTML = `temp: ${value}`;
@@ -352,15 +327,13 @@ const getLogsFromDevice = function (deviceID) {
 const checkCoffeePrerequisites = function () {
 	if (isTurnedOn == 1) {
 		//RemoveTurnOnMsg();
-		document.querySelector('.js-brewingpopup').classList.remove('c-hidden');
+		htmlBrewingPopUp.classList.remove('c-hidden');
 		htmlbrewButton.disabled = true;
 		updatePrerequisites();
 		htmlStartbtn.disabled = false;
 		listenToStart();
 	} else {
-		document.querySelector(
-			'.js-turnonspan'
-		).innerHTML = `<span> Please turn on the coffee machine </span>`;
+		htmlTurnOnSpan.innerHTML = `<span> Please turn on the coffee machine </span>`;
 		htmlbrewButton.disabled = false;
 	}
 };
@@ -384,17 +357,22 @@ const checkWelcomeMsg = function () {
 //#endregion
 
 //#region ***  Event Listeners - listenTo___            ***********
+const listenToWeekSelector = function () {
+	htmlWeekSelector.addEventListener('change', function () {
+		let weekNr = htmlWeekSelector.value;
+		getLogs_week(weekNr);
+	});
+};
+
 const ListenToDeviceIDPicker = function () {
-	document
-		.querySelector('.deviceID_picker')
-		.addEventListener('change', function () {
-			let deviceID = document.querySelector('.deviceID_picker').value;
-			getLogsFromDevice(deviceID);
-		});
+	htmlDeviceIDPicker.addEventListener('change', function () {
+		let deviceID = document.querySelector('.deviceID_picker').value;
+		getLogsFromDevice(deviceID);
+	});
 };
 
 const listenToMobileNav = function () {
-	document.querySelector('.hamburger').addEventListener('click', function () {
+	htmlHamburger.addEventListener('click', function () {
 		document.querySelector('.mobile-dropdown').classList.toggle('c-hidden');
 	});
 };
@@ -425,7 +403,7 @@ const listenToUI = function () {
 		}
 	});
 	htmlClosePopUp.addEventListener('click', function () {
-		document.querySelector('.js-brewingpopup').classList.add('c-hidden');
+		htmlBrewingPopUp.classList.add('c-hidden');
 		htmlbrewButton.disabled = false;
 		ResetPopUpHtml();
 	});
@@ -468,10 +446,16 @@ const listenToSocket = function () {
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
 	console.log('dom loaded');
+	htmlHamburger = document.querySelector('.hamburger');
 	listenToMobileNav();
+	if (document.querySelector('.weekly-logs')) {
+		htmlWeekSelector = document.querySelector('.week-selector');
+		listenToWeekSelector();
+	}
 	if (document.querySelector('.log-page')) {
 		console.log('getting logs...');
 		htmlTable = document.querySelector('.js-table');
+		htmlDeviceIDPicker = document.querySelector('.deviceID_picker');
 		getLogs();
 		ListenToDeviceIDPicker();
 	} else if (document.querySelector('.homepage')) {
@@ -486,6 +470,8 @@ const init = function () {
 		htmlFSRCheck = document.querySelector('.js-fsrcheck');
 		htmlStartbtn = document.querySelector('.js-startbtn');
 		htmlClosePopUp = document.querySelector('.c-closepopup');
+		htmlCoffeeStatus = document.querySelector('.c-coffeestatus');
+		htmlTurnOnSpan = document.querySelector('.js-turnonspan');
 		listenToSocket();
 		listenToUI();
 		checkWelcomeMsg();

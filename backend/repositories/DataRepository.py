@@ -23,11 +23,11 @@ class DataRepository:
         sql = "select * from logs order by actiedatum desc"
         return Database.get_rows(sql)
 
-    # @staticmethod
-    # def get_specific_log(id):
-    #     sql = "select * from logs where volgnummer = %s"
-    #     params = [id]
-    #     return Database.get_one_row(sql,params)
+    @staticmethod
+    def get_weekly_log(week_nr):
+        sql = "select volgnummer, dayname(actiedatum) as day, Waarde, commentaar,deviceid,actieid,status from logs where YEARWEEK(actiedatum)=YEARWEEK(NOW() - interval %s week) order by volgnummer asc"
+        params = [week_nr]
+        return Database.get_one_row(sql,params)
 
     @staticmethod
     def get_latest_value(id):

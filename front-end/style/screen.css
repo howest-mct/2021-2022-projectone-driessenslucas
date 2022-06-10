@@ -415,6 +415,22 @@ span {
   #COMPONENTS
 \*------------------------------------*/
 
+.prev-week {
+	display: flex;
+	justify-content: flex-end;
+}
+.next-week {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.js-next-week-btn {
+	max-width: 80px;
+}
+.js-prev-week-btn {
+	max-width: 80px;
+}
+
 /*
 	Components: graphs/logs
 	---

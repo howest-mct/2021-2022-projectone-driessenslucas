@@ -51,7 +51,7 @@ const createCoffeeMadeChart = function () {
 		labels: labels,
 		datasets: [
 			{
-				label: 'coffee made',
+				label: 'times coffee brewed',
 				data: CoffeeData,
 				backgroundColor: '#357560',
 				borderColor: '#357560',
@@ -129,6 +129,17 @@ const listenToBtn = function () {
 			CoffeeData.length = 0;
 			CoffeeLabels.length = 0;
 			weekIndex--;
+			socketio.emit('F2B_getWeightLogs', { weeknr: weekIndex });
+			socketio.emit('F2B_getCoffeeLogs', { weeknr: weekIndex });
+		});
+	document
+		.querySelector('.js-current-week-btn')
+		.addEventListener('click', function () {
+			weightData.length = 0;
+			WeightLabels.length = 0;
+			CoffeeData.length = 0;
+			CoffeeLabels.length = 0;
+			weekIndex = 0;
 			socketio.emit('F2B_getWeightLogs', { weeknr: weekIndex });
 			socketio.emit('F2B_getCoffeeLogs', { weeknr: weekIndex });
 		});

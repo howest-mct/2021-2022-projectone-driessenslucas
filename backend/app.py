@@ -214,9 +214,17 @@ def get_logs_from_device(volgnummer):
                 return jsonify(data=data),200
             else:
                 return jsonify(message="niet gevonden, foutive id"),400
-    
-    
 
+@app.route(endpoint + '/weeklylogs/<weeknr>/', methods=['GET'])
+def get_weekly_logs(weeknr):
+    if request.method == 'GET':
+        if weeknr != 0:
+            data = DataRepository.get_weekly_logs(weeknr)
+            if data is not None:
+                return jsonify(data=data),200
+            else:
+                return jsonify(message="week niet gevonden"),400
+    
 @app.route(endpoint + '/status/', methods=['GET'])
 def get_status():
     if request.method == 'GET':
