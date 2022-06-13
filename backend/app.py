@@ -252,13 +252,15 @@ def brew():
     
 @socketio.on('F2B_turn_on')
 def turn_on():
-    print('turn on')
-    turn_on_coffee_machine()
+    pass
+    # print('turn on')
+    # turn_on_coffee_machine()
 
 @socketio.on('F2B_turn_off')
 def turn_off():
-    print('turn off')
-    turn_off_coffee_machine()
+    pass
+    # print('turn off')
+    # turn_off_coffee_machine()
 
 @socketio.on('F2B_getWeightLogs')
 def get_weight_logs(data):

@@ -415,6 +415,13 @@ span {
   #COMPONENTS
 \*------------------------------------*/
 
+.js-fsrcheck {
+	margin-top: -30px;
+}
+.js-wlscheck {
+	margin-top: -30px;
+}
+
 .prev-week {
 	display: flex;
 	justify-content: flex-end;
@@ -425,15 +432,28 @@ span {
 }
 
 .js-next-week-btn {
-	max-width: 80px;
+	max-width: 90px;
 	border-radius: 2em;
+	background-color: #357560;
+	padding: 8px;
+	color: #fbf1e5;
+	margin-left: 12px;
+	border: 1px solid #202024;
+}
+.js-prev-week-btn {
+	max-width: 90px;
+	border-radius: 2em;
+	padding: 8px;
+	margin-right: 12px;
+	border: 1px solid #202024;
 	background-color: #357560;
 	color: #fbf1e5;
 }
-.js-prev-week-btn {
-	max-width: 80px;
+.js-current-week-btn {
 	border-radius: 2em;
-
+	border: 1px solid #202024;
+	padding: 8px;
+	margin-top: 12px;
 	background-color: #357560;
 	color: #fbf1e5;
 }
@@ -670,13 +690,15 @@ body > .js-brewingpopup {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+
+	padding-top: 24px;
 }
 .c-welcome {
 	text-align: center;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
+	padding-top: 24px;
 	flex-direction: column;
 }
 @media (min-width: 968px) {
@@ -1357,7 +1379,7 @@ h2 {
 .hamburger {
 	align-self: flex-end;
 	padding-bottom: 8px;
-	padding-top: 12px;
+	padding-top: 32px;
 	padding-right: 12px;
 	margin-bottom: -120px;
 	z-index: 2000;

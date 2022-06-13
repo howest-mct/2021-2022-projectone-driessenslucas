@@ -22,7 +22,7 @@ let htmlbrewButton,
 	htmlCoffeeStatus,
 	htmlTurnOnSpan;
 let statusWLS = 0;
-let statusFSR = 0;
+let statusFSR = 1;
 let canStart = 0;
 
 let currentProgress = 0; // in milliliter
@@ -36,6 +36,7 @@ const socketio = io(lanIP);
 //#region ***  Callback-Visualisation - show___         ***********
 const showSpecificLogs = function (data) {
 	console.log(data);
+	let value = ``;
 	let html = '';
 	html += `<tr class="c-row js-header">
 	<th>id</th>
@@ -44,9 +45,11 @@ const showSpecificLogs = function (data) {
 	<th>device</th>
 	  </tr>`;
 	for (let log of data.data) {
+		value = '';
 		icon = ``;
 		meeteenheid = ``;
 		if (specificDeviceID == 1) {
+			value = Math.round(log.Waarde, 2);
 			meeteenheid = '%';
 			icon = `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20">
 			<g id="water_drop_black_24dp" transform="translate(0 -0.238)">
@@ -56,6 +59,7 @@ const showSpecificLogs = function (data) {
 		  </svg>
 		  `;
 		} else if (specificDeviceID == 2) {
+			value = Math.round(log.Waarde, 2);
 			meeteenheid = '°C';
 			icon = `<svg id="thermostat_black_24dp" xmlns="http://www.w3.org/2000/svg" width="20.636" height="20.636" viewBox="0 0 20.636 20.636">
 			<g id="Group_8" data-name="Group 8">
@@ -67,6 +71,7 @@ const showSpecificLogs = function (data) {
 		  </svg>
 		  `;
 		} else if (specificDeviceID == 3) {
+			value = Math.round(log.Waarde, 2);
 			meeteenheid = 'g';
 			icon = `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
 			<g id="scale_black_24dp" transform="translate(0 0.02)">
@@ -81,9 +86,9 @@ const showSpecificLogs = function (data) {
 		  `;
 		} else if (specificDeviceID == 4) {
 			if (log.Waarde == 1) {
-				log.Waarde = 'Aan';
+				value = 'Aan';
 			} else if (log.Waarde == 0) {
-				log.Waarde = 'Uit';
+				value = 'Uit';
 			}
 			icon = `
 			<svg
@@ -132,7 +137,7 @@ const showSpecificLogs = function (data) {
 		<tr class="c-row">
         <td class="c-cell">${log.volgnummer}</div>
         <td class="c-cell">${log.actiedatum}</div>
-		<td class="c-cell">${Math.round(log.Waarde, 2)} ${meeteenheid}</div>
+		<td class="c-cell">${value} ${meeteenheid}</div>
         <td class="c-cell">${icon}</div>
         </tr>`;
 	}
@@ -299,14 +304,14 @@ const updateView = function (value) {
 const updatePrerequisites = function () {
 	// console.log('checking sensors');
 	if (statusWLS == 1) {
-		htmlWLSCheck.checked = true;
+		document.querySelector('.js-wlscheck').classList.remove('c-hidden');
 	} else if (statusWLS == 0) {
-		htmlWLSCheck.checked = false;
+		document.querySelector('.js-wlscheck').classList.add('c-hidden');
 	}
 	if (statusFSR == 1) {
-		htmlFSRCheck.checked = true;
+		document.querySelector('.js-fsrcheck').classList.remove('c-hidden');
 	} else if (statusFSR == 0) {
-		htmlFSRCheck.checked = false;
+		document.querySelector('.js-fsrcheck').classList.add('c-hidden');
 	}
 	if (statusFSR == 1 && statusWLS == 1) {
 		htmlStartbtn.disabled = false;
@@ -324,9 +329,14 @@ const getLogs = function () {
 };
 
 const getLogsFromDevice = function (deviceID) {
-	const url = `${lanIP}/api/v1/logs/${deviceID}/`;
-	specificDeviceID = deviceID;
-	handleData(url, showSpecificLogs);
+	if (deviceID != 0) {
+		const url = `${lanIP}/api/v1/logs/${deviceID}/`;
+		specificDeviceID = deviceID;
+		handleData(url, showSpecificLogs);
+	} else if (deviceID == 0) {
+		const url = `${lanIP}/api/v1/logs/`;
+		handleData(url, showSpecificLogs);
+	}
 };
 
 //checks if there is water and if there is a coffee pot
