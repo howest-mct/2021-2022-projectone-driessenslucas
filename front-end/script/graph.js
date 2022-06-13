@@ -28,14 +28,21 @@ const createWeightChart = function () {
 		type: 'line',
 		data: data,
 		options: {
+			maintainAspectRatio: false,
+			scales: {
+				y: {
+					beginAtZero: false,
+				},
+			},
 			responsive: true,
 			plugins: {
 				legend: {
 					position: 'top',
+					labels: { font: { size: 14 } },
 				},
 				title: {
 					display: true,
-					text: 'Weight of coffee pot this week',
+					text: 'Weight of coffee pot per week',
 				},
 			},
 		},
@@ -64,6 +71,12 @@ const createCoffeeMadeChart = function () {
 		type: 'bar',
 		data: data,
 		options: {
+			maintainAspectRatio: false,
+			scales: {
+				y: {
+					beginAtZero: true,
+				},
+			},
 			responsive: true,
 			plugins: {
 				legend: {
@@ -71,7 +84,7 @@ const createCoffeeMadeChart = function () {
 				},
 				title: {
 					display: true,
-					text: 'coffee made per day this week',
+					text: 'coffee made per day in a week',
 				},
 			},
 		},

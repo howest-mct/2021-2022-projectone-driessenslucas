@@ -51,7 +51,7 @@ body {
  */
 
 ::selection {
-	background: #5051db;
+	background: #357560;
 	color: white;
 	text-shadow: none;
 }
@@ -415,6 +415,16 @@ span {
   #COMPONENTS
 \*------------------------------------*/
 
+.deviceID_picker {
+	border-radius: 4px;
+}
+
+.c-deviceInputDiv {
+	padding-left: 8px;
+	align-self: flex-end;
+	margin-bottom: 24px;
+}
+
 .js-fsrcheck {
 	margin-top: -30px;
 }
@@ -464,20 +474,12 @@ span {
 	displays logs in a graph format
   */
 
-.deviceID_picker {
-}
-
 .c-graph-buttons {
 	display: flex;
 	justify-content: center;
 }
 .c-graphs {
-	justify-content: flex-start;
-}
-@media (min-width: 768px) {
-	.c-graphs {
-		justify-content: center;
-	}
+	justify-content: center;
 }
 
 .c-legendediv {
@@ -487,6 +489,8 @@ span {
 
 .weightgraph {
 	min-height: 300px;
+	height: 100%;
+	max-width: 90%;
 }
 .coffee-weight {
 	min-height: 300px;
@@ -494,13 +498,25 @@ span {
 }
 .coffeegraph {
 	min-height: 300px;
+	max-width: 90%;
+	height: 100%;
 }
 .coffee-made {
 	overflow: hidden;
-
 	min-height: 300px;
 }
-
+@media (max-width: 768px) {
+	.weightgraph {
+		max-width: 100%;
+		height: 45%;
+		font-size: 14px;
+	}
+	.coffeegraph {
+		max-width: 100%;
+		height: 45%;
+		font-size: 14px;
+	}
+}
 /*
     Component: popup
     ---
@@ -690,18 +706,17 @@ body > .js-brewingpopup {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-
-	padding-top: 24px;
+	padding-top: 14px;
 }
 .c-welcome {
 	text-align: center;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding-top: 24px;
+	padding-top: 14px;
 	flex-direction: column;
 }
-@media (min-width: 968px) {
+@media (min-width: 1224px) {
 	.c-welcome {
 		padding-top: 50px;
 	}

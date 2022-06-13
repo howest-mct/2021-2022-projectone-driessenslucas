@@ -22,7 +22,7 @@ let htmlbrewButton,
 	htmlCoffeeStatus,
 	htmlTurnOnSpan;
 let statusWLS = 0;
-let statusFSR = 1;
+let statusFSR = 0;
 let canStart = 0;
 
 let currentProgress = 0; // in milliliter
@@ -335,7 +335,7 @@ const getLogsFromDevice = function (deviceID) {
 		handleData(url, showSpecificLogs);
 	} else if (deviceID == 0) {
 		const url = `${lanIP}/api/v1/logs/`;
-		handleData(url, showSpecificLogs);
+		handleData(url, showLogs);
 	}
 };
 
@@ -371,12 +371,12 @@ const checkWelcomeMsg = function () {
 //#endregion
 
 //#region ***  Event Listeners - listenTo___            ***********
-const listenToWeekSelector = function () {
-	htmlWeekSelector.addEventListener('change', function () {
-		let weekNr = htmlWeekSelector.value;
-		getLogs_week(weekNr);
-	});
-};
+// const listenToWeekSelector = function () {
+// 	htmlWeekSelector.addEventListener('change', function () {
+// 		let weekNr = htmlWeekSelector.value;
+// 		getLogs_week(weekNr);
+// 	});
+// };
 
 const ListenToDeviceIDPicker = function () {
 	htmlDeviceIDPicker.addEventListener('change', function () {

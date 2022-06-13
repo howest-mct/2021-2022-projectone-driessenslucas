@@ -100,16 +100,15 @@ def make_coffee():
     
 
 def write_lcd():
-    lcd.reset_lcd()
     lcd.init_LCD()
     lcd.write_line("coffee machine  ")
     ips = str(check_output(['hostname','--all-ip-addresses']))
     ip_addr = ips.split(' ')
-    
+    print(ip_addr)
     while True:
         lcd.next_line()
-        lcd.write_line(f"{ip_addr[0][2:]}   ")
-        time.sleep(2)
+        lcd.write_line(f"{ip_addr[1]}   ")
+        time.sleep(4)
         lcd.next_line()
         lcd.write_line(f"temp: {tmp(False)}C      ")
         time.sleep(2)
@@ -158,7 +157,7 @@ def fsr(write_to_db):
     commentaar = "read coffee pot weight"
     if weight < 0:
         weight = 0
-    if weight > 0:
+    if weight > 10:
             status = 1
     if weight is not None and write_to_db:
         
@@ -252,15 +251,15 @@ def brew():
     
 @socketio.on('F2B_turn_on')
 def turn_on():
-    pass
-    # print('turn on')
-    # turn_on_coffee_machine()
+    
+    print('turn on')
+    turn_on_coffee_machine()
 
 @socketio.on('F2B_turn_off')
 def turn_off():
-    pass
-    # print('turn off')
-    # turn_off_coffee_machine()
+    
+    print('turn off')
+    turn_off_coffee_machine()
 
 @socketio.on('F2B_getWeightLogs')
 def get_weight_logs(data):
@@ -363,9 +362,9 @@ if __name__ == '__main__':
     try:
         GPIO.output(23, GPIO.HIGH)
         GPIO.output(24, GPIO.HIGH)
-        # start_thread()
-        # start_thread2()
-        # start_thread3()
+        start_thread()
+        start_thread2()
+        start_thread3()
         start_chrome_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')
