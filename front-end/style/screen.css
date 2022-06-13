@@ -611,6 +611,7 @@ span {
 	width: 232px;
 	height: 39px;
 	border-radius: 20px;
+	justify-content: center;
 }
 .c-popup-header--text {
 	grid-area: title;
@@ -624,12 +625,11 @@ span {
 .c-closepopup {
 	grid-area: closepop;
 	padding-left: 12px;
-	align-self: center;
 	color: #fbf1e5;
-	float: right;
 	font-size: 28px;
 	font-weight: bold;
 	text-align: center;
+	margin-top: -4px;
 }
 .c-closepopup:hover,
 .c-closepopup:focus {
@@ -697,6 +697,7 @@ body > .js-brewingpopup {
 	cursor: pointer;
 	background-color: #462f20;
 	transition: background-color ease 0.3s;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .js-onswitch:before {
@@ -708,7 +709,7 @@ body > .js-brewingpopup {
 	height: 21.5px;
 	background: #fdf3ee;
 	left: 2px;
-	top: 2px;
+	top: 1.5px;
 	border-radius: 50%;
 	font: 10px/21.5px 'Titillium Web';
 	text-transform: uppercase;
@@ -1434,7 +1435,7 @@ h2 {
 .hamburger {
 	align-self: flex-end;
 	padding-bottom: 8px;
-	padding-top: 32px;
+	padding-top: 16px;
 	padding-right: 12px;
 	margin-bottom: -120px;
 	z-index: 2000;
