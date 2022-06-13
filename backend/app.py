@@ -104,7 +104,6 @@ def write_lcd():
     lcd.write_line("coffee machine  ")
     ips = str(check_output(['hostname','--all-ip-addresses']))
     ip_addr = ips.split(' ')
-    print(ip_addr)
     while True:
         lcd.next_line()
         lcd.write_line(f"{ip_addr[1]}   ")

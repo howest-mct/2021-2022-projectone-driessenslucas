@@ -12,6 +12,7 @@ let htmlbrewButton,
 	htmlFSRCheck,
 	htmlWLSCheck,
 	htmlStartbtn,
+	htmlBackToTopBtn,
 	specificDeviceID,
 	meeteenheid,
 	icon,
@@ -377,6 +378,20 @@ const checkWelcomeMsg = function () {
 // 		getLogs_week(weekNr);
 // 	});
 // };
+const scrollFunction = function () {
+	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+		htmlBackToTopBtn.style.display = 'block';
+	} else {
+		htmlBackToTopBtn.style.display = 'none';
+	}
+};
+
+const listenToBackToTop = function () {
+	htmlBackToTopBtn.addEventListener('click', function () {
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+	});
+};
 
 const ListenToDeviceIDPicker = function () {
 	htmlDeviceIDPicker.addEventListener('change', function () {
@@ -463,14 +478,15 @@ const init = function () {
 	console.log('dom loaded');
 	htmlHamburger = document.querySelector('.hamburger');
 	listenToMobileNav();
-	if (document.querySelector('.weekly-logs')) {
-		htmlWeekSelector = document.querySelector('.week-selector');
-		listenToWeekSelector();
-	}
 	if (document.querySelector('.log-page')) {
 		console.log('getting logs...');
 		htmlTable = document.querySelector('.js-table');
 		htmlDeviceIDPicker = document.querySelector('.deviceID_picker');
+		htmlBackToTopBtn = document.querySelector('.backtotop-btn');
+		window.onscroll = function () {
+			scrollFunction();
+		};
+		listenToBackToTop();
 		getLogs();
 		ListenToDeviceIDPicker();
 	} else if (document.querySelector('.homepage')) {

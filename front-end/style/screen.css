@@ -414,6 +414,23 @@ span {
 /*------------------------------------*\
   #COMPONENTS
 \*------------------------------------*/
+.backtotop-btn {
+	display: none; /* Hidden by default */
+	position: fixed; /* Fixed/sticky position */
+	bottom: 20px; /* Place the button at the bottom of the page */
+	right: 30px; /* Place the button 30px from the right */
+	z-index: 99; /* Make sure it does not overlap */
+	border: none; /* Remove borders */
+	outline: none; /* Remove outline */
+	background-color: #357560; /* Set a background color */
+	color: #e9ded1; /* Text color */
+	cursor: pointer; /* Add a mouse pointer on hover */
+	padding: 5px; /* Some padding */
+	padding-bottom: 0px;
+	box-shadow: 0px 0px 15px #e9ded1;
+	border-radius: 10px; /* Rounded corners */
+	font-size: 18px; /* Increase font size */
+}
 
 .deviceID_picker {
 	border-radius: 4px;
@@ -1035,6 +1052,7 @@ h2 {
 	padding: 1rem;
 	width: 80px;
 	color: #3b4727;
+	border-radius: 4px;
 }
 
 .c-cell + .c-cell {
