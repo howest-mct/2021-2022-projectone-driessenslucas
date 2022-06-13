@@ -434,6 +434,7 @@ span {
 
 .deviceID_picker {
 	border-radius: 4px;
+	font-family: 'Titillium Web', sans-serif;
 }
 
 .c-deviceInputDiv {
@@ -443,10 +444,10 @@ span {
 }
 
 .js-fsrcheck {
-	margin-top: -30px;
+	margin-top: -34px;
 }
 .js-wlscheck {
-	margin-top: -30px;
+	margin-top: -34px;
 }
 
 .prev-week {
@@ -466,6 +467,7 @@ span {
 	color: #fbf1e5;
 	margin-left: 12px;
 	border: 1px solid #202024;
+	font-family: 'Titillium Web', sans-serif;
 }
 .js-prev-week-btn {
 	max-width: 90px;
@@ -475,6 +477,7 @@ span {
 	border: 1px solid #202024;
 	background-color: #357560;
 	color: #fbf1e5;
+	font-family: 'Titillium Web', sans-serif;
 }
 .js-current-week-btn {
 	border-radius: 2em;
@@ -483,6 +486,7 @@ span {
 	margin-top: 12px;
 	background-color: #357560;
 	color: #fbf1e5;
+	font-family: 'Titillium Web', sans-serif;
 }
 
 /*
@@ -557,6 +561,18 @@ span {
 	align-self: center;
 	margin-left: 6px;
 }
+.fsrtext {
+	text-align: center;
+	justify-content: center;
+	align-self: center;
+	padding-top: 14px;
+}
+.wlstext {
+	text-align: center;
+	justify-content: center;
+	align-self: center;
+	padding-top: 14px;
+}
 .fsr {
 	border: 3px solid #7c7573;
 	border-radius: 40px;
@@ -564,8 +580,10 @@ span {
 	height: 64px;
 	text-align: center;
 	align-self: center;
+	justify-content: center;
 	margin-left: 6px;
 }
+
 .c-checkdiv {
 	grid-area: checkdiv;
 	display: flex;
@@ -846,7 +864,7 @@ body > .js-brewingpopup {
 .js-startbtn {
 	width: 210px;
 	height: 75px;
-	padding-top: 16px;
+	padding-top: 8px;
 	padding-bottom: 25px;
 	border-radius: 20px;
 	background-color: #357560;
@@ -856,7 +874,7 @@ body > .js-brewingpopup {
 .js-brewbtn {
 	width: 230px;
 	height: 75px;
-	padding-top: 16px;
+	padding-top: 8px;
 	padding-bottom: 25px;
 	border-radius: 8px;
 	background-color: #357560;
@@ -1195,23 +1213,27 @@ h2 {
 
 .c-lead {
 	font-weight: 200;
+	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-tiny {
 	display: block;
-	padding-top: 8px;
 	font-size: 14px;
 	line-height: 14px;
+	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-sm {
 	font-weight: 200;
 	font-size: 12px;
+	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-bt {
 	font-size: 32px;
 	font-weight: 600;
+	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-bold {
 	font-weight: 700;
+	font-family: 'Titillium Web', sans-serif;
 }
 
 .c-lead--lg {
