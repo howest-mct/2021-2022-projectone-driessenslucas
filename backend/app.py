@@ -75,14 +75,14 @@ GPIO.setup(24, GPIO.OUT)
 def turn_on_coffee_machine():
     time.sleep(1)
     print('turning on coffee machine')
-    DataRepository.create_log(1,4,6,1,"coffee machine aan")
+    # DataRepository.create_log(1,4,6,1,"coffee machine aan")
     GPIO.output(23, GPIO.LOW)
     time.sleep(1)
 
 def turn_off_coffee_machine():
     time.sleep(1)
     print('turning off coffee machine')
-    DataRepository.create_log(1,4,6,0,"coffee machine uit")
+    # DataRepository.create_log(1,4,6,0,"coffee machine uit")
     GPIO.output(23, GPIO.HIGH)
     time.sleep(1)
 
@@ -361,9 +361,9 @@ if __name__ == '__main__':
     try:
         GPIO.output(23, GPIO.HIGH)
         GPIO.output(24, GPIO.HIGH)
-        start_thread()
-        start_thread2()
-        start_thread3()
+        # start_thread()
+        # start_thread2()
+        # start_thread3()
         start_chrome_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')

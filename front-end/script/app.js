@@ -305,7 +305,6 @@ const updateHamburger = function () {
 	if (
 		document.querySelector('.mobile-dropdown').classList.contains('c-hidden')
 	) {
-		console.log('true');
 		htmlHamburger.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
 		<g id="navbar_mobile" transform="translate(-745 -78.284)">
 		  <rect id="rectangle" width="34" height="34" transform="translate(745 78.284)" fill="none"/>
@@ -315,7 +314,6 @@ const updateHamburger = function () {
 	  
 	  `;
 	} else {
-		console.log('false');
 		htmlHamburger.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="33.793" height="33.793" viewBox="0 0 33.793 33.793">
 		<path id="close_FILL0_wght400_GRAD0_opsz48" d="M12.949,44.143l-2.6-2.6,14.3-14.3-14.3-14.3,2.6-2.6,14.3,14.3,14.3-14.3,2.6,2.6-14.3,14.3,14.3,14.3-2.6,2.6-14.3-14.3Z" transform="translate(-10.35 -10.35)" fill="#3b4727"/>
 	  </svg>

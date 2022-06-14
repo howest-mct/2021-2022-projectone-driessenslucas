@@ -190,11 +190,17 @@ span {
 */
 
 .o-row--body {
-	height: 80vh;
+	height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
 	flex-direction: column;
+	overflow: hidden;
+}
+@media (min-width: 968px) {
+	.o-row--body {
+		height: 80vh;
+	}
 }
 .o-row--footer {
 	position: relative;
@@ -427,7 +433,7 @@ span {
 	cursor: pointer; /* Add a mouse pointer on hover */
 	padding: 5px; /* Some padding */
 	padding-bottom: 0px;
-	box-shadow: 0px 0px 15px #e9ded1;
+	box-shadow: 0px 0px 30px #e9ded1;
 	border-radius: 10px; /* Rounded corners */
 	font-size: 18px; /* Increase font size */
 }
@@ -511,7 +517,11 @@ span {
 .weightgraph {
 	min-height: 300px;
 	height: 100%;
-	max-width: 90%;
+	max-width: 80%;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.8);
+	margin-top: 24px;
+	margin-bottom: 20px;
+	padding: 14px;
 }
 .coffee-weight {
 	min-height: 300px;
@@ -519,8 +529,11 @@ span {
 }
 .coffeegraph {
 	min-height: 300px;
-	max-width: 90%;
+	max-width: 80%;
 	height: 100%;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.8);
+	margin-bottom: 20px;
+	padding: 14px;
 }
 .coffee-made {
 	overflow: hidden;
@@ -528,12 +541,12 @@ span {
 }
 @media (max-width: 768px) {
 	.weightgraph {
-		max-width: 100%;
+		max-width: 95%;
 		height: 45%;
 		font-size: 14px;
 	}
 	.coffeegraph {
-		max-width: 100%;
+		max-width: 95%;
 		height: 45%;
 		font-size: 14px;
 	}

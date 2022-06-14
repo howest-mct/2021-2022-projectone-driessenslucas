@@ -7,6 +7,7 @@ let weightData = [];
 let WeightLabels = [];
 let CoffeeLabels = [];
 let CoffeeChart;
+let htmlHamburger;
 let weightChart;
 let weekIndex = 0;
 
@@ -94,6 +95,26 @@ const createCoffeeMadeChart = function () {
 	CoffeeChart = new Chart(ctx, config);
 };
 
+const updateHamburger = function () {
+	if (
+		document.querySelector('.mobile-dropdown').classList.contains('c-hidden')
+	) {
+		htmlHamburger.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+		<g id="navbar_mobile" transform="translate(-745 -78.284)">
+		  <rect id="rectangle" width="34" height="34" transform="translate(745 78.284)" fill="none"/>
+		  <path id="path" d="M3,23.142H28.713V20.285H3v2.857ZM3,16H28.713V13.142H3V16ZM3,6V8.857H28.713V6Z" transform="translate(746.286 80.571)" fill="#3b4727" fill-rule="evenodd"/>
+		</g>
+	  </svg>
+	  
+	  `;
+	} else {
+		htmlHamburger.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="33.793" height="33.793" viewBox="0 0 33.793 33.793">
+		<path id="close_FILL0_wght400_GRAD0_opsz48" d="M12.949,44.143l-2.6-2.6,14.3-14.3-14.3-14.3,2.6-2.6,14.3,14.3,14.3-14.3,2.6,2.6-14.3,14.3,14.3,14.3-2.6,2.6-14.3-14.3Z" transform="translate(-10.35 -10.35)" fill="#3b4727"/>
+	  </svg>
+	`;
+	}
+};
+
 const updateCoffeMade = function (data) {
 	for (const log of data) {
 		CoffeeData.push(log['Waarde']);
@@ -120,6 +141,7 @@ const getData = function () {
 const listenToMobileNav = function () {
 	document.querySelector('.hamburger').addEventListener('click', function () {
 		document.querySelector('.mobile-dropdown').classList.toggle('c-hidden');
+		updateHamburger();
 	});
 };
 const listenToBtn = function () {
@@ -167,6 +189,7 @@ socketio.on('B2F_weightLogs', function (data) {
 
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
+	htmlHamburger = document.querySelector('.hamburger');
 	createCoffeeMadeChart();
 	createWeightChart();
 	getData();
