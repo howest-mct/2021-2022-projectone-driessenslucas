@@ -470,6 +470,7 @@ span {
 	border-radius: 2em;
 	background-color: #357560;
 	padding: 8px;
+	font-size: 16px;
 	color: #fbf1e5;
 	margin-left: 12px;
 	border: 1px solid #202024;
@@ -483,12 +484,14 @@ span {
 	border: 1px solid #202024;
 	background-color: #357560;
 	color: #fbf1e5;
+	font-size: 16px;
 	font-family: 'Titillium Web', sans-serif;
 }
 .js-current-week-btn {
 	border-radius: 2em;
 	border: 1px solid #202024;
 	padding: 8px;
+	font-size: 16px;
 	margin-top: 12px;
 	background-color: #357560;
 	color: #fbf1e5;
@@ -524,7 +527,8 @@ span {
 	padding: 14px;
 }
 .coffee-weight {
-	min-height: 300px;
+	min-height: 400px;
+
 	overflow: hidden;
 }
 .coffeegraph {
@@ -537,9 +541,16 @@ span {
 }
 .coffee-made {
 	overflow: hidden;
-	min-height: 300px;
+
+	min-height: 400px;
 }
 @media (max-width: 768px) {
+	.coffee-made {
+		min-height: 300px;
+	}
+	.coffee-weight {
+		min-height: 300px;
+	}
 	.weightgraph {
 		max-width: 95%;
 		height: 45%;

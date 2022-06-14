@@ -39,7 +39,9 @@ const createWeightChart = function () {
 			plugins: {
 				legend: {
 					position: 'top',
-					labels: { font: { size: 14 } },
+					labels: {
+						font: { size: 14, family: "'Titillium Web', 'sans-serif'" },
+					},
 				},
 				title: {
 					display: true,
@@ -82,6 +84,9 @@ const createCoffeeMadeChart = function () {
 			plugins: {
 				legend: {
 					position: 'top',
+					labels: {
+						font: { size: 14, family: "'Titillium Web', 'sans-serif'" },
+					},
 				},
 				title: {
 					display: true,
