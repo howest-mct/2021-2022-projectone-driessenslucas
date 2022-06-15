@@ -466,31 +466,32 @@ span {
 }
 
 .js-next-week-btn {
-	max-width: 90px;
-	border-radius: 2em;
-	background-color: #357560;
+	display: flex;
+	flex-direction: row;
 	padding: 8px;
-	font-size: 16px;
-	color: #fbf1e5;
+	font-size: 24px;
+	color: #357560;
 	margin-left: 12px;
-	border: 1px solid #202024;
 	font-family: 'Titillium Web', sans-serif;
 }
 .js-prev-week-btn {
-	max-width: 90px;
-	border-radius: 2em;
+	display: flex;
+	flex-direction: row;
 	padding: 8px;
 	margin-right: 12px;
-	border: 1px solid #202024;
-	background-color: #357560;
-	color: #fbf1e5;
-	font-size: 16px;
+	color: #357560;
+	font-size: 24px;
 	font-family: 'Titillium Web', sans-serif;
 }
+.next-week-text {
+	margin-top: 0px;
+	text-align: center;
+}
 .js-current-week-btn {
+	display: flex;
+	flex-direction: row;
 	border-radius: 2em;
 	border: 1px solid #202024;
-	padding: 8px;
 	font-size: 16px;
 	margin-top: 12px;
 	background-color: #357560;
@@ -522,7 +523,7 @@ span {
 	height: 100%;
 	max-width: 80%;
 	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.8);
-	margin-top: 24px;
+	margin-top: 14px;
 	margin-bottom: 20px;
 	padding: 14px;
 }

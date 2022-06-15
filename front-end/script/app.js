@@ -245,7 +245,7 @@ const showLogs = function (data) {
 			icon = log.deviceID;
 		}
 
-		html += `=
+		html += `
 		<tr class="c-row">
         <td class="c-cell">${log.volgnummer}</div>
         <td class="c-cell">${log.actiedatum}</div>
