@@ -51,7 +51,7 @@ body {
  */
 
 ::selection {
-	background: #5051db;
+	background: #357560;
 	color: white;
 	text-shadow: none;
 }
@@ -190,11 +190,17 @@ span {
 */
 
 .o-row--body {
-	height: 80vh;
+	height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
 	flex-direction: column;
+	overflow: hidden;
+}
+@media (min-width: 968px) {
+	.o-row--body {
+		height: 80vh;
+	}
 }
 .o-row--footer {
 	position: relative;
@@ -249,7 +255,7 @@ span {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 15vh;
+	height: 10vh;
 }
 
 /*
@@ -414,40 +420,174 @@ span {
 /*------------------------------------*\
   #COMPONENTS
 \*------------------------------------*/
+.backtotop-btn {
+	display: none; /* Hidden by default */
+	position: fixed; /* Fixed/sticky position */
+	bottom: 20px; /* Place the button at the bottom of the page */
+	right: 30px; /* Place the button 30px from the right */
+	z-index: 99; /* Make sure it does not overlap */
+	border: none; /* Remove borders */
+	outline: none; /* Remove outline */
+	background-color: #357560; /* Set a background color */
+	color: #e9ded1; /* Text color */
+	cursor: pointer; /* Add a mouse pointer on hover */
+	padding: 5px; /* Some padding */
+	padding-bottom: 0px;
+	box-shadow: 0px 0px 30px #e9ded1;
+	border-radius: 10px; /* Rounded corners */
+	font-size: 18px; /* Increase font size */
+}
+
+.deviceID_picker {
+	border-radius: 4px;
+	font-family: 'Titillium Web', sans-serif;
+}
+
+.c-deviceInputDiv {
+	align-self: center;
+	margin: 0 auto;
+	padding-left: 8px;
+	max-width: 472px;
+}
+
+.js-fsrcheck {
+	margin-top: -34px;
+}
+.js-wlscheck {
+	margin-top: -34px;
+}
+
+.prev-week {
+	display: flex;
+	justify-content: flex-end;
+	max-height: 32px;
+}
+.next-week {
+	display: flex;
+	justify-content: flex-start;
+	max-height: 32px;
+}
+
+.js-next-week-btn {
+	display: flex;
+	flex-direction: row;
+	padding: 8px;
+	font-size: 24px;
+	color: #357560;
+	margin-left: 12px;
+	font-family: 'Titillium Web', sans-serif;
+}
+.js-prev-week-btn {
+	display: flex;
+	flex-direction: row;
+	padding: 8px;
+	margin-right: 12px;
+	color: #357560;
+	font-size: 24px;
+	font-family: 'Titillium Web', sans-serif;
+}
+
+.next-week-text {
+	margin-top: -10px;
+	text-align: center;
+}
+.js-prev-week-btn:active,
+.js-prev-week-btn:hover,
+.js-next-week-btn:hover,
+.js-next-week-btn:active {
+	box-shadow: 2px 4px rgba(53, 117, 96, 0.8);
+	border-radius: 14px;
+}
+
+.js-current-week-btn {
+	display: flex;
+	flex-direction: row;
+	border-radius: 2em;
+	border: 1px solid #202024;
+	font-size: 16px;
+	margin-top: 12px;
+	background-color: #357560;
+	color: #fbf1e5;
+	font-family: 'Titillium Web', sans-serif;
+}
+
+/*
+	Components: graphs/logs
+	---
+	displays logs in a graph format
+  */
+
 .c-graph-buttons {
 	display: flex;
 	justify-content: center;
 }
 .c-graphs {
-	justify-content: flex-start;
-}
-@media (min-width: 768px) {
-	.c-graphs {
-		justify-content: center;
-	}
+	justify-content: center;
 }
 
 .c-legendediv {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
+	flex-direction: row;
+	align-items: center;
+	text-align: center;
+	margin-bottom: 14px;
+}
+.c-legendediv > p {
+	padding: 4px;
+	max-height: 59px;
+}
+@media (max-width: 768px) {
+	.c-legendediv {
+		justify-content: space-evenly;
+	}
 }
 
 .weightgraph {
 	min-height: 300px;
+	height: 100%;
+	max-width: 80%;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.8);
+	margin-top: 14px;
+	margin-bottom: 20px;
+	padding: 14px;
 }
 .coffee-weight {
-	min-height: 300px;
+	min-height: 400px;
+
 	overflow: hidden;
 }
 .coffeegraph {
 	min-height: 300px;
+	max-width: 80%;
+	height: 100%;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.8);
+	margin-bottom: 20px;
+	padding: 14px;
 }
 .coffee-made {
 	overflow: hidden;
 
-	min-height: 300px;
+	min-height: 400px;
 }
-
+@media (max-width: 768px) {
+	.coffee-made {
+		min-height: 300px;
+	}
+	.coffee-weight {
+		min-height: 300px;
+	}
+	.weightgraph {
+		max-width: 95%;
+		height: 45%;
+		font-size: 14px;
+	}
+	.coffeegraph {
+		max-width: 95%;
+		height: 45%;
+		font-size: 14px;
+	}
+}
 /*
     Component: popup
     ---
@@ -471,6 +611,18 @@ span {
 	align-self: center;
 	margin-left: 6px;
 }
+.fsrtext {
+	text-align: center;
+	justify-content: center;
+	align-self: center;
+	padding-top: 14px;
+}
+.wlstext {
+	text-align: center;
+	justify-content: center;
+	align-self: center;
+	padding-top: 14px;
+}
 .fsr {
 	border: 3px solid #7c7573;
 	border-radius: 40px;
@@ -478,8 +630,10 @@ span {
 	height: 64px;
 	text-align: center;
 	align-self: center;
+	justify-content: center;
 	margin-left: 6px;
 }
+
 .c-checkdiv {
 	grid-area: checkdiv;
 	display: flex;
@@ -507,6 +661,7 @@ span {
 	width: 232px;
 	height: 39px;
 	border-radius: 20px;
+	justify-content: center;
 }
 .c-popup-header--text {
 	grid-area: title;
@@ -520,12 +675,11 @@ span {
 .c-closepopup {
 	grid-area: closepop;
 	padding-left: 12px;
-	align-self: center;
-	color: #e9ded1;
-	float: right;
+	color: #fbf1e5;
 	font-size: 28px;
 	font-weight: bold;
 	text-align: center;
+	margin-top: -4px;
 }
 .c-closepopup:hover,
 .c-closepopup:focus {
@@ -593,6 +747,7 @@ body > .js-brewingpopup {
 	cursor: pointer;
 	background-color: #462f20;
 	transition: background-color ease 0.3s;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .js-onswitch:before {
@@ -604,14 +759,14 @@ body > .js-brewingpopup {
 	height: 21.5px;
 	background: #fdf3ee;
 	left: 2px;
-	top: 2px;
+	top: 1.5px;
 	border-radius: 50%;
 	font: 10px/21.5px 'Titillium Web';
 	text-transform: uppercase;
 	font-weight: bold;
 	text-indent: -28px;
 	word-spacing: 37px;
-	color: #fdf3ee;
+	color: #fbf1e5;
 	text-shadow: -1px -1px rgba(0, 0, 0, 0.15);
 	white-space: nowrap;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -637,16 +792,17 @@ body > .js-brewingpopup {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+	padding-top: 14px;
 }
 .c-welcome {
 	text-align: center;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
+	padding-top: 14px;
 	flex-direction: column;
 }
-@media (min-width: 968px) {
+@media (min-width: 1224px) {
 	.c-welcome {
 		padding-top: 50px;
 	}
@@ -759,8 +915,6 @@ body > .js-brewingpopup {
 .js-startbtn {
 	width: 210px;
 	height: 75px;
-	padding-top: 16px;
-	padding-bottom: 25px;
 	border-radius: 20px;
 	background-color: #357560;
 	border-color: #357560;
@@ -769,8 +923,6 @@ body > .js-brewingpopup {
 .js-brewbtn {
 	width: 230px;
 	height: 75px;
-	padding-top: 16px;
-	padding-bottom: 25px;
 	border-radius: 8px;
 	background-color: #357560;
 	border-color: #357560;
@@ -793,7 +945,7 @@ body > .js-brewingpopup {
 	height: 225px;
 	margin-left: auto;
 	margin-right: auto;
-	color: #fafafa;
+	color: #fbf1e5;
 	background: #462f21;
 	background: linear-gradient(180deg, #462f21, #2b1e15);
 	box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
@@ -833,7 +985,7 @@ body > .js-brewingpopup {
 	font-size: 26px;
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
-	color: white;
+	color: #fbf1e5;
 }
 .c-tmp::after {
 	content: '°C';
@@ -954,10 +1106,10 @@ h2 {
 
 .c-row:nth-child(even) {
 	background-color: #357560;
-	color: #e9ded1;
+	color: #fbf1e5;
 }
 .c-row:nth-child(even) > .c-cell {
-	color: #e9ded1;
+	color: #fbf1e5;
 }
 
 .c-cell {
@@ -965,6 +1117,7 @@ h2 {
 	padding: 1rem;
 	width: 80px;
 	color: #3b4727;
+	border-radius: 4px;
 }
 
 .c-cell + .c-cell {
@@ -1089,7 +1242,7 @@ h2 {
 .c-link-cta--inverse,
 .c-link-cta--inverse:visited,
 .c-link-cta--inverse:active {
-	color: #fff;
+	color: #fbf1e5;
 }
 
 .c-link-cta--inverse:after {
@@ -1107,23 +1260,32 @@ h2 {
 
 .c-lead {
 	font-weight: 200;
+	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-tiny {
 	display: block;
-	padding-top: 8px;
 	font-size: 14px;
 	line-height: 14px;
+	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-sm {
 	font-weight: 200;
 	font-size: 12px;
+	font-family: 'Titillium Web', sans-serif;
+}
+.c-lead-bt2 {
+	font-size: 32px;
+	font-weight: 600;
+	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-bt {
 	font-size: 32px;
-	font-weight: 600;
+	font-weight: 700;
+	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-bold {
 	font-weight: 700;
+	font-family: 'Titillium Web', sans-serif;
 }
 
 .c-lead--lg {
@@ -1207,7 +1369,7 @@ h2 {
 .navbar a {
 	float: left;
 	font-size: 16px;
-	color: #e9ded1;
+	color: #fbf1e5;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
@@ -1222,7 +1384,7 @@ h2 {
 	font-size: 16px;
 	border: none;
 	outline: none;
-	color: #e9ded1;
+	color: #fbf1e5;
 	padding: 14px 16px;
 	background-color: inherit;
 	font-family: inherit;
@@ -1241,6 +1403,19 @@ h2 {
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 	z-index: 100;
+	animation: growDown 300ms ease-in-out;
+}
+
+@keyframes growDown {
+	0% {
+		transform: scaleY(0);
+	}
+	80% {
+		transform: scaleY(1.1);
+	}
+	100% {
+		transform: scaleY(1);
+	}
 }
 
 .dropdown-content a {
@@ -1254,7 +1429,7 @@ h2 {
 
 .dropdown-content a:hover {
 	background-color: #357560;
-	color: #e9ded1;
+	color: #fbf1e5;
 }
 
 .dropdown:hover .dropdown-content {
@@ -1266,12 +1441,27 @@ h2 {
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 	z-index: 100;
+	padding-top: 80px;
+	margin-bottom: -120px;
+	animation: growDown 300ms ease-in-out;
+}
+
+@keyframes growDown {
+	0% {
+		transform: scaleY(0);
+	}
+	80% {
+		transform: scaleY(1.1);
+	}
+	100% {
+		transform: scaleY(1);
+	}
 }
 
 .mobile-dropdown a {
 	float: left;
 	font-size: 16px;
-	color: #e9ded1;
+	color: #fbf1e5;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
@@ -1287,7 +1477,7 @@ h2 {
 
 .mobile-dropdown a:hover {
 	background-color: #357560;
-	color: #e9ded1;
+	color: #fbf1e5;
 }
 .mobile-nav {
 	display: flex;
@@ -1296,8 +1486,10 @@ h2 {
 .hamburger {
 	align-self: flex-end;
 	padding-bottom: 8px;
-	padding-top: 12px;
+	padding-top: 16px;
 	padding-right: 12px;
+	margin-bottom: -120px;
+	z-index: 2000;
 }
 
 @media (min-width: 992px) {

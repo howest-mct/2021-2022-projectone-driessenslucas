@@ -4,8 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>COF-FI | Coffee pot weight</title>
+		<title>COF-FI | Graphs</title>
 		<link rel="stylesheet" href="./style/screen.css" />
+		<link rel="shortcut icon" href="imgs/favicon.ico" type="image/x-icon" />
+		<link rel="icon" href="imgs/favicon.ico" type="image/x-icon" />
 		<script
 			src="https://cdn.socket.io/4.4.1/socket.io.min.js"
 			integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
@@ -25,32 +27,25 @@
 						<i class="fa fa-caret-down"></i>
 					</button>
 					<div class="dropdown-content">
-						<a href="./logs.html">all logs</a>
-						<a href="./graphs.html">weekly logs</a>
-						<a href="./graphs.html">coffee drank</a>
-						<a href="./graphs.html">pot weight</a>
+						<a href="./logs.html">logs</a>
+						<a href="./graphs.html">graphs</a>
 					</div>
 				</div>
 			</div>
 			<div class="mobile-nav">
 				<div class="hamburger">
-					<svg
-						fill="#000000"
-						height="24"
-						viewBox="0 0 24 24"
-						width="24"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path d="M0 0h24v24H0z" fill="none" />
-						<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-					</svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+						<g id="navbar_mobile" transform="translate(-745 -78.284)">
+						  <rect id="rectangle" width="34" height="34" transform="translate(745 78.284)" fill="none"/>
+						  <path id="path" d="M3,23.142H28.713V20.285H3v2.857ZM3,16H28.713V13.142H3V16ZM3,6V8.857H28.713V6Z" transform="translate(746.286 80.571)" fill="#3b4727" fill-rule="evenodd"/>
+						</g>
+					  </svg>											
 				</div>
 				<div class="mobile-dropdown c-hidden">
 					<a href="./index.html">Home</a>
 					<a href="#">about</a>
-					<a href="./logs.html">all logs</a>
-					<a href="./graphs.html">coffee drank</a>
-					<a href="./graphs.html">pot weight</a>
+					<a href="./logs.html">logs</a>
+					<a href="./graphs.html">graphs</a>
 				</div>
 			</div>
 			<div class="c-welcomelogs">
@@ -58,16 +53,30 @@
 			</div>
 		</header>
 		<div
-			class="c-graphs o-layout o-layout--align-center o-layout--align-content-center"
-		>
-			<div class="o-layout__item c-graph-buttons">
-				<button class="js-prev-week-btn">prev week</button>
-				<button class="js-next-week-btn">next week</button>
+			class="o-layout o-layout--justify-center o-layout--align-center o-layout--align-content-center"
+			<div class=" c-graph-buttons">
+				<div class="prev-week u-1-of-2 o-layout__item o-layout--justify-center">
+					  <div class="js-prev-week-btn"><svg xmlns="http://www.w3.org/2000/svg" width="22.8" height="20" viewBox="0 0 22.8 40">
+						<path id="arrow_back_ios_new_FILL0_wght400_GRAD0_opsz48" d="M32.75,44l-20-20,20-20,2.8,2.85L18.4,24,35.55,41.15Z" transform="translate(-12.75 -4)" fill="#3b4727"/>
+					  </svg><p  class="next-week-text">prev week</p></div>
+				</div>
+				<div class="next-week u-1-of-2 o-layout__item o-layout--justify-center">
+					
+					<div class="js-next-week-btn"><p class="next-week-text">next week</p><svg xmlns="http://www.w3.org/2000/svg" width="22.8" height="20" viewBox="0 0 22.8 40">
+						<path id="arrow_forward_ios_FILL0_wght400_GRAD0_opsz48" d="M15.2,43.9l-2.8-2.85L29.55,23.9,12.4,6.75,15.2,3.9l20,20Z" transform="translate(-12.4 -3.9)" fill="#3b4727"/>
+					  </svg></div>
+					
+					 
+				</div>
+				
+				<button class="js-current-week-btn">current week</button>
 			</div>
-			<div class="o-layout__item u-1-of-2-bp3 weightgraph">
+		</div>
+			<div class="c-graphs o-layout  o-layout--align-center o-layout--align-content-center">
+			<div class="o-layout__item weightgraph">
 				<canvas class="coffee-weight"></canvas>
 			</div>
-			<div class="o-layout__item u-1-of-2-bp3 coffeegraph">
+			<div class="o-layout__item coffeegraph">
 				<canvas class="coffee-made"></canvas>
 			</div>
 		</div>
