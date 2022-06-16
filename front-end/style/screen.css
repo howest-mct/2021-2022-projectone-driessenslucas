@@ -255,7 +255,7 @@ span {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 15vh;
+	height: 10vh;
 }
 
 /*
@@ -460,10 +460,12 @@ span {
 .prev-week {
 	display: flex;
 	justify-content: flex-end;
+	max-height: 32px;
 }
 .next-week {
 	display: flex;
 	justify-content: flex-start;
+	max-height: 32px;
 }
 
 .js-next-week-btn {
@@ -484,10 +486,19 @@ span {
 	font-size: 24px;
 	font-family: 'Titillium Web', sans-serif;
 }
+
 .next-week-text {
 	margin-top: -10px;
 	text-align: center;
 }
+.js-prev-week-btn:active,
+.js-prev-week-btn:hover,
+.js-next-week-btn:hover,
+.js-next-week-btn:active {
+	box-shadow: 2px 4px rgba(53, 117, 96, 0.8);
+	border-radius: 14px;
+}
+
 .js-current-week-btn {
 	display: flex;
 	flex-direction: row;
