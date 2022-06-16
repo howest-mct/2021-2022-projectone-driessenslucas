@@ -485,7 +485,7 @@ span {
 	font-family: 'Titillium Web', sans-serif;
 }
 .next-week-text {
-	margin-top: 0px;
+	margin-top: -10px;
 	text-align: center;
 }
 .js-current-week-btn {
@@ -904,8 +904,6 @@ body > .js-brewingpopup {
 .js-startbtn {
 	width: 210px;
 	height: 75px;
-	padding-top: 8px;
-	padding-bottom: 25px;
 	border-radius: 20px;
 	background-color: #357560;
 	border-color: #357560;
@@ -914,8 +912,6 @@ body > .js-brewingpopup {
 .js-brewbtn {
 	width: 230px;
 	height: 75px;
-	padding-top: 8px;
-	padding-bottom: 25px;
 	border-radius: 8px;
 	background-color: #357560;
 	border-color: #357560;
@@ -1266,9 +1262,14 @@ h2 {
 	font-size: 12px;
 	font-family: 'Titillium Web', sans-serif;
 }
-.c-lead-bt {
+.c-lead-bt2 {
 	font-size: 32px;
 	font-weight: 600;
+	font-family: 'Titillium Web', sans-serif;
+}
+.c-lead-bt {
+	font-size: 32px;
+	font-weight: 700;
 	font-family: 'Titillium Web', sans-serif;
 }
 .c-lead-bold {
