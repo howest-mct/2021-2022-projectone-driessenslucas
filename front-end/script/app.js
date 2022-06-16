@@ -22,7 +22,7 @@ let htmlbrewButton,
 	htmlHamburger,
 	htmlCoffeeStatus,
 	htmlTurnOnSpan;
-let statusWLS = 1;
+let statusWLS = 0;
 let statusFSR = 0;
 let canStart = 0;
 

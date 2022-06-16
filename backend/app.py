@@ -53,8 +53,10 @@ GPIO.setmode(GPIO.BCM)
 NO_TOUCH = 0xFE
 max_val_wls = 95
 Coffee_machine_on = False
-relais_coffee_machine_pin = 24
-relais_make_coffee_pin = 23
+relais_make_coffee_pin = 24
+relais_coffee_machine_pin = 23
+status_machine_on_led = 27
+status_make_coffee_led = 17
 toggle_coffee_machine = False
 
 
@@ -71,37 +73,45 @@ if os.path.isfile(swap_file_name):
 
 GPIO.setup(23, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
+GPIO.setup(17, GPIO.OUT)
+GPIO.setup(27, GPIO.OUT)
 
 def turn_on_coffee_machine():
     time.sleep(1)
     print('turning on coffee machine')
     # DataRepository.create_log(1,4,6,1,"coffee machine aan")
-    GPIO.output(23, GPIO.LOW)
+    GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
+    time.sleep(1)
+    GPIO.output(status_machine_on_led, GPIO.HIGH)
     time.sleep(1)
 
 def turn_off_coffee_machine():
     time.sleep(1)
     print('turning off coffee machine')
     # DataRepository.create_log(1,4,6,0,"coffee machine uit")
-    GPIO.output(23, GPIO.HIGH)
+    GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(status_machine_on_led, GPIO.LOW)
     time.sleep(1)
 
 def make_coffee():
     #aanpassen zodat we coffeemachine apart kunnen aanzetten
     print('brewing coffee')
-    GPIO.output(24, GPIO.LOW)
-    time.sleep(10)#120 seconden na development
-    GPIO.output(24, GPIO.HIGH)
+    GPIO.output(relais_make_coffee_pin, GPIO.LOW)
+    GPIO.output(status_make_coffee_led, GPIO.HIGH)
+    time.sleep(420) #7 minutes  
+    GPIO.output(relais_make_coffee_pin, GPIO.HIGH)
+    GPIO.output(status_make_coffee_led, GPIO.LOW)
     time.sleep(1)
     print('coffee is done')
     DataRepository.create_log(1,4,5,1,"coffee gemaakt")
     socketio.emit('B2F_brewingStatus', {'coffee_status': 0})
-    fsr(True)
+    loadcell(True)
     
 
 def write_lcd():
     lcd.init_LCD()
-    lcd.write_line("coffee machine  ")
+    lcd.write_line("COF-FI        ")
     ips = str(check_output(['hostname','--all-ip-addresses']))
     ip_addr = ips.split(' ')
     while True:
@@ -148,10 +158,7 @@ def tmp(write_to_db):
         socketio.emit('B2F_temp', {'current_temp': round(temp,0)},broadcast=True)
         return round(temp,0)
     
-def fsr(write_to_db):
-    #tijdelijke code tot defitge weight sensor
-    #print(f"fsr{write_to_db}")
-
+def loadcell(write_to_db):
     weight = hx.get_weight_mean(20)
     commentaar = "read coffee pot weight"
     if weight < 0:
@@ -159,7 +166,6 @@ def fsr(write_to_db):
     if weight > 10:
             status = 1
     if weight is not None and write_to_db:
-        
             data = DataRepository.create_log(weight,3,3,status,commentaar)
             if data != 0:
                 print('gelukt weight wegschrijven')
@@ -291,7 +297,7 @@ def lcd_thread():
 def sensors_to_frontend():
     while True:
         try:
-            fsr(False)
+            loadcell(False)
             tmp(False)
             wls(False)
             time.sleep(1)
@@ -311,7 +317,7 @@ def start_thread2():
     thread2 = threading.Thread(target=lcd_thread,args=(),daemon=True)
     thread2.start()
 def start_thread3():
-    print("**** Starting THREADFSR ****")
+    print("**** Starting THREADloadcell ****")
     thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
     thread3.start()
     
