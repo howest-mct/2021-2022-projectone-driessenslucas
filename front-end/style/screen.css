@@ -444,9 +444,10 @@ span {
 }
 
 .c-deviceInputDiv {
+	align-self: center;
+	margin: 0 auto;
 	padding-left: 8px;
-	align-self: flex-end;
-	margin-bottom: 24px;
+	max-width: 472px;
 }
 
 .js-fsrcheck {
@@ -515,7 +516,20 @@ span {
 
 .c-legendediv {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
+	flex-direction: row;
+	align-items: center;
+	text-align: center;
+	margin-bottom: 14px;
+}
+.c-legendediv > p {
+	padding: 4px;
+	max-height: 59px;
+}
+@media (max-width: 768px) {
+	.c-legendediv {
+		justify-content: space-evenly;
+	}
 }
 
 .weightgraph {

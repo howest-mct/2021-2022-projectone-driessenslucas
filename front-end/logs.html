@@ -55,23 +55,8 @@
   </header>
   <main class="c-dashboard">
     <div class="o-layout o-layout--justify-center o-layout--align-center o-layout--align-content-center">
-     
-      <div class="c-deviceInputDiv o-layout__item u-1-of-2">
-        <div class="deviceInput">
-          <label for="deviceid">select device: </label>
-          <select name="deviceid" class="deviceID_picker">
-            <option value="0">all devices</option>
-            <option value="1">water level</option>
-            <option value="2">temperature</option>
-            <option value="3">weight</option>
-            <option value="4">coffee machine</option>
-          </select>
-        </div>
-        
-      </div>
-      <div class="o-layout__item u-1-of-2">
+      <div class="o-layout__item ">
         <div class="c-legendediv">
-          <div class="c-legende">
             <p><svg id="thermostat_black_24dp" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
               <g id="Group_8" data-name="Group 8">
                 <path id="Path_6" data-name="Path 6" d="M0,0H20.636V20.636H0Z" fill="none"/>
@@ -105,8 +90,8 @@
                <svg
               id='coffee_maker_black_24dp'
               xmlns='http://www.w3.org/2000/svg'
-              width='32'
-              height='32'
+              width='21'
+              height='21'
               viewBox='0 0 139.204 128.469'
             >
               <g id='Group_3' data-name='Group 3'>
@@ -142,10 +127,18 @@
               </g>
               </svg> = coffee machine 
           </p>
-          </div>
         </div>
-    
       </div>
+      <div class="o-layout__item"><div class="c-deviceInputDiv">
+        <label for="deviceid">select device: </label>
+        <select name="deviceid" class="deviceID_picker">
+          <option value="0">all devices</option>
+          <option value="1">water level</option>
+          <option value="2">temperature</option>
+          <option value="3">weight</option>
+          <option value="4">coffee machine</option>
+        </select>
+    </div></div>
       <div class="o-layout__item">
         <table class="c-table js-table">
           <tr class="c-row js-header">
