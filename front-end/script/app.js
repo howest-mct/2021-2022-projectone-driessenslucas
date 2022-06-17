@@ -290,11 +290,6 @@ const backToIndex = function () {
 };
 
 const updateView = function (value) {
-	if ((value > 10) & (value < 98)) {
-		statusWLS = 1;
-	} else {
-		statusWLS = 0;
-	}
 	htmlWave.style.transform = `translateY(${100 - value}%)`;
 };
 
@@ -325,13 +320,19 @@ const updatePrerequisites = function () {
 	// console.log('checking sensors');
 	if (statusWLS == 1) {
 		document.querySelector('.js-wlscheck').classList.remove('c-hidden');
+		document.querySelector('.refill-water').innerHTML = '';
 	} else if (statusWLS == 0) {
 		document.querySelector('.js-wlscheck').classList.add('c-hidden');
+		document.querySelector(
+			'.refill-water'
+		).innerHTML = `place coffee pot under the machine`;
 	}
 	if (statusFSR == 1) {
 		document.querySelector('.js-fsrcheck').classList.remove('c-hidden');
+		document.querySelector('.place-pot').innerHTML = '';
 	} else if (statusFSR == 0) {
 		document.querySelector('.js-fsrcheck').classList.add('c-hidden');
+		document.querySelector('.place-pot').innerHTML = `refill water`;
 	}
 	if (statusFSR == 1 && statusWLS == 1) {
 		htmlStartbtn.disabled = false;
@@ -468,13 +469,17 @@ const listenToSocket = function () {
 	});
 
 	socketio.on('B2F_WLS', function (data) {
-		//console.log(data)
-		statusWLS = data.current_waterlevel;
+		// console.log(data);
+		if ((data.current_waterlevel > 10) & (data.current_waterlevel < 98)) {
+			statusWLS = 1;
+		} else {
+			statusWLS = 0;
+		}
 		updatePrerequisites();
 		updateView(data.current_waterlevel);
 	});
 	socketio.on('B2F_coffepot', function (data) {
-		//console.log(data)
+		// console.log(data);
 		statusFSR = data.coffepot_status;
 		updatePrerequisites();
 	});

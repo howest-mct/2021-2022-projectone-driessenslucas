@@ -99,7 +99,7 @@ def make_coffee():
     print('brewing coffee')
     GPIO.output(relais_make_coffee_pin, GPIO.LOW)
     GPIO.output(status_make_coffee_led, GPIO.HIGH)
-    time.sleep(420) #7 minutes  
+    time.sleep(5) # 420 = 7 minutes  
     GPIO.output(relais_make_coffee_pin, GPIO.HIGH)
     GPIO.output(status_make_coffee_led, GPIO.LOW)
     time.sleep(1)
@@ -139,8 +139,7 @@ def check_water_level():
             touch_val += 1
     
     value = touch_val * 5
-    socketio.emit('B2F_WLS', {'current_waterlevel': value},broadcast=True)
-    # print(f"waterlevel: {value}")
+    print(f"waterlevel: {value}")
     return value
 
 def tmp(write_to_db):
@@ -160,27 +159,32 @@ def tmp(write_to_db):
     
 def loadcell(write_to_db):
     weight = hx.get_weight_mean(20)
+    print(f"weight: {weight}")
+    status = 0
     commentaar = "read coffee pot weight"
     if weight < 0:
         weight = 0
     if weight > 10:
-            status = 1
+        status = 1
     if weight is not None and write_to_db:
             data = DataRepository.create_log(weight,3,3,status,commentaar)
             if data != 0:
                 print('gelukt weight wegschrijven')
-            print('gelukt wegschrijven gewicht')  
     socketio.emit('B2F_coffepot', {'coffepot_status': status},broadcast=True)
     return weight
     
 def wls(write_to_db):
-        #print(f"wls{write_to_db}")
-        percent = check_water_level()
+        try:
+            percent = check_water_level()
+        except:
+            percent = 0
+        socketio.emit('B2F_WLS', {'current_waterlevel': percent},broadcast=True)
+        print(percent)
         status = 0
         if percent > 10 & percent < 98:
             status = 1
         else:
-            status - 0
+            status = 0
         commentaar = "get water level"
         if write_to_db:
             data = DataRepository.create_log(percent,1,2,status,commentaar)
@@ -298,8 +302,8 @@ def sensors_to_frontend():
     while True:
         try:
             loadcell(False)
-            tmp(False)
             wls(False)
+            tmp(False)
             time.sleep(1)
         except:
             #print("error uitlezen sensors")\
@@ -367,9 +371,9 @@ if __name__ == '__main__':
     try:
         GPIO.output(23, GPIO.HIGH)
         GPIO.output(24, GPIO.HIGH)
-        # start_thread()
-        # start_thread2()
-        # start_thread3()
+        start_thread()
+        start_thread2()
+        start_thread3()
         start_chrome_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')

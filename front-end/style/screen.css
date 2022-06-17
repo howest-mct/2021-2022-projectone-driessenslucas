@@ -450,12 +450,12 @@ span {
 	max-width: 472px;
 }
 
-.js-fsrcheck {
+/* .js-fsrcheck {
 	margin-top: -34px;
 }
 .js-wlscheck {
 	margin-top: -34px;
-}
+} */
 
 .prev-week {
 	display: flex;
@@ -603,10 +603,12 @@ span {
 		'start start start';
 }
 .wls {
+	display: flex;
+	flex-direction: column;
 	border: 3px solid #7c7573;
 	border-radius: 40px;
-	width: 64px;
-	height: 64px;
+	width: 100px;
+	height: 100px;
 	text-align: center;
 	align-self: center;
 	margin-left: 6px;
@@ -624,13 +626,14 @@ span {
 	padding-top: 14px;
 }
 .fsr {
+	display: flex;
+	flex-direction: column;
 	border: 3px solid #7c7573;
 	border-radius: 40px;
-	width: 64px;
-	height: 64px;
+	width: 100px;
+	height: 100px;
 	text-align: center;
 	align-self: center;
-	justify-content: center;
 	margin-left: 6px;
 }
 
