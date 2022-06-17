@@ -150,6 +150,8 @@ def tmp(write_to_db):
         temp = (100 * volt) - 50
         status = 1
         commentaar = "get current temperature"
+        if temp < 0:
+            temp = 0
         if write_to_db:
             data = DataRepository.create_log(temp,2,1,status,commentaar)
             if data != 0:
@@ -159,7 +161,7 @@ def tmp(write_to_db):
     
 def loadcell(write_to_db):
     weight = hx.get_weight_mean(20)
-    print(f"weight: {weight}")
+    # print(f"weight: {weight}")
     status = 0
     commentaar = "read coffee pot weight"
     if weight < 0:
@@ -179,7 +181,7 @@ def wls(write_to_db):
         except:
             percent = 0
         socketio.emit('B2F_WLS', {'current_waterlevel': percent},broadcast=True)
-        print(percent)
+        # print(percent)
         status = 0
         if percent > 10 & percent < 98:
             status = 1
@@ -245,11 +247,6 @@ def get_status():
 
 
 #socketio
-    
-
-@socketio.on('connect')
-def initial_connection():
-    pass
 
 @socketio.on('F2B_brew')
 def brew():
@@ -266,7 +263,6 @@ def turn_on():
 
 @socketio.on('F2B_turn_off')
 def turn_off():
-    
     print('turn off')
     turn_off_coffee_machine()
 
@@ -281,6 +277,8 @@ def get_coffee_logs(data):
 
 #threads
 
+    
+    
 
 def sensors_to_db():
     while True:
@@ -299,6 +297,7 @@ def lcd_thread():
         pass
 
 def sensors_to_frontend():
+    print('sensors to frontend')
     while True:
         try:
             loadcell(False)
@@ -310,7 +309,14 @@ def sensors_to_frontend():
             pass
 
         
+thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
+    
+    
 
+@socketio.on('connect')
+def initial_connection():
+    print('connected')
+    thread3.start()
 
 def start_thread():
     print("**** Starting THREAD ****")
@@ -320,11 +326,7 @@ def start_thread2():
     print("**** Starting THREADlcd ****")
     thread2 = threading.Thread(target=lcd_thread,args=(),daemon=True)
     thread2.start()
-def start_thread3():
-    print("**** Starting THREADloadcell ****")
-    thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
-    thread3.start()
-    
+
 
 
 def start_chrome_kiosk():
@@ -373,8 +375,7 @@ if __name__ == '__main__':
         GPIO.output(24, GPIO.HIGH)
         start_thread()
         start_thread2()
-        start_thread3()
-        start_chrome_thread()
+        # start_chrome_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')
     except KeyboardInterrupt:

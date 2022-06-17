@@ -20,35 +20,56 @@
 <body class="log-page">
   <header class="">
     <div class="navbar">
-      <a href="./index.html">Home</a>
-      <a href="#">about</a>
+      <a class="c-nav__link is-selected c-link-cta" href="./index.html"
+        >Home</a
+      >
+      <a class="c-nav__link is-selected c-link-cta" href="#">About</a>
       <div class="dropdown">
-        <button class="dropbtn">
-          logs
-          <i class="fa fa-caret-down"></i>
+        <button class="dropbtn c-nav__link is-selected c-link-cta">
+          Logs
         </button>
         <div class="dropdown-content">
-          <a href="./logs.html">logs</a>
-          <a href="./graphs.html">graphs</a>
+          <a class="c-nav__link is-selected c-link-cta" href="./logs.html"
+            >All logs</a
+          >
+          <a class="c-nav__link is-selected c-link-cta" href="./graphs.html"
+            >Graphs</a
+          >
         </div>
       </div>
     </div>
     <div class="mobile-nav">
-      <div class="hamburger">
-        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+      <div class="hamburger" data-clicked="0">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="34"
+          height="34"
+          viewBox="0 0 34 34"
+        >
           <g id="navbar_mobile" transform="translate(-745 -78.284)">
-            <rect id="rectangle" width="34" height="34" transform="translate(745 78.284)" fill="none"/>
-            <path id="path" d="M3,23.142H28.713V20.285H3v2.857ZM3,16H28.713V13.142H3V16ZM3,6V8.857H28.713V6Z" transform="translate(746.286 80.571)" fill="#3b4727" fill-rule="evenodd"/>
+            <rect
+              id="rectangle"
+              width="34"
+              height="34"
+              transform="translate(745 78.284)"
+              fill="none"
+            />
+            <path
+              id="path"
+              d="M3,23.142H28.713V20.285H3v2.857ZM3,16H28.713V13.142H3V16ZM3,6V8.857H28.713V6Z"
+              transform="translate(746.286 80.571)"
+              fill="#3b4727"
+              fill-rule="evenodd"
+            />
           </g>
-        </svg>        
+        </svg>
       </div>
       <div class="mobile-dropdown c-hidden">
         <a href="./index.html">Home</a>
-        <a href="#">about</a>
-        <a href="./logs.html">logs</a>
-        <a href="./graphs.html">graphs</a>
+        <a href="#">About</a>
+        <a href="./logs.html">Logs</a>
+        <a href="./graphs.html">Graphs</a>
       </div>
-     
     </div>
     <div class="c-welcomelogs">
       <h1 class="welcome-text c-lead-bold">Logs</h1>

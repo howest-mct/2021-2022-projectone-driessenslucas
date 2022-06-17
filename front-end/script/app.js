@@ -273,6 +273,12 @@ const showCoffeeStatus = function (status) {
 		htmlCoffeeStatus.innerHTML = `<span>Coffee is done</span>`;
 		htmlStartbtn.disabled = true;
 		htmlStartbtn.innerHTML = `Enjoy!`;
+		setTimeout(function () {
+			ResetPopUpHtml();
+			console.log('Reset');
+			htmlBrewingPopUp.classList.add('c-hidden');
+			htmlbrewButton.disabled = false;
+		}, 10000);
 	}
 };
 
@@ -323,16 +329,16 @@ const updatePrerequisites = function () {
 		document.querySelector('.refill-water').innerHTML = '';
 	} else if (statusWLS == 0) {
 		document.querySelector('.js-wlscheck').classList.add('c-hidden');
-		document.querySelector(
-			'.refill-water'
-		).innerHTML = `place coffee pot under the machine`;
+		document.querySelector('.refill-water').innerHTML = `refill water`;
 	}
 	if (statusFSR == 1) {
 		document.querySelector('.js-fsrcheck').classList.remove('c-hidden');
 		document.querySelector('.place-pot').innerHTML = '';
 	} else if (statusFSR == 0) {
 		document.querySelector('.js-fsrcheck').classList.add('c-hidden');
-		document.querySelector('.place-pot').innerHTML = `refill water`;
+		document.querySelector(
+			'.place-pot'
+		).innerHTML = `place coffee pot under the machine`;
 	}
 	if (statusFSR == 1 && statusWLS == 1) {
 		htmlStartbtn.disabled = false;
@@ -456,7 +462,7 @@ const listenToUI = function () {
 	htmlClosePopUp.addEventListener('click', function () {
 		htmlBrewingPopUp.classList.add('c-hidden');
 		htmlbrewButton.disabled = false;
-		ResetPopUpHtml();
+		// ResetPopUpHtml();
 	});
 };
 
