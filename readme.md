@@ -1,25 +1,52 @@
-# Project One - Name of the project
+<div id="top"></div>
 
-**De inhoud van dit document schrijf je volledig in het Engels**
+Project One - COF-FI
+made by Lucas Driessens
 
-Omschrijf het project. Doe dit in het markdown formaat.
-- [Syntax md](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 
-Hoe kan een externe persoon (die niets weet over de "ProjectOne" opdracht) het project snel runnen op de eigen pc?
-Op github vind je verschillende voorbeelden hoe je een readme.md bestand kan structureren.
-- [Voorbeeld 1](https://github.com/othneildrew/Best-README-Template)
-- [Voorbeeld 2](https://github.com/tsungtwu/flask-example/blob/master/README.md)
-- [Voorbeeld 3](https://github.com/twbs/bootstrap/blob/main/README.md)
-- [Voorbeeld 4](https://www.makeareadme.com/)
 
-## Inhoud
-Zoals je kan zien is er geen "vaste" structuur voor zo'n document. Je bepaalt zelf hoe je het bestand via markdown structureert. Zorg ervoor dat het document minimaal op volgende vragen een antwoord biedt.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-- Wat is de structuur van het project?
-- Wat moet er gebeuren met de database? Hoe krijgt de persoon dit up and running?
-- Moeten er settings worden veranderd in de backend code voor de database? 
-- Runt de back- en front-end code direct? Of moeten er nog commando's worden ingegeven?
-- Zijn er poorten die extra aandacht vereisen in de back- en/of front-end code?
-  
+
+
+For the final project in the first year of my studies I decided to make a remote controlled coffee machine named COF-FI
+
+functionalities:
+* make coffee from anywhere as long as you have internet access
+* track how much coffee you've made each week
+* check how much water there is in the reservoir
+* detects if there is a coffee pot underneath the machine
+* measure temperature of the coffee machine
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+### Built With
+
+* [python](https://www.python.org/)
+* [javascript](https://www.javascript.com/)
+* [charts.js](https://www.chartjs.org/)
+* [Socket.IO](https://socket.io/)
+* [css](https://developer.mozilla.org/en-US/docs/Web/CSS)
+* [mysql](https://www.mysql.com/)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+<!-- CONTACT -->
+## Contact
+
+Lucas Driessens - lucas.driessens@hotmail.com
+
+Project Link: [https://github.com/howest-mct/2021-2022-projectone-driessenslucas](https://github.com/howest-mct/2021-2022-projectone-driessenslucas)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 ## Instructables
-Plaats zeker een link naar de Instructables zodat het project kan nagebouwd worden!
+visit this page if you want to try this project for yourself!
+
+<p align="right">(<a href="#top">back to top</a>)</p>
