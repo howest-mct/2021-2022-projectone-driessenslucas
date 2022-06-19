@@ -30,8 +30,8 @@ functionalities:
 * [javascript](https://www.javascript.com/)
 * [charts.js](https://www.chartjs.org/)
 * [Socket.IO](https://socket.io/)
-* [css](https://developer.mozilla.org/en-US/docs/Web/CSS)
 * [mysql](https://www.mysql.com/)
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
