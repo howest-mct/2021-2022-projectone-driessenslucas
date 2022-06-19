@@ -403,9 +403,14 @@ const listenToShutDown = function () {
 	htmlShutdown.addEventListener('click', function () {
 		console.log('shutting down');
 		socketio.emit('F2B_shutdown');
-	}
-}
-
+	});
+	document
+		.querySelector('.js-shutdown_mobile')
+		.addEventListener('click', function () {
+			console.log('shutting down');
+			socketio.emit('F2B_shutdown');
+		});
+};
 
 const scrollFunction = function () {
 	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -512,6 +517,9 @@ const init = function () {
 	console.log('dom loaded');
 	htmlHamburger = document.querySelector('.hamburger');
 	listenToMobileNav();
+
+	htmlShutdown = document.querySelector('.js-shutdown');
+	listenToShutDown();
 	if (document.querySelector('.log-page')) {
 		console.log('getting logs...');
 		htmlTable = document.querySelector('.js-table');
@@ -537,8 +545,6 @@ const init = function () {
 		htmlClosePopUp = document.querySelector('.c-closepopup');
 		htmlCoffeeStatus = document.querySelector('.c-coffeestatus');
 		htmlTurnOnSpan = document.querySelector('.js-turnonspan');
-		htmlShutdown = document.querySelector('.js-shutdown');
-		listenToShutDown();
 		listenToSocket();
 		listenToStart();
 		listenToUI();

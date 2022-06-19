@@ -118,6 +118,7 @@ def write_lcd():
     ip_addr = ips.split(' ')
     while True:
         lcd.next_line()
+        if(ip_addr[1] is not None):
         lcd.write_line(f"{ip_addr[1]}   ")
         time.sleep(4)
         lcd.next_line()
@@ -276,7 +277,7 @@ def get_weight_logs(data):
 def get_coffee_logs(data):
     socketio.emit('B2F_coffeeLogs', {'coffee_logs': DataRepository.get_weekly_coffee_made(data['weeknr'])})
 
-socketio.on('F2B_shutdown')
+@socketio.on('F2B_shutdown')
 def shutdown():
     print('powering off')
     time.sleep(2)

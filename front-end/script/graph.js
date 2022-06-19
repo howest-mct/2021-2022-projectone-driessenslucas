@@ -7,6 +7,7 @@ let weightData = [];
 let WeightLabels = [];
 let CoffeeLabels = [];
 let CoffeeChart;
+let htmlShutdown;
 let htmlHamburger;
 let weightChart;
 let weekIndex = 0;
@@ -192,6 +193,19 @@ socketio.on('B2F_weightLogs', function (data) {
 	updateWeightData(data.weight_logs);
 });
 
+const listenToShutDown2 = function () {
+	htmlShutdown.addEventListener('click', function () {
+		console.log('shutting down');
+		socketio.emit('F2B_shutdown');
+	});
+	document
+		.querySelector('.js-shutdown_mobile')
+		.addEventListener('click', function () {
+			console.log('shutting down');
+			socketio.emit('F2B_shutdown');
+		});
+};
+
 //#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
 	htmlHamburger = document.querySelector('.hamburger');
@@ -200,6 +214,9 @@ const init = function () {
 	getData();
 	listenToMobileNav();
 	listenToBtn();
+
+	htmlShutdown = document.querySelector('.js-shutdown');
+	listenToShutDown2();
 };
 document.addEventListener('DOMContentLoaded', init);
 //#endregio
