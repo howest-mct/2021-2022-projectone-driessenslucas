@@ -139,7 +139,7 @@ def check_water_level():
             touch_val += 1
     
     value = touch_val * 5
-    print(f"waterlevel: {value}")
+    # print(f"waterlevel: {value}")
     return value
 
 def tmp(write_to_db):
@@ -373,6 +373,8 @@ if __name__ == '__main__':
     try:
         GPIO.output(23, GPIO.HIGH)
         GPIO.output(24, GPIO.HIGH)
+        GPIO.output(27, GPIO.LOW)
+        GPIO.output(17, GPIO.LOW)
         start_thread()
         start_thread2()
         # start_chrome_thread()
