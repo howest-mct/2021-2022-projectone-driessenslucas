@@ -10,7 +10,8 @@ made by Lucas Driessens
 
 
 
-For the final project in the first year of my studies I decided to make a remote controlled coffee machine named COF-FI
+For the final project in the first year of my studies I decided to make a remote controlled coffee machine named 
+COF-FI
 
 functionalities:
 * make coffee from anywhere as long as you have internet access
