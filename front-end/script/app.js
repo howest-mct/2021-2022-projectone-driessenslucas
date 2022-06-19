@@ -20,6 +20,7 @@ let htmlbrewButton,
 	htmlDeviceIDPicker,
 	htmlWeekSelector,
 	htmlHamburger,
+	htmlShutdown,
 	htmlCoffeeStatus,
 	htmlTurnOnSpan;
 let statusWLS = 0;
@@ -398,12 +399,14 @@ const checkWelcomeMsg = function () {
 //#endregion
 
 //#region ***  Event Listeners - listenTo___            ***********
-// const listenToWeekSelector = function () {
-// 	htmlWeekSelector.addEventListener('change', function () {
-// 		let weekNr = htmlWeekSelector.value;
-// 		getLogs_week(weekNr);
-// 	});
-// };
+const listenToShutDown = function () {
+	htmlShutdown.addEventListener('click', function () {
+		console.log('shutting down');
+		socketio.emit('F2B_shutdown');
+	}
+}
+
+
 const scrollFunction = function () {
 	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
 		htmlBackToTopBtn.style.display = 'block';
@@ -534,6 +537,8 @@ const init = function () {
 		htmlClosePopUp = document.querySelector('.c-closepopup');
 		htmlCoffeeStatus = document.querySelector('.c-coffeestatus');
 		htmlTurnOnSpan = document.querySelector('.js-turnonspan');
+		htmlShutdown = document.querySelector('.js-shutdown');
+		listenToShutDown();
 		listenToSocket();
 		listenToStart();
 		listenToUI();

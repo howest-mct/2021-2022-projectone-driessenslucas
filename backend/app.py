@@ -57,6 +57,7 @@ relais_make_coffee_pin = 24
 relais_coffee_machine_pin = 23
 status_machine_on_led = 27
 status_make_coffee_led = 17
+shutdown_btn = 13
 toggle_coffee_machine = False
 
 
@@ -75,6 +76,7 @@ GPIO.setup(23, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
 GPIO.setup(17, GPIO.OUT)
 GPIO.setup(27, GPIO.OUT)
+GPIO.setup(shutdown_btn, GPIO.IN,pull_up_down = GPIO.PUD_UP)
 
 def turn_on_coffee_machine():
     time.sleep(1)
@@ -274,12 +276,14 @@ def get_weight_logs(data):
 def get_coffee_logs(data):
     socketio.emit('B2F_coffeeLogs', {'coffee_logs': DataRepository.get_weekly_coffee_made(data['weeknr'])})
 
+socketio.on('F2B_shutdown')
+def shutdown():
+    print('powering off')
+    time.sleep(2)
+    os.system("sudo shutdown -h now")
+   
 
 #threads
-
-    
-    
-
 def sensors_to_db():
     while True:
         try:
@@ -366,8 +370,17 @@ def start_chrome_thread():
 
 
 # ANDERE FUNCTIES
-# GPIO.add_event_detect(stop_btn,GPIO.RISING,callback=Coffee_stop,bouncetime = 300)
 
+
+
+def shutdown_callback(pin):
+    print('powering off')
+    time.sleep(2)
+    os.system("sudo shutdown -h now")
+
+
+
+GPIO.add_event_detect(shutdown_btn,GPIO.RISING,callback=shutdown_callback,bouncetime = 400)
 
 if __name__ == '__main__':
     try:
