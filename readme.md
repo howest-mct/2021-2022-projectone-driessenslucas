@@ -20,7 +20,6 @@ functionalities:
 * measure temperature of the coffee machine
 
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
@@ -33,8 +32,6 @@ functionalities:
 * [mysql](https://www.mysql.com/)
 
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 
 <!-- CONTACT -->
 ## Contact
@@ -43,10 +40,10 @@ Lucas Driessens - lucas.driessens@hotmail.com
 
 Project Link: [https://github.com/howest-mct/2021-2022-projectone-driessenslucas](https://github.com/howest-mct/2021-2022-projectone-driessenslucas)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+
 
 
 ## Instructables
 visit this page if you want to try this project for yourself!
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+
