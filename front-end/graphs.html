@@ -19,33 +19,68 @@
 	<body>
 		<header class="">
 			<div class="navbar">
-				<a href="./index.html">Home</a>
-				<a href="#">about</a>
-				<div class="dropdown">
-					<button class="dropbtn">
-						logs
-						<i class="fa fa-caret-down"></i>
+				<a class="c-nav__link is-selected c-link-cta" href="./index.html"
+					>Home</a
+				>
+				<a class="c-nav__link is-selected c-link-cta" href="#">About</a>
+				<a
+					class="drop-down-link c-nav__link is-selected c-link-cta"
+					href="./logs.html"
+					>Logs</a
+				>
+				<a
+					class="drop-down-link c-nav__link is-selected c-link-cta"
+					href="./graphs.html"
+					>Graphs</a
+				>
+				<a class="js-shutdown c-nav__link is-selected c-link-cta">Power off</a>
+
+				
+				<!-- <div class="dropdown">
+					<button class="dropbtn c-nav__link is-selected c-link-cta">
+						Logs
 					</button>
 					<div class="dropdown-content">
-						<a href="./logs.html">logs</a>
-						<a href="./graphs.html">graphs</a>
+						<a
+							class="drop-down-link c-nav__link is-selected c-link-cta"
+							href="./logs.html"
+							>All logs</a
+						>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="mobile-nav">
-				<div class="hamburger">
-					<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+				<div class="hamburger" data-clicked="0">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="34"
+						height="34"
+						viewBox="0 0 34 34"
+					>
 						<g id="navbar_mobile" transform="translate(-745 -78.284)">
-						  <rect id="rectangle" width="34" height="34" transform="translate(745 78.284)" fill="none"/>
-						  <path id="path" d="M3,23.142H28.713V20.285H3v2.857ZM3,16H28.713V13.142H3V16ZM3,6V8.857H28.713V6Z" transform="translate(746.286 80.571)" fill="#3b4727" fill-rule="evenodd"/>
+							<rect
+								id="rectangle"
+								width="34"
+								height="34"
+								transform="translate(745 78.284)"
+								fill="none"
+							/>
+							<path
+								id="path"
+								d="M3,23.142H28.713V20.285H3v2.857ZM3,16H28.713V13.142H3V16ZM3,6V8.857H28.713V6Z"
+								transform="translate(746.286 80.571)"
+								fill="#3b4727"
+								fill-rule="evenodd"
+							/>
 						</g>
-					  </svg>											
+					</svg>
 				</div>
 				<div class="mobile-dropdown c-hidden">
 					<a href="./index.html">Home</a>
-					<a href="#">about</a>
-					<a href="./logs.html">logs</a>
-					<a href="./graphs.html">graphs</a>
+					<a href="#">About</a>
+					<a href="./logs.html">Logs</a>
+					<a href="./graphs.html">Graphs</a>
+					<a class="js-shutdown_mobile"> Power off</a>
 				</div>
 			</div>
 			<div class="c-welcomelogs">
@@ -56,15 +91,15 @@
 			class="o-layout o-layout--justify-center o-layout--align-center o-layout--align-content-center"
 			<div class=" c-graph-buttons">
 				<div class="prev-week u-1-of-2 o-layout__item o-layout--justify-center">
-					  <div class="js-prev-week-btn"><svg xmlns="http://www.w3.org/2000/svg" width="22.8" height="20" viewBox="0 0 22.8 40">
+					  <div class="js-prev-week-btn"><p  class="next-week-text"><svg class="arrow-svg" xmlns="http://www.w3.org/2000/svg" width="22.8" height="20" viewBox="0 0 22.8 40">
 						<path id="arrow_back_ios_new_FILL0_wght400_GRAD0_opsz48" d="M32.75,44l-20-20,20-20,2.8,2.85L18.4,24,35.55,41.15Z" transform="translate(-12.75 -4)" fill="#3b4727"/>
-					  </svg><p  class="next-week-text">prev week</p></div>
+					  </svg>prev week</p></div>
 				</div>
 				<div class="next-week u-1-of-2 o-layout__item o-layout--justify-center">
 					
-					<div class="js-next-week-btn"><p class="next-week-text">next week</p><svg xmlns="http://www.w3.org/2000/svg" width="22.8" height="20" viewBox="0 0 22.8 40">
+					<div class="js-next-week-btn"><p class="next-week-text">next week<svg class="arrow-svg" xmlns="http://www.w3.org/2000/svg" width="22.8" height="20" viewBox="0 0 22.8 40">
 						<path id="arrow_forward_ios_FILL0_wght400_GRAD0_opsz48" d="M15.2,43.9l-2.8-2.85L29.55,23.9,12.4,6.75,15.2,3.9l20,20Z" transform="translate(-12.4 -3.9)" fill="#3b4727"/>
-					  </svg></div>
+					  </svg></p></div>
 					
 					 
 				</div>

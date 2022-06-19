@@ -190,7 +190,7 @@ span {
 */
 
 .o-row--body {
-	height: 100vh;
+	height: 80vh;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
@@ -198,9 +198,6 @@ span {
 	overflow: hidden;
 }
 @media (min-width: 968px) {
-	.o-row--body {
-		height: 80vh;
-	}
 }
 .o-row--footer {
 	position: relative;
@@ -450,12 +447,12 @@ span {
 	max-width: 472px;
 }
 
-.js-fsrcheck {
+/* .js-fsrcheck {
 	margin-top: -34px;
 }
 .js-wlscheck {
 	margin-top: -34px;
-}
+} */
 
 .prev-week {
 	display: flex;
@@ -471,7 +468,6 @@ span {
 .js-next-week-btn {
 	display: flex;
 	flex-direction: row;
-	padding: 8px;
 	font-size: 24px;
 	color: #357560;
 	margin-left: 12px;
@@ -480,23 +476,13 @@ span {
 .js-prev-week-btn {
 	display: flex;
 	flex-direction: row;
-	padding: 8px;
 	margin-right: 12px;
 	color: #357560;
 	font-size: 24px;
 	font-family: 'Titillium Web', sans-serif;
 }
-
-.next-week-text {
-	margin-top: -10px;
-	text-align: center;
-}
-.js-prev-week-btn:active,
-.js-prev-week-btn:hover,
-.js-next-week-btn:hover,
-.js-next-week-btn:active {
-	box-shadow: 2px 4px rgba(53, 117, 96, 0.8);
-	border-radius: 14px;
+.arrow-svg {
+	padding-top: 8px;
 }
 
 .js-current-week-btn {
@@ -505,7 +491,7 @@ span {
 	border-radius: 2em;
 	border: 1px solid #202024;
 	font-size: 16px;
-	margin-top: 12px;
+	margin-top: 24px;
 	background-color: #357560;
 	color: #fbf1e5;
 	font-family: 'Titillium Web', sans-serif;
@@ -603,13 +589,16 @@ span {
 		'start start start';
 }
 .wls {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 	border: 3px solid #7c7573;
-	border-radius: 40px;
-	width: 64px;
-	height: 64px;
+	border-radius: 24px;
+	width: 80px;
+	height: 100px;
 	text-align: center;
 	align-self: center;
-	margin-left: 6px;
+	margin-left: 4px;
 }
 .fsrtext {
 	text-align: center;
@@ -624,14 +613,17 @@ span {
 	padding-top: 14px;
 }
 .fsr {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 	border: 3px solid #7c7573;
-	border-radius: 40px;
-	width: 64px;
-	height: 64px;
+	border-radius: 24px;
+	width: 80px;
+	height: 100px;
 	text-align: center;
 	align-self: center;
-	justify-content: center;
 	margin-left: 6px;
+	margin-right: 4px;
 }
 
 .c-checkdiv {
@@ -805,9 +797,11 @@ body > .js-brewingpopup {
 @media (min-width: 1224px) {
 	.c-welcome {
 		padding-top: 50px;
+		padding-bottom: 25px;
 	}
 	.c-welcomelogs {
 		padding-top: 50px;
+		padding-bottom: 25px;
 	}
 }
 
@@ -1195,48 +1189,6 @@ h2 {
     Small cta link with custom animation
 */
 
-.c-link-cta {
-	position: relative;
-	display: inline-block;
-	text-decoration: none;
-	font-size: 16px;
-	line-height: 24px;
-	font-weight: 400;
-	padding: 4px 0;
-	transition: color 0.175s ease-in;
-}
-
-.c-link-cta,
-.c-link-cta:visited,
-.c-link-cta:active {
-	color: #7373f5;
-}
-
-.c-link-cta::after {
-	content: '';
-	display: block;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	height: 1px;
-	width: 100%;
-	background-color: #7373f5;
-	transform: scaleX(0.5);
-	transform-origin: left;
-	transition-property: transform, background-color;
-	transition: transform 0.175s;
-	transition-timing-function: ease;
-}
-
-.c-link-cta:hover {
-	color: #3e3ea8;
-}
-
-.c-link-cta:hover::after {
-	transform: scaleX(1);
-	background-color: #3e3ea8;
-}
-
 /* inverse cta */
 
 .c-link-cta--inverse,
@@ -1352,7 +1304,50 @@ h2 {
     Component: header
     ---
     Main header of the website
+	
 */
+
+.c-link-cta {
+	text-align: end;
+	position: relative;
+	display: inline-block;
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 24px;
+	padding: 4px 0;
+	transition: color 0.175s ease-in;
+}
+
+.c-link-cta,
+.c-link-cta:visited,
+.c-link-cta:active {
+	color: #357560;
+}
+
+.c-link-cta::after {
+	content: '';
+	display: block;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 1px;
+	width: 100%;
+	background-color: #357560;
+	transform: scaleX(0.5);
+	transform-origin: center;
+	transition-property: transform, #462f20;
+	transition: transform 0.175s;
+	transition-timing-function: ease;
+}
+
+.c-link-cta:hover {
+	color: #462f20;
+}
+
+.c-link-cta:hover::after {
+	transform: scaleX(1);
+	background-color: #462f20;
+}
 
 /*
     Component: header
@@ -1363,15 +1358,13 @@ h2 {
 	display: none;
 	width: 100%;
 	overflow: hidden;
-	background-color: #434441;
 }
 
 .navbar a {
-	float: left;
-	font-size: 16px;
-	color: #fbf1e5;
-	text-align: center;
-	padding: 14px 16px;
+	font-size: 20px;
+	color: rgba(53, 117, 96, 0.8);
+	margin-right: 12px;
+	margin-left: 12px;
 	text-decoration: none;
 }
 
@@ -1381,26 +1374,20 @@ h2 {
 }
 
 .dropdown .dropbtn {
-	font-size: 16px;
+	font-size: 20px;
 	border: none;
 	outline: none;
-	color: #fbf1e5;
-	padding: 14px 16px;
+	color: rgba(53, 117, 96, 0.8);
 	background-color: inherit;
 	font-family: inherit;
 	margin: 0;
 }
 
-.navbar a:hover,
-.dropdown:hover .dropbtn {
-	background-color: #357560;
-}
-
 .dropdown-content {
 	display: none;
 	position: absolute;
+	width: 80px;
 	background-color: #e9ded1;
-	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 	z-index: 100;
 	animation: growDown 300ms ease-in-out;
@@ -1421,15 +1408,14 @@ h2 {
 .dropdown-content a {
 	float: none;
 	color: black;
-	padding: 12px 16px;
+	padding: 0;
 	text-decoration: none;
 	display: block;
-	text-align: left;
-}
-
-.dropdown-content a:hover {
-	background-color: #357560;
-	color: #fbf1e5;
+	text-align: center;
+	padding: 0;
+	margin: 0 auto;
+	margin-top: 14px;
+	margin-bottom: 8px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -1500,7 +1486,9 @@ h2 {
 	}
 
 	.navbar {
-		display: block;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	.mobile-nav {
 		display: None;
@@ -1595,46 +1583,6 @@ h2 {
     ---
     Main navigation of the site
 */
-
-.c-nav {
-	font-size: 18px;
-	line-height: 24px;
-}
-
-.c-nav--meta {
-	font-size: 16px;
-}
-
-.c-nav__link {
-	display: block;
-	text-decoration: none;
-	padding: 8px 0;
-}
-
-.c-nav__link,
-.c-nav__link:visited,
-.c-nav__link:active {
-	color: #202024;
-}
-
-.c-nav__link--meta,
-.c-nav__link--meta:visited,
-.c-nav__link--meta:active {
-	color: #6c6c75;
-}
-
-.c-nav__link.is-selected,
-.c-nav__link:hover,
-.c-nav__link:focus {
-	color: #5051db;
-}
-
-@media (min-width: 768px) {
-	.c-nav__list {
-		display: flex;
-		gap: 32px;
-	}
-}
 
 /*------------------------------------*\
   #UTILITIES

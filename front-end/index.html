@@ -29,18 +29,33 @@
 	<body class="homepage">
 		<header class="o-row--header">
 			<div class="navbar">
-				<a href="./index.html">Home</a>
-				<a href="#">about</a>
-				<div class="dropdown">
-					<button class="dropbtn">
-						logs
-						<i class="fa fa-caret-down"></i>
+				<a class="c-nav__link is-selected c-link-cta" href="./index.html"
+					>Home</a
+				>
+				<a class="c-nav__link is-selected c-link-cta" href="#">About</a>
+				<a
+					class="drop-down-link c-nav__link is-selected c-link-cta"
+					href="./logs.html"
+					>Logs</a
+				>
+				<a
+					class="drop-down-link c-nav__link is-selected c-link-cta"
+					href="./graphs.html"
+					>Graphs</a
+				>
+				<a class="js-shutdown c-nav__link is-selected c-link-cta">Power off</a>
+				<!-- <div class="dropdown">
+					<button class="dropbtn c-nav__link is-selected c-link-cta">
+						Logs
 					</button>
 					<div class="dropdown-content">
-						<a href="./logs.html">logs</a>
-						<a href="./graphs.html">graphs</a>
+						<a
+							class="drop-down-link c-nav__link is-selected c-link-cta"
+							href="./logs.html"
+							>All logs</a
+						>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="mobile-nav">
 				<div class="hamburger" data-clicked="0">
@@ -70,9 +85,10 @@
 				</div>
 				<div class="mobile-dropdown c-hidden">
 					<a href="./index.html">Home</a>
-					<a href="#">about</a>
-					<a href="./logs.html">logs</a>
-					<a href="./graphs.html">graphs</a>
+					<a href="#">About</a>
+					<a href="./logs.html">Logs</a>
+					<a href="./graphs.html">Graphs</a>
+					<a class="js-shutdown_mobile"> Power off</a>
 				</div>
 			</div>
 			<div class="c-welcome">
@@ -93,7 +109,7 @@
 							</div>
 							<div class="c-coffeestatus"></div>
 							<div class="c-checkdiv">
-								<div class="wls">
+								<div class="wls u-1-of-2">
 									<a class="wlstext c-lead-tiny"
 										>water-level<br />
 										<!-- <input
@@ -131,8 +147,9 @@
 											</g>
 										</svg>
 									</div>
+									<span class="c-lead-tiny refill-water"></span>
 								</div>
-								<div class="fsr">
+								<div class="fsr u-1-of-2">
 									<a class="fsrtext c-lead-tiny"
 										>coffee pot<br />
 										<!-- <input
@@ -170,6 +187,7 @@
 											</g>
 										</svg>
 									</div>
+									<span class="c-lead-tiny place-pot"></span>
 								</div>
 							</div>
 

@@ -14,7 +14,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit, send
 from flask import Flask, jsonify, request
 from repositories.DataRepository import DataRepository
-
+import ipaddress
 from selenium import webdriver
 
 endpoint = '/api/v1'
@@ -57,6 +57,7 @@ relais_make_coffee_pin = 24
 relais_coffee_machine_pin = 23
 status_machine_on_led = 27
 status_make_coffee_led = 17
+shutdown_btn = 13
 toggle_coffee_machine = False
 
 
@@ -75,6 +76,7 @@ GPIO.setup(23, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
 GPIO.setup(17, GPIO.OUT)
 GPIO.setup(27, GPIO.OUT)
+GPIO.setup(shutdown_btn, GPIO.IN,pull_up_down = GPIO.PUD_UP)
 
 def turn_on_coffee_machine():
     time.sleep(1)
@@ -99,7 +101,7 @@ def make_coffee():
     print('brewing coffee')
     GPIO.output(relais_make_coffee_pin, GPIO.LOW)
     GPIO.output(status_make_coffee_led, GPIO.HIGH)
-    time.sleep(420) #7 minutes  
+    time.sleep(360) # 420 = 7 minutes  
     GPIO.output(relais_make_coffee_pin, GPIO.HIGH)
     GPIO.output(status_make_coffee_led, GPIO.LOW)
     time.sleep(1)
@@ -108,15 +110,24 @@ def make_coffee():
     socketio.emit('B2F_brewingStatus', {'coffee_status': 0})
     loadcell(True)
     
+def is_ipv4(string):
+        try:
+            ipaddress.IPv4Network(string)
+            return True
+        except ValueError:
+            return False
 
 def write_lcd():
     lcd.init_LCD()
     lcd.write_line("COF-FI        ")
-    ips = str(check_output(['hostname','--all-ip-addresses']))
-    ip_addr = ips.split(' ')
     while True:
+        ips = str(check_output(['hostname','--all-ip-addresses']))
+        ip_addr = ips.split(' ')
         lcd.next_line()
-        lcd.write_line(f"{ip_addr[1]}   ")
+        if(is_ipv4(ip_addr[1])):
+            lcd.write_line(f"{ip_addr[1]}   ")
+        else:
+            lcd.write_line("no ip found      ")
         time.sleep(4)
         lcd.next_line()
         lcd.write_line(f"temp: {tmp(False)}C      ")
@@ -139,7 +150,6 @@ def check_water_level():
             touch_val += 1
     
     value = touch_val * 5
-    socketio.emit('B2F_WLS', {'current_waterlevel': value},broadcast=True)
     # print(f"waterlevel: {value}")
     return value
 
@@ -151,6 +161,8 @@ def tmp(write_to_db):
         temp = (100 * volt) - 50
         status = 1
         commentaar = "get current temperature"
+        if temp < 0:
+            temp = 0
         if write_to_db:
             data = DataRepository.create_log(temp,2,1,status,commentaar)
             if data != 0:
@@ -160,27 +172,32 @@ def tmp(write_to_db):
     
 def loadcell(write_to_db):
     weight = hx.get_weight_mean(20)
+    # print(f"weight: {weight}")
+    status = 0
     commentaar = "read coffee pot weight"
     if weight < 0:
         weight = 0
     if weight > 10:
-            status = 1
+        status = 1
     if weight is not None and write_to_db:
             data = DataRepository.create_log(weight,3,3,status,commentaar)
             if data != 0:
                 print('gelukt weight wegschrijven')
-            print('gelukt wegschrijven gewicht')  
     socketio.emit('B2F_coffepot', {'coffepot_status': status},broadcast=True)
     return weight
     
 def wls(write_to_db):
-        #print(f"wls{write_to_db}")
-        percent = check_water_level()
+        try:
+            percent = check_water_level()
+        except:
+            percent = 0
+        socketio.emit('B2F_WLS', {'current_waterlevel': percent},broadcast=True)
+        # print(percent)
         status = 0
         if percent > 10 & percent < 98:
             status = 1
         else:
-            status - 0
+            status = 0
         commentaar = "get water level"
         if write_to_db:
             data = DataRepository.create_log(percent,1,2,status,commentaar)
@@ -241,11 +258,6 @@ def get_status():
 
 
 #socketio
-    
-
-@socketio.on('connect')
-def initial_connection():
-    pass
 
 @socketio.on('F2B_brew')
 def brew():
@@ -262,7 +274,6 @@ def turn_on():
 
 @socketio.on('F2B_turn_off')
 def turn_off():
-    
     print('turn off')
     turn_off_coffee_machine()
 
@@ -274,10 +285,14 @@ def get_weight_logs(data):
 def get_coffee_logs(data):
     socketio.emit('B2F_coffeeLogs', {'coffee_logs': DataRepository.get_weekly_coffee_made(data['weeknr'])})
 
+@socketio.on('F2B_shutdown')
+def shutdown():
+    print('powering off')
+    time.sleep(2)
+    os.system("sudo shutdown -h now")
+   
 
 #threads
-
-
 def sensors_to_db():
     while True:
         try:
@@ -295,18 +310,26 @@ def lcd_thread():
         pass
 
 def sensors_to_frontend():
+    print('sensors to frontend')
     while True:
         try:
             loadcell(False)
-            tmp(False)
             wls(False)
+            tmp(False)
             time.sleep(1)
         except:
             #print("error uitlezen sensors")\
             pass
 
         
+thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
+    
+    
 
+@socketio.on('connect')
+def initial_connection():
+    print('connected')
+    thread3.start()
 
 def start_thread():
     print("**** Starting THREAD ****")
@@ -316,11 +339,7 @@ def start_thread2():
     print("**** Starting THREADlcd ****")
     thread2 = threading.Thread(target=lcd_thread,args=(),daemon=True)
     thread2.start()
-def start_thread3():
-    print("**** Starting THREADloadcell ****")
-    thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
-    thread3.start()
-    
+
 
 
 def start_chrome_kiosk():
@@ -360,17 +379,27 @@ def start_chrome_thread():
 
 
 # ANDERE FUNCTIES
-# GPIO.add_event_detect(stop_btn,GPIO.RISING,callback=Coffee_stop,bouncetime = 300)
 
+
+
+def shutdown_callback(pin):
+    print('powering off')
+    time.sleep(2)
+    os.system("sudo shutdown -h now")
+
+
+
+GPIO.add_event_detect(shutdown_btn,GPIO.RISING,callback=shutdown_callback,bouncetime = 400)
 
 if __name__ == '__main__':
     try:
         GPIO.output(23, GPIO.HIGH)
         GPIO.output(24, GPIO.HIGH)
-        # start_thread()
-        # start_thread2()
-        # start_thread3()
-        start_chrome_thread()
+        GPIO.output(27, GPIO.LOW)
+        GPIO.output(17, GPIO.LOW)
+        start_thread()
+        start_thread2()
+        # start_chrome_thread()
         print("**** Starting APP ****")
         socketio.run(app, debug=False, host='0.0.0.0')
     except KeyboardInterrupt:
