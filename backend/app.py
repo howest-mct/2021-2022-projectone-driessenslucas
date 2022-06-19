@@ -110,6 +110,11 @@ def make_coffee():
     socketio.emit('B2F_brewingStatus', {'coffee_status': 0})
     loadcell(True)
     
+def isgoodipv4(s):
+    pieces = s.split('.')
+    if len(pieces) != 4: return False
+    try: return all(0<=int(p)<256 for p in pieces)
+    except ValueError: return False
 
 def write_lcd():
     lcd.init_LCD()
@@ -118,8 +123,10 @@ def write_lcd():
     ip_addr = ips.split(' ')
     while True:
         lcd.next_line()
-        if(ip_addr[1] is not None):
-        lcd.write_line(f"{ip_addr[1]}   ")
+        if(isgoodipv4(ip_addr[1]) ):
+            lcd.write_line(f"{ip_addr[1]}   ")
+        else:
+            lcd.write_line("no ip found      ")
         time.sleep(4)
         lcd.next_line()
         lcd.write_line(f"temp: {tmp(False)}C      ")
