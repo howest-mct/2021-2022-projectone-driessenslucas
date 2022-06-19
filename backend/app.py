@@ -99,7 +99,7 @@ def make_coffee():
     print('brewing coffee')
     GPIO.output(relais_make_coffee_pin, GPIO.LOW)
     GPIO.output(status_make_coffee_led, GPIO.HIGH)
-    time.sleep(5) # 420 = 7 minutes  
+    time.sleep(360) # 420 = 7 minutes  
     GPIO.output(relais_make_coffee_pin, GPIO.HIGH)
     GPIO.output(status_make_coffee_led, GPIO.LOW)
     time.sleep(1)

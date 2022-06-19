@@ -468,7 +468,6 @@ span {
 .js-next-week-btn {
 	display: flex;
 	flex-direction: row;
-	padding: 8px;
 	font-size: 24px;
 	color: #357560;
 	margin-left: 12px;
@@ -477,23 +476,13 @@ span {
 .js-prev-week-btn {
 	display: flex;
 	flex-direction: row;
-	padding: 8px;
 	margin-right: 12px;
 	color: #357560;
 	font-size: 24px;
 	font-family: 'Titillium Web', sans-serif;
 }
-
-.next-week-text {
-	margin-top: -10px;
-	text-align: center;
-}
-.js-prev-week-btn:active,
-.js-prev-week-btn:hover,
-.js-next-week-btn:hover,
-.js-next-week-btn:active {
-	box-shadow: 2px 4px rgba(53, 117, 96, 0.8);
-	border-radius: 14px;
+.arrow-svg {
+	padding-top: 8px;
 }
 
 .js-current-week-btn {
@@ -502,7 +491,7 @@ span {
 	border-radius: 2em;
 	border: 1px solid #202024;
 	font-size: 16px;
-	margin-top: 12px;
+	margin-top: 24px;
 	background-color: #357560;
 	color: #fbf1e5;
 	font-family: 'Titillium Web', sans-serif;
@@ -1374,7 +1363,8 @@ h2 {
 .navbar a {
 	font-size: 20px;
 	color: rgba(53, 117, 96, 0.8);
-	margin-right: 24px;
+	margin-right: 12px;
+	margin-left: 12px;
 	text-decoration: none;
 }
 
