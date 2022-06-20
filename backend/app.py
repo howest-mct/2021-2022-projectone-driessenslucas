@@ -124,8 +124,8 @@ def write_lcd():
         ips = str(check_output(['hostname','--all-ip-addresses']))
         ip_addr = ips.split(' ')
         lcd.next_line()
-        if(is_ipv4(ip_addr[1])):
-            lcd.write_line(f"{ip_addr[1]}   ")
+        if(is_ipv4(ip_addr[0][2:])):
+            lcd.write_line(f"{ip_addr[0][2:]}   ")
         else:
             lcd.write_line("no ip found      ")
         time.sleep(4)
