@@ -13,7 +13,7 @@ made by Lucas Driessens
 For the final project in the first year of my studies I decided to make a remote controlled coffee machine named 
 COF-FI
 
-functionalities:
+### functionalities:
 * make coffee from anywhere as long as you have internet access
 * track how much coffee you've made each week
 * check how much water there is in the reservoir
