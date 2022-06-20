@@ -1,6 +1,6 @@
 <div id="top"></div>
 
-Project One - COF-FI
+# Project One - COF-FI
 made by Lucas Driessens
 
 
@@ -21,6 +21,11 @@ functionalities:
 * measure temperature of the coffee machine
 
 
+### possible features to be added
+
+* add physical buttons to make coffee
+* add gif animation while waiting for the coffee to be made.
+* add a select menu with timers that makes different amounts of coffee (instead of just a static amount of time).
 
 
 
