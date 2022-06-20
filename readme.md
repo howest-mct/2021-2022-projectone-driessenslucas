@@ -1,7 +1,6 @@
 <div id="top"></div>
 
 # Project One - COF-FI
-made by Lucas Driessens
 
 
 
