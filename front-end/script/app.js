@@ -303,6 +303,14 @@ const updateView = function (value) {
 //#endregion
 
 //#region ***  Callback-No Visualisation - callback___  ***********\\
+const updateOnSwitch = function (jsonObject) {
+	if (jsonObject == 1) {
+		htmlOnSwitch.checked = true;
+	} else {
+		htmlOnSwitch.checked = false;
+	}
+};
+
 const updateHamburger = function () {
 	if (
 		document.querySelector('.mobile-dropdown').classList.contains('c-hidden')
@@ -475,6 +483,9 @@ const listenToUI = function () {
 };
 
 const listenToSocket = function () {
+	socketio.on('B2F_Machine_status', function (data) {
+		updateOnSwitch(data.status);
+	});
 	socketio.on('B2F_logs', function (data) {
 		showHistoriek(data);
 	});

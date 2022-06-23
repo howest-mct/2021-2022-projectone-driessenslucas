@@ -154,10 +154,6 @@ const listenToBtn = function () {
 	document
 		.querySelector('.js-prev-week-btn')
 		.addEventListener('click', function () {
-			weightData.length = 0;
-			WeightLabels.length = 0;
-			CoffeeData.length = 0;
-			CoffeeLabels.length = 0;
 			weekIndex++;
 			socketio.emit('F2B_getWeightLogs', { weeknr: weekIndex });
 			socketio.emit('F2B_getCoffeeLogs', { weeknr: weekIndex });
@@ -165,10 +161,6 @@ const listenToBtn = function () {
 	document
 		.querySelector('.js-next-week-btn')
 		.addEventListener('click', function () {
-			weightData.length = 0;
-			WeightLabels.length = 0;
-			CoffeeData.length = 0;
-			CoffeeLabels.length = 0;
 			weekIndex--;
 			socketio.emit('F2B_getWeightLogs', { weeknr: weekIndex });
 			socketio.emit('F2B_getCoffeeLogs', { weeknr: weekIndex });
@@ -187,9 +179,17 @@ const listenToBtn = function () {
 };
 
 socketio.on('B2F_coffeeLogs', function (data) {
+	weightData.length = 0;
+	WeightLabels.length = 0;
+	CoffeeData.length = 0;
+	CoffeeLabels.length = 0;
 	updateCoffeMade(data.coffee_logs);
 });
 socketio.on('B2F_weightLogs', function (data) {
+	weightData.length = 0;
+	WeightLabels.length = 0;
+	CoffeeData.length = 0;
+	CoffeeLabels.length = 0;
 	updateWeightData(data.weight_logs);
 });
 

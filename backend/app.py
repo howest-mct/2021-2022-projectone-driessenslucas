@@ -81,18 +81,16 @@ GPIO.setup(shutdown_btn, GPIO.IN,pull_up_down = GPIO.PUD_UP)
 def turn_on_coffee_machine():
     time.sleep(1)
     print('turning on coffee machine')
-    # DataRepository.create_log(1,4,6,1,"coffee machine aan")
+    DataRepository.create_log(1,4,6,1,"coffee machine aan")
     GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
-    time.sleep(1)
     GPIO.output(status_machine_on_led, GPIO.HIGH)
     time.sleep(1)
 
 def turn_off_coffee_machine():
     time.sleep(1)
     print('turning off coffee machine')
-    # DataRepository.create_log(1,4,6,0,"coffee machine uit")
+    DataRepository.create_log(0,4,6,0,"coffee machine uit")
     GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
-    time.sleep(1)
     GPIO.output(status_machine_on_led, GPIO.LOW)
     time.sleep(1)
 
@@ -268,22 +266,23 @@ def brew():
     
 @socketio.on('F2B_turn_on')
 def turn_on():
-    
+    socketio.emit('B2F_Machine_status', {'status': 1},broadcast=True)
     print('turn on')
     turn_on_coffee_machine()
 
 @socketio.on('F2B_turn_off')
 def turn_off():
+    socketio.emit('B2F_Machine_status', {'status': 0},broadcast=True)
     print('turn off')
     turn_off_coffee_machine()
 
 @socketio.on('F2B_getWeightLogs')
 def get_weight_logs(data):
-    socketio.emit('B2F_weightLogs', {'weight_logs': DataRepository.get_weekly_weight(data['weeknr'])})
+    socketio.emit('B2F_weightLogs', {'weight_logs': DataRepository.get_weekly_weight(data['weeknr'])},broadcast=True)
 
 @socketio.on('F2B_getCoffeeLogs')
 def get_coffee_logs(data):
-    socketio.emit('B2F_coffeeLogs', {'coffee_logs': DataRepository.get_weekly_coffee_made(data['weeknr'])})
+    socketio.emit('B2F_coffeeLogs', {'coffee_logs': DataRepository.get_weekly_coffee_made(data['weeknr'])},broadcast=True)
 
 @socketio.on('F2B_shutdown')
 def shutdown():
@@ -329,6 +328,8 @@ thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
 @socketio.on('connect')
 def initial_connection():
     print('connected')
+    socketio.emit('B2F_Machine_status', {'status': round(DataRepository.get_latest_value(4)['Waarde'],0)},broadcast=True)
+    print(DataRepository.get_latest_value(4))
     thread3.start()
 
 def start_thread():
