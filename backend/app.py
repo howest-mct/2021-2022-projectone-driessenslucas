@@ -397,6 +397,7 @@ GPIO.add_event_detect(shutdown_btn,GPIO.RISING,callback=shutdown_callback,bounce
 
 if __name__ == '__main__':
     try:
+        DataRepository.create_log(1,4,5,0,"starting up")
         DataRepository.create_log(0,4,6,0,"coffee machine off")
         GPIO.output(23, GPIO.HIGH)
         GPIO.output(24, GPIO.HIGH)
