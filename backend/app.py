@@ -81,7 +81,7 @@ GPIO.setup(shutdown_btn, GPIO.IN,pull_up_down = GPIO.PUD_UP)
 def turn_on_coffee_machine():
     time.sleep(1)
     print('turning on coffee machine')
-    DataRepository.create_log(1,4,6,1,"coffee machine aan")
+    DataRepository.create_log(1,4,6,1,"coffee machine on")
     GPIO.output(relais_coffee_machine_pin, GPIO.LOW)
     GPIO.output(status_machine_on_led, GPIO.HIGH)
     time.sleep(1)
@@ -89,23 +89,23 @@ def turn_on_coffee_machine():
 def turn_off_coffee_machine():
     time.sleep(1)
     print('turning off coffee machine')
-    DataRepository.create_log(0,4,6,0,"coffee machine uit")
+    DataRepository.create_log(0,4,6,0,"coffee machine off")
     GPIO.output(relais_coffee_machine_pin, GPIO.HIGH)
     GPIO.output(status_machine_on_led, GPIO.LOW)
     time.sleep(1)
 
 def make_coffee():
-    #aanpassen zodat we coffeemachine apart kunnen aanzetten
     print('brewing coffee')
     GPIO.output(relais_make_coffee_pin, GPIO.LOW)
     GPIO.output(status_make_coffee_led, GPIO.HIGH)
-    time.sleep(360) # 420 = 7 minutes  
+    time.sleep(300) # 420 = 7 minutes  
     GPIO.output(relais_make_coffee_pin, GPIO.HIGH)
     GPIO.output(status_make_coffee_led, GPIO.LOW)
     time.sleep(1)
     print('coffee is done')
-    DataRepository.create_log(1,4,5,1,"coffee gemaakt")
+    DataRepository.create_log(0,4,5,0,"coffee made")
     socketio.emit('B2F_brewingStatus', {'coffee_status': 0})
+    socketio.emit('B2F_brewing_PopUp', {'status' : 0},broadcast=True)
     loadcell(True)
     
 def is_ipv4(string):
@@ -260,7 +260,9 @@ def get_status():
 @socketio.on('F2B_brew')
 def brew():
     print('brew')
-    socketio.emit('B2F_brewingStatus', {'coffee_status': 1})
+    socketio.emit('B2F_brewingStatus', {'coffee_status': 1},broadcast=True)
+    socketio.emit('B2F_brewing_PopUp', {'status' : 1},broadcast=True)
+    DataRepository.create_log(1,4,5,1,"making Coffee")
     thread4 = threading.Thread(target=make_coffee,args=(),daemon=True)
     thread4.start()
     
@@ -297,7 +299,7 @@ def sensors_to_db():
         try:
             wls(True)
             tmp(True)
-            time.sleep(60)
+            time.sleep(600)
         except:
             pass
             # print("error while writing to db")
@@ -328,7 +330,8 @@ thread3 = threading.Thread(target=sensors_to_frontend,args=(),daemon=True)
 @socketio.on('connect')
 def initial_connection():
     print('connected')
-    socketio.emit('B2F_Machine_status', {'status': round(DataRepository.get_latest_value(4)['Waarde'],0)},broadcast=True)
+    socketio.emit('B2F_Machine_status', {'status': round(DataRepository.get_latest_status_from_device(4,6)['status'],0)},broadcast=True)
+    socketio.emit('B2F_brewing_PopUp', {'status': DataRepository.get_latest_status_from_device(4,5)['status']},broadcast=True)
     print(DataRepository.get_latest_value(4))
     thread3.start()
 
@@ -394,6 +397,7 @@ GPIO.add_event_detect(shutdown_btn,GPIO.RISING,callback=shutdown_callback,bounce
 
 if __name__ == '__main__':
     try:
+        DataRepository.create_log(0,4,6,0,"coffee machine off")
         GPIO.output(23, GPIO.HIGH)
         GPIO.output(24, GPIO.HIGH)
         GPIO.output(27, GPIO.LOW)

@@ -305,8 +305,10 @@ const updateView = function (value) {
 //#region ***  Callback-No Visualisation - callback___  ***********\\
 const updateOnSwitch = function (jsonObject) {
 	if (jsonObject == 1) {
+		isTurnedOn = 1;
 		htmlOnSwitch.checked = true;
 	} else {
+		isTurnedOn = 0;
 		htmlOnSwitch.checked = false;
 	}
 };
@@ -517,6 +519,13 @@ const listenToSocket = function () {
 			showCoffeeStatus(0);
 		} else {
 			showCoffeeStatus(1);
+		}
+	});
+	socketio.on('B2F_brewing_PopUp', function (data) {
+		console.log(data.status);
+		if (data.status == 1) {
+			showCoffeeStatus(1);
+		} else {
 		}
 	});
 };

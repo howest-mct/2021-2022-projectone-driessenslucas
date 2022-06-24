@@ -36,6 +36,12 @@ class DataRepository:
         return Database.get_one_row(sql,params)
 
     @staticmethod
+    def get_latest_status_from_device(deviceID,actieID):
+        sql = "select status from logs where deviceID = %s and actieid = %s ORDER BY volgnummer DESC LIMIT 1"
+        params = [deviceID,actieID]
+        return Database.get_one_row(sql,params)
+
+    @staticmethod
     def create_log(value,deviceid,actieid,status,commentaar):
         sql = "INSERT INTO logs(waarde,deviceID,actieID,status,commentaar) VALUES(%s,%s,%s,%s,%s)"
         params = [value,deviceid,actieid,status,commentaar]
